@@ -2,7 +2,7 @@
 
 Static design pages for Vietnamese Legal RAG, served by GitHub Pages from `main` at the repo root.
 
-Live: https://velvetforest.github.io/legal-rag-docs/
+Live: https://velvetforest.github.io/legal-rag-docs/ (Vietnamese, `index.html`) and https://velvetforest.github.io/legal-rag-docs/en.html (English, `en.html`)
 
 ## First deploy (once)
 
@@ -22,7 +22,8 @@ gh api repos/velvetforest/legal-rag-docs/pages/builds/latest --jq .status
 ## Update a page
 
 ```bash
-cp ../vietnamese-legal-rag/docs/model-ladder-design.html index.html
+cp ../vietnamese-legal-rag/docs/thiet-ke-thang-model.html index.html
+cp ../vietnamese-legal-rag/docs/model-ladder-design.html en.html
 git add -A && git commit -m "Update model ladder page" && git push
 ```
 

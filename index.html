@@ -1,20 +1,13 @@
 <!doctype html>
-<html lang="en" data-palette="burgundy" data-theme="dark">
+<html lang="vi" data-palette="burgundy" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RAG Model Ladder</title>
+<title>Thang model RAG</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
 <style>
-/* ---------- burgundy tokens (micro-cards-design.css) ---------- */
-[data-palette="burgundy"], [data-palette="burgundy"][data-theme="light"] {
-  --mc-bg: #F8F2F4; --mc-panel: #FDF9FA; --mc-surface: #F2E8EC; --mc-white: #FFFFFF; --mc-border: #E6D6DC;
-  --mc-text: #3B2E33; --mc-strong: #2B1F24; --mc-muted: #7F6A73; --mc-accent: #B57A8C; --mc-deep: #7E3F54;
-  --mc-on: #2B1F24; --mc-grad: linear-gradient(#B57A8C,#B57A8C); --mc-soft: #EEDCE2; --mc-grad-soft: linear-gradient(#EEDCE2,#EEDCE2);
-  --mc-mesh: radial-gradient(40vmax 30vmax at 10% 0%,rgba(181,122,140,0.08),transparent 70%),radial-gradient(36vmax 28vmax at 94% 12%,rgba(181,122,140,0.06),transparent 70%);
-  --mc-shadow: 0 12px 30px -8px rgba(126,63,84,0.18); --mc-glow: none;
-}
+/* ---------- burgundy dark tokens (micro-cards-design.css) ---------- */
 [data-palette="burgundy"][data-theme="dark"] {
   color-scheme: dark;
   --mc-bg: #251F22; --mc-panel: #2F282C; --mc-surface: #382F34; --mc-white: #40363B; --mc-border: #52454B;
@@ -37,38 +30,39 @@
 .mc-card { position: relative; overflow: hidden; display: flex; flex-direction: column; box-sizing: border-box; padding: 20px; border-radius: 16px; background: var(--mc-panel); border: 1px solid var(--mc-border); box-shadow: var(--mc-shadow); }
 .mc-card::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--mc-grad); pointer-events: none; }
 /* ---------- viz.css (rules used here) ---------- */
-:root { --ok: #2f7a55; --warn: #6d4c8a; --bad: #b23a48; --info: #3d6f96; --series-2: #3d7f88; --mono: ui-monospace, 'Cascadia Code', Consolas, monospace; --display: 'Noto Serif Display', Georgia, serif; }
-[data-theme="dark"] { --ok: #8fd6ae; --warn: #c9b3dc; --bad: #f09aa4; --info: #9cc6e6; --series-2: #8fd0d6; }
+:root { --ok: #8fd6ae; --warn: #c9b3dc; --bad: #f09aa4; --info: #9cc6e6; --series-2: #8fd0d6; --mono: ui-monospace, 'Cascadia Code', Consolas, monospace; --display: 'Noto Serif Display', Georgia, serif; }
 h1, h2, h3, h4, p { margin: 0; }
 .studio-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .studio-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; min-width: 0; }
 .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--mc-muted); }
 .viz-title { font-family: var(--display); font-size: 25px; font-weight: 500; line-height: 1.25; color: var(--mc-strong); text-wrap: balance; }
 .viz-source { font-size: 12px; font-weight: 700; color: var(--mc-deep); overflow-wrap: anywhere; }
-.viz-why { line-height: 1.55; }
-.viz-takeaways { display: grid; gap: 6px; line-height: 1.5; overflow-wrap: anywhere; }
+.viz-source a { color: inherit; }
+.viz-why { line-height: 1.6; }
+.viz-takeaways { display: grid; gap: 6px; line-height: 1.55; overflow-wrap: anywhere; }
 .viz-takeaways h4 { font-size: 13px; font-weight: 700; color: var(--mc-strong); }
-.viz-takeaways ul, .viz-takeaways ol { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.viz-takeaways ul, .viz-takeaways ol { margin: 0; padding-left: 18px; display: grid; gap: 5px; }
 .viz-meta { display: flex; flex-wrap: wrap; gap: 6px; }
 .seal { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 6px; border: 1px solid currentColor; }
 .seal::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .seal--ok { color: var(--ok); } .seal--warn { color: var(--warn); } .seal--bad { color: var(--bad); } .seal--info { color: var(--info); }
 .seal--calc { color: var(--mc-deep); border-style: dashed; }
 .stage { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; min-width: 0; overflow-wrap: anywhere; }
-.note { font-size: 12px; line-height: 1.5; color: var(--mc-muted); }
+.note { font-size: 12px; line-height: 1.55; color: var(--mc-muted); }
 .stat-line { font-weight: 700; color: var(--mc-strong); font-variant-numeric: tabular-nums; line-height: 1.5; }
 .num { font-weight: 700; color: var(--mc-deep); font-variant-numeric: tabular-nums; }
-.stp-caption { min-height: 3em; padding: 9px 12px; border-radius: 10px; background: var(--mc-surface); line-height: 1.5; font-variant-numeric: tabular-nums; }
-.stp-caption code, .lay-item code, .viz-takeaways code, .viz-why code { font-family: var(--mono); font-size: 12px; }
+.stp-caption { min-height: 3em; padding: 9px 12px; border-radius: 10px; background: var(--mc-surface); line-height: 1.55; font-variant-numeric: tabular-nums; }
+code { font-family: var(--mono); font-size: 12px; }
 .stp-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .stp-controls .mc-btn { padding: 6px 12px; }
 .stp-count { margin-left: auto; font-size: 12px; color: var(--mc-muted); font-variant-numeric: tabular-nums; }
 input[type=range] { width: 100%; margin: 0; accent-color: var(--mc-accent); }
+input[type=checkbox] { width: 18px; height: 18px; margin: 0; accent-color: var(--mc-accent); flex: none; }
 .ctl-row { display: flex; flex-wrap: wrap; gap: 10px 16px; }
 .ctl { flex: 1 1 170px; min-width: 0; display: grid; gap: 4px; font-size: 12px; font-weight: 600; color: var(--mc-muted); }
-.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--mc-muted); }
-.key { width: 14px; height: 10px; border-radius: 3px; display: inline-block; margin-left: 6px; }
-.key:first-child { margin-left: 0; }
+.ctl--check { display: flex; align-items: center; gap: 8px; flex: 1 1 220px; min-height: 32px; color: var(--mc-text); }
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 12px; color: var(--mc-muted); }
+.key { width: 14px; height: 10px; border-radius: 3px; display: inline-block; }
 .tone-good { --tone: var(--ok); } .tone-bad { --tone: var(--bad); } .tone-warn { --tone: var(--warn); }
 .tone-info { --tone: var(--info); } .tone-accent { --tone: var(--mc-accent); } .tone-alt { --tone: var(--series-2); }
 .lay-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
@@ -82,15 +76,19 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
 .wrap { display: grid; gap: 16px; max-width: 780px; margin-inline: auto; }
 .top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 .top h1 { font-family: var(--display); font-size: 28px; font-weight: 500; color: var(--mc-strong); line-height: 1.2; }
-.seg { display: inline-flex; border: 1px solid var(--mc-border); border-radius: 999px; overflow: hidden; }
+.top a { font-size: 13px; font-weight: 600; color: var(--mc-deep); padding: 10px 4px; }
+.lead { line-height: 1.6; color: var(--mc-text); }
+.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--mc-border); border-radius: 14px; overflow: hidden; justify-self: start; }
 .seg button { font: inherit; font-size: 12px; font-weight: 600; padding: 7px 14px; border: 0; background: transparent; color: var(--mc-text); cursor: pointer; }
 .seg button[aria-pressed="true"] { background: var(--mc-accent); color: var(--mc-on); }
-.rank { display: grid; gap: 6px; }
-.rank-row { display: grid; grid-template-columns: minmax(84px, 7.5em) minmax(0, 1fr); gap: 4px 10px; align-items: center; font-size: 13px; }
-.rank-name { font-weight: 700; color: var(--mc-strong); }
+.rank { display: grid; gap: 8px; }
+.rank-row { display: grid; grid-template-columns: minmax(96px, 9em) minmax(0, 1fr); gap: 3px 10px; align-items: center; font-size: 13px; }
+.rank-name { font-weight: 700; color: var(--mc-strong); line-height: 1.25; }
+.rank-name small { display: block; font-weight: 500; font-size: 11px; color: var(--mc-muted); }
 .rank-bar { position: relative; height: 22px; border-radius: 6px; background: var(--mc-surface); overflow: hidden; }
 .rank-fill { position: absolute; inset: 0 auto 0 0; border-radius: 6px; background: color-mix(in srgb, var(--tone) 55%, transparent); transition: width .25s; }
 .rank-txt { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 12px; font-weight: 700; color: var(--mc-strong); white-space: nowrap; }
+.rank-meta { grid-column: 2; font-size: 11px; color: var(--mc-muted); font-variant-numeric: tabular-nums; }
 .rank-why { grid-column: 2; font-size: 12px; font-weight: 600; color: var(--tone); }
 .rung { display: grid; grid-template-columns: 28px minmax(0, 1fr) minmax(120px, 44%); gap: 8px; align-items: center; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--mc-border); background: var(--mc-surface); }
 .rung.is-active { border-color: var(--mc-deep); box-shadow: 0 0 0 1px var(--mc-deep); }
@@ -100,15 +98,21 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
 .rung-strike { font-size: 11px; font-weight: 600; color: var(--bad); }
 .timebar { position: relative; height: 14px; border-radius: 7px; background: var(--mc-surface); overflow: hidden; }
 .timefill { position: absolute; inset: 0 auto 0 0; background: var(--mc-accent); transition: width .25s; }
-.timefill.over { background: var(--bad); }
 .outcome { padding: 9px 12px; border-radius: 10px; border: 1px solid var(--tone); color: var(--tone); background: color-mix(in srgb, var(--tone) 14%, var(--mc-surface)); font-weight: 700; line-height: 1.45; }
 .fixes { display: grid; gap: 8px; }
-.fix { padding: 9px 12px; border-radius: 10px; background: var(--mc-surface); line-height: 1.5; border-left: 3px solid var(--tone, var(--mc-accent)); }
+.fix { padding: 9px 12px; border-radius: 10px; background: var(--mc-surface); line-height: 1.55; border-left: 3px solid var(--tone, var(--mc-accent)); }
 .fix b { color: var(--mc-strong); }
+.why-list { display: grid; gap: 8px; }
+.why-item { padding: 9px 12px; border-radius: 10px; background: var(--mc-surface); line-height: 1.55; }
+.why-item b { color: var(--mc-strong); }
+.src { margin: 0; padding-left: 18px; display: grid; gap: 6px; line-height: 1.5; font-size: 13px; }
+.src a { color: var(--mc-deep); }
 @media (max-width: 560px) {
   .rung { grid-template-columns: 28px minmax(0, 1fr); }
   .rung select { grid-column: 1 / -1; }
   .mc-field { font-size: 16px; }
+  .rank-row { grid-template-columns: minmax(0, 1fr); }
+  .rank-meta, .rank-why { grid-column: 1; }
 }
 @media (pointer: coarse) { .mc-btn, .seg button, .mc-field { min-height: 44px; } input[type=range] { height: 32px; } }
 @media (prefers-reduced-motion: reduce) { .rank-fill, .timefill, .lay-item { transition: none; } }
@@ -117,109 +121,173 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
 <body class="mc-page">
 <main class="wrap">
   <div class="top">
-    <h1>Model ladder for Legal RAG</h1>
+    <h1>Thang model cho Legal RAG</h1>
+    <a href="en.html" lang="en">English</a>
   </div>
+  <p class="lead">Trang này trả lời ba câu hỏi: hiện tại repo gọi LLM như thế nào, nên đưa những model nào vào thang và vì sao chúng hợp với việc hỏi đáp pháp luật bằng tiếng Việt, và khi một model hết quota thì thang xử lý ra sao.</p>
 
-  <!-- 1. Current call path vs proposal -->
+  <!-- 1. Luồng gọi: cũ và mới -->
   <section class="mc-card studio-card">
     <div class="studio-body">
-      <p class="eyebrow">Old way vs new way · team2_rag</p>
-      <h2 class="viz-title">How a question reaches the LLM</h2>
+      <p class="eyebrow">Cách cũ và cách mới · team2_rag</p>
+      <h2 class="viz-title">Một câu hỏi đi tới LLM như thế nào</h2>
       <p class="viz-source">team2_rag/answer.py → llm/factory.py → llm/*_client.py</p>
-      <p class="viz-why">Press Next to walk each step. Switch to <b>New: with ladder</b> to see that only a few steps change; the rest of the pipeline stays as it is.</p>
-      <div class="viz-meta"><span class="seal seal--ok">Read from code</span><span class="seal seal--info">develop · 3d64c4d</span></div>
+      <p class="viz-why">Bấm Tiếp để đi qua từng bước của pipeline. Sau đó chuyển sang <b>Mới: có thang</b> để thấy chỉ có vài bước phải đổi, còn phần lớn pipeline giữ nguyên như hiện tại.</p>
+      <div class="viz-meta"><span class="seal seal--ok">Đọc trực tiếp từ code</span><span class="seal seal--info">develop · 3d64c4d</span></div>
       <div class="stage">
-        <div class="seg" role="group" aria-label="Mode">
-          <button type="button" id="mode-now" aria-pressed="true">Old: one model</button>
-          <button type="button" id="mode-new" aria-pressed="false">New: with ladder</button>
+        <div class="seg" role="group" aria-label="Chế độ">
+          <button type="button" id="mode-now" aria-pressed="true">Cũ: một model</button>
+          <button type="button" id="mode-new" aria-pressed="false">Mới: có thang</button>
         </div>
         <ol class="lay-list" id="flow"></ol>
         <p class="stp-caption" id="flow-cap"></p>
         <div class="stp-controls">
-          <button class="mc-btn" id="flow-back" type="button">Back</button>
-          <button class="mc-btn mc-btn--primary" id="flow-next" type="button">Next</button>
+          <button class="mc-btn" id="flow-back" type="button">Trước</button>
+          <button class="mc-btn mc-btn--primary" id="flow-next" type="button">Tiếp</button>
           <span class="stp-count" id="flow-count"></span>
         </div>
       </div>
-      <div class="viz-takeaways"><h4>Key points</h4><ul>
-        <li>The old way has <b>one</b> fixed model from <code>LLM_PROVIDER</code>/<code>LLM_MODEL</code>. A 429, 5xx or timeout becomes an error at once: no switching, no quota memory.</li>
-        <li>The ladder should be one <code>LLMProvider</code> wrapping several providers, so <code>LLMService</code>, <code>answer.py</code> and the citation check need no change.</li>
+      <div class="viz-takeaways"><h4>Điều cần nhớ</h4><ul>
+        <li>Cách cũ chỉ dùng <b>một</b> model cố định, lấy từ <code>LLM_PROVIDER</code> và <code>LLM_MODEL</code>. Khi gặp 429, lỗi 5xx hay timeout thì request báo lỗi ngay: không có fallback sang model khác và cũng không nhớ model nào đã hết quota.</li>
+        <li>Thang nên được viết thành một <code>LLMProvider</code> bọc nhiều adapter. Nhờ vậy <code>LLMService</code>, <code>answer.py</code> và bước kiểm tra citation không phải sửa gì.</li>
       </ul></div>
     </div>
   </section>
 
-  <!-- 2. Model gate -->
+  <!-- 2. Cổng lọc theo tiếng Việt -->
   <section class="mc-card studio-card">
     <div class="studio-body">
-      <p class="eyebrow">Drop weak models · offline</p>
-      <h2 class="viz-title">Which models make the ladder</h2>
-      <p class="viz-source">docs/team2_rag/llm-proposal.md · 20-question eval set</p>
-      <p class="viz-why">Drag the thresholds. A model that fails any one is dropped; the rest are ranked by total score. The ladder takes the top 4.</p>
-      <div class="viz-meta"><span class="seal seal--warn">Illustrative numbers</span><span class="seal seal--calc">Score from formula</span></div>
+      <p class="eyebrow">Chọn model · điểm tiếng Việt thật</p>
+      <h2 class="viz-title">Model nào đủ giỏi tiếng Việt để lên thang</h2>
+      <p class="viz-source"><a href="https://leaderboard.sea-lion.ai/detailed/VI" target="_blank" rel="noopener">SEA-HELM, bảng tiếng Việt · cập nhật 18/09/2026</a></p>
+      <p class="viz-why">Mỗi dòng là điểm thật của model trên phần tiếng Việt của SEA-HELM, benchmark do AI Singapore chạy cho các ngôn ngữ Đông Nam Á. Kéo các ngưỡng để xem model nào bị loại. Model đạt được xếp theo điểm tổng, và thang lấy tối đa 4 bậc. Mỗi provider chỉ được giữ một số bậc nhất định để khi một provider hết quota hoặc gặp sự cố thì vẫn còn đường fallback.</p>
+      <div class="viz-meta"><span class="seal seal--ok">Số liệu thật từ SEA-HELM</span><span class="seal seal--calc">Điểm tổng tính bằng công thức</span></div>
       <div class="stage">
         <div class="ctl-row">
-          <label class="ctl">Grounding at least: <span class="num" id="g-out"></span><input type="range" id="g-min" min="60" max="95" value="75"></label>
-          <label class="ctl">Valid citations ≥ <span class="num" id="c-out"></span><input type="range" id="c-min" min="75" max="100" value="90"></label>
-          <label class="ctl">Valid JSON ≥ <span class="num" id="j-out"></span><input type="range" id="j-min" min="85" max="100" value="97"></label>
-          <label class="ctl">p95 latency ≤ <span class="num" id="p-out"></span><input type="range" id="p-max" min="4" max="30" value="20"></label>
+          <label class="ctl">Điểm tiếng Việt tối thiểu: <span class="num" id="v-out"></span><input type="range" id="v-min" min="65" max="79" step="0.5" value="75"></label>
+          <label class="ctl">Knowledge tối thiểu: <span class="num" id="k-out"></span><input type="range" id="k-min" min="70" max="92" step="1" value="80"></label>
+          <label class="ctl">Suy luận (NLR) tối thiểu: <span class="num" id="n-out"></span><input type="range" id="n-min" min="65" max="84" step="1" value="75"></label>
+          <label class="ctl">Số bậc tối đa mỗi provider: <span class="num" id="c-out"></span><input type="range" id="cap" min="1" max="4" step="1" value="2"></label>
+        </div>
+        <div class="ctl-row">
+          <label class="ctl ctl--check"><input type="checkbox" id="flag"> Tính cả model flagship (Opus, Pro, GPT 6)</label>
+          <label class="ctl ctl--check"><input type="checkbox" id="hide"> Ẩn các model bị loại</label>
         </div>
         <div class="rank" id="rank"></div>
-        <div class="legend"><span><span class="key" style="background:var(--ok)"></span> On the ladder</span><span><span class="key" style="background:var(--warn)"></span> Passes, below top 4</span><span><span class="key" style="background:var(--bad)"></span> Dropped</span></div>
-        <p class="stat-line">Ladder: <span class="num" id="ladder-line"></span></p>
-        <p class="note">Total = 0.6 × grounding + 0.3 × valid citations + 0.1 × valid JSON. Models A–F are placeholders; replace them with real results on the 20-question set.</p>
+        <div class="legend"><span><span class="key" style="background:var(--ok)"></span> Lên thang</span><span><span class="key" style="background:var(--warn)"></span> Đạt ngưỡng nhưng không còn chỗ</span><span><span class="key" style="background:var(--info)"></span> Flagship, đang tắt</span><span><span class="key" style="background:var(--bad)"></span> Bị loại</span></div>
+        <p class="stat-line">Thang: <span class="num" id="ladder-line"></span></p>
+        <p class="note">Điểm tổng = 0,4 × điểm tiếng Việt + 0,3 × Knowledge + 0,2 × NLR + 0,1 × Instruction Following. Knowledge và suy luận được tính nặng hơn vì câu hỏi pháp luật cần hiểu đúng khái niệm và suy ra được điều kiện, ngoại lệ. Với model có cả bản reasoning và bản thường, trang lấy điểm của bản cao hơn, tức là bản có bật thinking. Tên model ghi theo SEA-HELM; cần kiểm tra model ID thật của từng provider trước khi đưa vào cấu hình.</p>
       </div>
-      <div class="viz-takeaways"><h4>Key points</h4><ul>
-        <li>Rank by <b>the project's own legal eval</b>, not a general leaderboard: a model that is strong in general can still invent articles or cite the wrong chunk.</li>
-        <li>Hard rules run before any numbers: names with <code>lite</code>/<code>mini</code>/<code>nano</code> are dropped, and so is any model whose p95 exceeds the 30 s budget, since it would never answer in time.</li>
+      <div class="viz-takeaways"><h4>Điều cần nhớ</h4><ul>
+        <li>Với ngưỡng mặc định, thang gồm <b>Gemini 3.8 Flash → Gemini 3.5 Flash → GPT 5.6 Sol → Qwen 3.5 397B</b>. Cả ba provider này đều đã có adapter trong repo (gemini, openai, qwen), nên không cần viết adapter mới.</li>
+        <li>Mistral, Haiku 4.5, GPT OSS và Llama 4 đều thấp hơn nhóm đầu từ 6 đến 18 điểm tiếng Việt, nên bị loại. Riêng Mistral đang là một bậc trong thang của ai-ladder, nên khi port sang repo này phải bỏ bậc đó đi.</li>
+        <li>Gemini 3.1 Flash Lite thật ra vẫn đạt 75,24 điểm. Nó bị loại chỉ vì quy tắc "không dùng model lite" mà chủ dự án đã chốt, chứ không phải vì kém tiếng Việt.</li>
       </ul></div>
     </div>
   </section>
 
-  <!-- 3. Ladder simulation -->
+  <!-- 3. Bằng chứng riêng cho pháp luật -->
   <section class="mc-card studio-card">
     <div class="studio-body">
-      <p class="eyebrow">Runtime · one request</p>
-      <h2 class="viz-title">What the ladder does when a model runs out</h2>
-      <p class="viz-source">Ladder from the section above · 30 s LLM budget (llm-proposal.md)</p>
-      <p class="viz-why">Set each rung's state and press Next to watch the request move down. Press <b>Next request</b> to see what the quota store remembers: a rung that ran out is not called again, and a rung with 3 bad outputs is demoted.</p>
-      <div class="viz-meta"><span class="seal seal--calc">Simulated with the proposed rules</span></div>
+      <p class="eyebrow">Bằng chứng riêng cho pháp luật Việt Nam</p>
+      <h2 class="viz-title">Giỏi tiếng Việt chưa chắc đã nhớ đúng luật</h2>
+      <p class="viz-source"><a href="https://arxiv.org/abs/2512.14554" target="_blank" rel="noopener">VLegal-Bench (arXiv 2512.14554, 12/2025) · Accuracy, %</a></p>
+      <p class="viz-why">SEA-HELM chỉ đo tiếng Việt nói chung. Để có bằng chứng riêng về luật, trang dùng VLegal-Bench, một benchmark luật dân sự Việt Nam gồm hơn 10 nghìn mẫu do chuyên gia gán nhãn. Benchmark này mới chấm các model đời trước, nhưng đó chính là đời trước của các họ model được chọn ở trên. Chọn một tác vụ để so sánh.</p>
+      <div class="viz-meta"><span class="seal seal--ok">Số liệu thật từ bài báo</span><span class="seal seal--warn">Model đời trước</span></div>
       <div class="stage">
-        <label class="ctl">Time left for the LLM: <span class="num" id="b-out"></span><input type="range" id="budget" min="8" max="30" value="30"></label>
+        <div class="seg" role="group" aria-label="Tác vụ" id="task-seg"></div>
+        <div class="rank" id="legal"></div>
+        <div class="legend"><span><span class="key" style="background:var(--info)"></span> Model API đa dụng</span><span><span class="key" style="background:var(--series-2)"></span> Model fine-tune riêng cho luật</span><span><span class="key" style="background:var(--bad)"></span> Model nhỏ hoặc đời cũ</span></div>
+        <p class="stp-caption" id="task-cap"></p>
+      </div>
+      <div class="viz-takeaways"><h4>Điều cần nhớ</h4><ul>
+        <li>Model API đa dụng cỡ lớn (GPT-4o, Gemini 2.5 Flash) chỉ kém model fine-tune riêng cho luật vài điểm. Ngược lại, model nhỏ hoặc đời cũ tụt hẳn xuống. Đây là lý do thang chỉ giữ các model lớn của họ Gemini, GPT và Qwen, đồng thời loại PhoGPT và Qwen2.5-7B có trong đề xuất ban đầu của repo.</li>
+        <li>Ở tác vụ Legal Schema Recall, mọi model đều chỉ đạt khoảng 22–27%, gần như đoán ngẫu nhiên. Nghĩa là không model nào nhớ đúng cấu trúc luật từ trí nhớ của nó. Vì vậy pipeline phải đưa nguyên văn điều khoản vào context và kiểm tra citation, đúng như repo đang làm.</li>
+        <li>Theo VLQA (7/2025), model vẫn thường bịa nội dung khi trả lời câu hỏi luật. Nên bộ 20 câu đánh giá của dự án vẫn là bước quyết định cuối cùng trước khi bật thang.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- 4. Vì sao chọn từng model -->
+  <section class="mc-card studio-card">
+    <div class="studio-body">
+      <p class="eyebrow">Lý do cho từng bậc</p>
+      <h2 class="viz-title">Vì sao bốn model này hợp với hỏi đáp luật bằng tiếng Việt</h2>
+      <div class="why-list">
+        <div class="why-item"><b>1. Gemini 3.8 Flash.</b> Điểm tiếng Việt 78,40, cao nhất trong nhóm Flash và chỉ kém Opus 4.8 và Gemini 3.1 Pro khoảng 0,3 điểm. Knowledge đạt 91,88, đứng thứ hai trên cả bảng, rất quan trọng vì câu hỏi luật cần hiểu đúng thuật ngữ. Đời trước của nó (Gemini 2.5 Flash) đạt 81,4% ở tác vụ nhớ điều luật trong VLegal-Bench. Repo đã có Gemini adapter.</div>
+        <div class="why-item"><b>2. Gemini 3.5 Flash.</b> Điểm tiếng Việt 77,80, Knowledge 91,68, gần như ngang bậc 1. Cùng provider với bậc 1 nhưng quota của Gemini tính riêng cho từng model, nên khi 3.8 Flash hết lượt trong ngày thì model này vẫn dùng được.</div>
+        <div class="why-item"><b>3. GPT 5.6 Sol.</b> Điểm tiếng Việt 77,06, Knowledge 89,36, và Instruction Following 95,32, nghĩa là model này rất bám định dạng. Điều này quan trọng vì output phải là JSON đúng contract và có citation hợp lệ. Đây là bậc đầu tiên ở provider khác, nên khi Google gặp sự cố thì thang vẫn còn đường đi. Đời trước của nó (GPT-4o) dẫn đầu các model đa dụng trên VLegal-Bench. Repo đã có OpenAI adapter.</div>
+        <div class="why-item"><b>4. Qwen 3.5 397B.</b> Điểm tiếng Việt 78,15 và Instruction Following 96,24, cao nhất trong cả bốn bậc. Gọi qua API DashScope bằng Qwen adapter có sẵn. Đây cũng là model open weights, nên sau này có thể tự host nếu cần giữ dữ liệu trong nội bộ.</div>
+      </div>
+      <div class="viz-takeaways"><h4>Không chọn, và lý do</h4><ul>
+        <li><b>GPT-4o</b>, model đang được đề xuất trong <code>llm-proposal.md</code>, là đời cũ và không còn trên bảng SEA-HELM hiện tại. Nên thay bằng một model GPT mới hơn có điểm tiếng Việt đo được.</li>
+        <li><b>PhoGPT 7B5</b> chỉ đạt 24,0 và <b>Qwen2.5-7B</b> đạt 57,5 trên VMLU, đều thấp hơn hẳn nhóm được chọn.</li>
+        <li><b>Gemini 2.5 Pro</b> và <b>Gemini 3 Flash preview</b> trong thang của ai-ladder không có điểm trên SEA-HELM hiện tại, nên chưa thể xác minh. Chỉ thêm vào sau khi đã chạy bộ đánh giá của dự án.</li>
+        <li>Nhóm flagship (Opus 4.8, Gemini 3.1 Pro, GPT 6 Astra) chỉ hơn Gemini 3.8 Flash dưới 0,3 điểm tiếng Việt. Nhiều khả năng chúng đắt hơn và chậm hơn, nên khó vừa ngân sách 30 giây. Hãy kiểm tra giá và latency thật trước khi bật lựa chọn này.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- 5. Mô phỏng thang -->
+  <section class="mc-card studio-card">
+    <div class="studio-body">
+      <p class="eyebrow">Runtime · một request</p>
+      <h2 class="viz-title">Khi một model hết quota, thang làm gì</h2>
+      <p class="viz-source">Thang lấy từ phần chọn model ở trên · ngân sách LLM 30 giây (llm-proposal.md)</p>
+      <p class="viz-why">Chọn tình trạng cho từng bậc rồi bấm Tiếp để xem request đi xuống thang. Sau đó bấm <b>Request kế tiếp</b> để thấy kho quota nhớ được gì: bậc đã hết lượt sẽ không bị gọi lại, còn bậc trả output sai 3 lần sẽ bị hạ khỏi thang.</p>
+      <div class="viz-meta"><span class="seal seal--calc">Mô phỏng theo luật đề xuất</span><span class="seal seal--warn">Latency là giả định</span></div>
+      <div class="stage">
+        <label class="ctl">Thời gian còn lại cho LLM: <span class="num" id="b-out"></span><input type="range" id="budget" min="8" max="30" value="30"></label>
         <div class="rank" id="rungs"></div>
         <div class="timebar" aria-hidden="true"><div class="timefill" id="timefill"></div></div>
         <p class="note" id="time-line"></p>
         <p class="stp-caption" id="sim-cap"></p>
         <div class="stp-controls">
-          <button class="mc-btn" id="sim-back" type="button">Back</button>
-          <button class="mc-btn mc-btn--primary" id="sim-next" type="button">Next</button>
-          <button class="mc-btn" id="sim-again" type="button">Next request</button>
-          <button class="mc-btn" id="sim-reset" type="button">Reset</button>
+          <button class="mc-btn" id="sim-back" type="button">Trước</button>
+          <button class="mc-btn mc-btn--primary" id="sim-next" type="button">Tiếp</button>
+          <button class="mc-btn" id="sim-again" type="button">Request kế tiếp</button>
+          <button class="mc-btn" id="sim-reset" type="button">Đặt lại</button>
           <span class="stp-count" id="sim-count"></span>
         </div>
         <div class="outcome" id="outcome" hidden></div>
+        <p class="note">Latency trong mô phỏng là giả định theo nhóm model (Flash khoảng 5 giây, các model khác 8–14 giây). Hãy thay bằng p50 và p95 đo thật khi chạy bộ đánh giá.</p>
       </div>
-      <div class="viz-takeaways"><h4>Key points</h4><ul>
-        <li>Keep Team 3's spec: a bad output is <b>not</b> retried, not even on another rung. It is counted so the model can be demoted, not hidden.</li>
-        <li>Every wait and every rung draws on the same deadline. When there is no longer time, stop early with <code>LLM_UNAVAILABLE</code>, <code>retryable=true</code>.</li>
-        <li>When every rung is out, say so at once and send no request.</li>
+      <div class="viz-takeaways"><h4>Điều cần nhớ</h4><ul>
+        <li>Giữ đúng spec của Team 3: output sai thì <b>không</b> retry, kể cả không chuyển sang bậc khác. Lỗi đó được ghi lại để hạ bậc model nếu lặp lại, chứ không bị che đi.</li>
+        <li>Mọi lần chờ và mọi bậc đều dùng chung một deadline. Khi thời gian còn lại không đủ cho bậc kế tiếp, thang dừng sớm và trả <code>LLM_UNAVAILABLE</code> với <code>retryable=true</code>.</li>
+        <li>Nếu mọi bậc đều đã hết quota, thang báo ngay và không gửi request nào.</li>
       </ul></div>
     </div>
   </section>
 
-  <!-- 4. Porting ai-ladder -->
+  <!-- 6. Port ai-ladder -->
   <section class="mc-card studio-card">
     <div class="studio-body">
-      <p class="eyebrow">Porting ai-ladder to the server</p>
-      <h2 class="viz-title">What to keep, what to change</h2>
+      <p class="eyebrow">Port ai-ladder sang server</p>
+      <h2 class="viz-title">Giữ gì, sửa gì</h2>
       <div class="fixes">
-        <div class="fix tone-good"><b>Keep:</b> fixed order from best down, skip rungs known to be out, read <code>retry-after</code>/<code>retryDelay</code>/<code>PerDay</code>, Gemini's daily quota ends at midnight Pacific (15:00 Vietnam time in winter), back off further when the provider gives no time, and never swap a model pinned by hand.</div>
-        <div class="fix tone-accent"><b>Where quota lives:</b> <code>localStorage</code> → a locked JSON file (e.g. <code>data/.llm_quota.json</code>) shared by all workers. Key it by <code>sha256(key)[:8]</code> instead of the key's last 6 characters.</div>
-        <div class="fix tone-accent"><b>Never cut the context:</b> ai-ladder trims text to fit (<code>fit</code>). In law, cutting a clause changes its meaning. When the config loads, reject any rung whose context window is smaller than rung 1's largest prompt.</div>
-        <div class="fix tone-bad"><b>413 does not lock the model:</b> ai-ladder locks a model for 10 minutes on 413, but 413 means this request is too large, not that the model is down. Skip the rung for this request only.</div>
-        <div class="fix tone-bad"><b>A 400 must not silently drop thinking:</b> ai-ladder resends without <code>reasoning_effort</code>, falling back to the model default, which may be low. On the server this is a config error: catch it in a startup smoke test instead of changing behaviour quietly.</div>
-        <div class="fix tone-bad"><b>Wait on 429 inside the deadline:</b> ai-ladder waits up to 20 s. Here, wait only when the time left still covers that rung's latency.</div>
-        <div class="fix tone-warn"><b>Team decision needed:</b> <code>llm-proposal.md</code> says "do not switch provider on error", and <code>settings.validate()</code> requires <code>LLM_MAX_RETRIES=0</code>. The ladder changes the Week 1 decision, so update the doc and add an on/off switch (empty <code>LLM_LADDER</code> = the old one-model way).</div>
+        <div class="fix tone-good"><b>Giữ:</b> thứ tự cố định từ model tốt nhất trở xuống; bỏ qua bậc đã biết là hết lượt; đọc <code>retry-after</code>, <code>retryDelay</code> và dấu hiệu <code>PerDay</code> trong lỗi 429; quota ngày của Gemini reset lúc nửa đêm giờ Pacific (15:00 giờ Việt Nam vào mùa đông); giãn dần thời gian chờ khi provider không nói rõ; và không bao giờ đổi model mà người dùng đã ghim tay. SEA-HELM cũng xác nhận Gemini 3.8 Flash và 3.6 Flash trong thang của ai-ladder đều thuộc nhóm giỏi tiếng Việt nhất.</div>
+        <div class="fix tone-bad"><b>Bỏ bậc Mistral:</b> Mistral Medium 3.5 chỉ đạt 68,82 điểm tiếng Việt và 46,55 điểm văn hoá. Bảng SEA-HELM không có Mistral Large, nên không có bằng chứng bậc này đủ tốt cho câu hỏi luật bằng tiếng Việt.</div>
+        <div class="fix tone-accent"><b>Nơi lưu quota:</b> chuyển từ <code>localStorage</code> sang một file JSON có khoá (ví dụ <code>data/.llm_quota.json</code>) để mọi worker dùng chung. Định danh key bằng <code>sha256(key)[:8]</code> thay vì 6 ký tự cuối của key.</div>
+        <div class="fix tone-accent"><b>Không bao giờ cắt context:</b> ai-ladder cắt bớt chữ cho vừa giới hạn (hàm <code>fit</code>). Với văn bản luật, cắt mất một khoản là đổi nghĩa. Vì vậy, lúc nạp cấu hình phải từ chối mọi bậc có context window nhỏ hơn prompt lớn nhất của bậc 1.</div>
+        <div class="fix tone-bad"><b>Lỗi 413 không khoá model:</b> ai-ladder khoá model 10 phút khi gặp 413, nhưng 413 nghĩa là chính request này quá lớn chứ không phải model hỏng. Chỉ bỏ qua bậc đó cho request hiện tại.</div>
+        <div class="fix tone-bad"><b>Lỗi 400 không được âm thầm bỏ thinking:</b> ai-ladder gửi lại request mà không có <code>reasoning_effort</code>, tức là quay về mức mặc định của model, có thể là mức thấp. Ở server, đây phải được coi là lỗi cấu hình và bắt bằng smoke test lúc khởi động, thay vì lặng lẽ đổi hành vi.</div>
+        <div class="fix tone-bad"><b>Chờ 429 trong deadline:</b> ai-ladder có thể chờ tới 20 giây. Ở đây chỉ chờ khi thời gian còn lại vẫn đủ cho latency của bậc đó.</div>
+        <div class="fix tone-warn"><b>Cần team chốt:</b> <code>llm-proposal.md</code> ghi "Không tự chuyển provider khi lỗi", và <code>settings.validate()</code> bắt buộc <code>LLM_MAX_RETRIES=0</code>. Thang thay đổi quyết định của Week 1, nên phải sửa tài liệu và thêm công tắc bật/tắt: để trống <code>LLM_LADDER</code> thì hệ thống chạy đúng như cách cũ, một model.</div>
       </div>
+    </div>
+  </section>
+
+  <!-- 7. Nguồn -->
+  <section class="mc-card studio-card">
+    <div class="studio-body">
+      <p class="eyebrow">Nguồn</p>
+      <ol class="src">
+        <li><a href="https://leaderboard.sea-lion.ai/detailed/VI" target="_blank" rel="noopener">SEA-HELM Leaderboard, phần tiếng Việt</a>, AI Singapore, cập nhật 18/09/2026. Điểm VI, Knowledge, NLR và Instruction Following.</li>
+        <li><a href="https://arxiv.org/abs/2512.14554" target="_blank" rel="noopener">VLegal-Bench: Cognitively Grounded Benchmark for Vietnamese Legal Reasoning</a>, 12/2025. Các tác vụ 1.4, 1.5 và 2.2.</li>
+        <li><a href="https://arxiv.org/abs/2507.19995" target="_blank" rel="noopener">VLQA: Vietnamese Dataset for Legal Question Answering</a>, 7/2025.</li>
+        <li><a href="https://vmlu.ai/leaderboard" target="_blank" rel="noopener">VMLU Leaderboard</a>, Zalo AI và JAIST. Điểm của PhoGPT 7B5 và Qwen2.5-7B.</li>
+      </ol>
     </div>
   </section>
 </main>
@@ -228,30 +296,31 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
 (() => {
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const vn = (x, d = 2) => x.toFixed(d).replace('.', ',');
 
   /* ---------- 1. flow ---------- */
   const FLOW = [
     { name: 'generate_answer', file: 'answer.py',
-      now: "Without an <code>llm_service</code> argument it reads the config and builds one. This is the only entry point that calls a real LLM; Team 3's <code>service.query()</code> is still a mock." },
+      now: 'Nếu không được truyền sẵn <code>llm_service</code>, hàm này tự đọc cấu hình rồi tạo service. Đây là cửa vào duy nhất gọi LLM thật; còn <code>service.query()</code> của Team 3 vẫn đang là mock.' },
     { name: 'load_settings', file: 'config/settings.py',
-      now: 'Reads <code>.env</code> and the environment: <code>LLM_PROVIDER</code>, <code>LLM_MODEL</code>, one key per provider. <code>validate()</code> enforces timeout ≤ 30 s and <code>LLM_MAX_RETRIES=0</code>.',
-      new: "Add <code>LLM_LADDER</code> pointing at <code>configs/llm_ladder.json</code>. Empty means the old way exactly: one model, no switching." },
+      now: 'Đọc file <code>.env</code> và biến môi trường: <code>LLM_PROVIDER</code>, <code>LLM_MODEL</code> và một API key cho mỗi provider. Hàm <code>validate()</code> bắt timeout không quá 30 giây và bắt buộc <code>LLM_MAX_RETRIES=0</code>.',
+      new: 'Thêm biến <code>LLM_LADDER</code> trỏ tới <code>configs/llm_ladder.json</code>. Nếu để trống thì hệ thống chạy đúng như cách cũ: một model và không chuyển đổi.' },
     { name: 'create_llm_service', file: 'llm/factory.py',
-      now: '<code>_REGISTRY</code> picks exactly one adapter: <code>openai</code>, <code>gemini</code> or <code>qwen</code>.',
-      new: 'With a ladder, return a <code>LadderProvider</code> wrapping the adapters in eval order. <code>LLMService</code> never knows there is a ladder.' },
+      now: '<code>_REGISTRY</code> chọn đúng một adapter trong ba loại: <code>openai</code>, <code>gemini</code> hoặc <code>qwen</code>.',
+      new: 'Khi có thang, factory trả về <code>LadderProvider</code> bọc các adapter theo thứ tự đã đánh giá. <code>LLMService</code> không cần biết là đang có thang.' },
     { name: 'build_context', file: 'prompts/context.py · llm/tokens.py',
-      now: 'Joins up to 5 chunks. Only OpenAI has a token counter (tiktoken); other providers fall back to a rough 9000-character budget.',
-      new: 'Build the context once for rung 1. Every lower rung must have a context window that holds that prompt, checked when the config loads.' },
+      now: 'Ghép tối đa 5 chunk. Hiện chỉ OpenAI có bộ đếm token (tiktoken); các provider khác phải dùng budget ký tự xấp xỉ 9000.',
+      new: 'Context được dựng một lần theo bậc 1. Mọi bậc bên dưới phải có context window đủ chứa prompt đó, và điều này được kiểm tra ngay lúc nạp cấu hình.' },
     { name: 'LLMService.ask', file: 'llm/service.py',
-      now: 'Builds the prompt, calls <code>provider.complete()</code> exactly once, parses the output, logs provider/model/tokens/latency.' },
+      now: 'Dựng prompt, gọi <code>provider.complete()</code> đúng một lần, parse output, rồi ghi log provider, model, số token và latency.' },
     { name: 'Adapter + HTTP', file: 'llm/*_client.py · llm/http.py',
-      now: 'POST via urllib, JSON mode, temperature 0, 30 s timeout. Gemini calls native <code>generateContent</code>; OpenAI/Qwen call <code>/chat/completions</code>.' },
+      now: 'Gửi POST bằng urllib ở chế độ JSON, temperature 0, timeout 30 giây. Gemini gọi <code>generateContent</code> gốc; OpenAI và Qwen gọi <code>/chat/completions</code>.' },
     { name: 'raise_for_status', file: 'llm/base.py',
-      now: '429 → <code>LLMRateLimitError</code>, 5xx → <code>LLMProviderError</code>. Does not read <code>retry-after</code>, remembers nothing, surfaces straight up as <code>LLM_UNAVAILABLE</code>.',
-      new: 'Errors also carry <code>retry_after</code> and <code>scope</code> (minute/day) read from headers and body. <code>LadderProvider</code> catches them, writes the quota store and moves to the next rung.' },
+      now: '429 thành <code>LLMRateLimitError</code>, 5xx thành <code>LLMProviderError</code>. Hàm này không đọc <code>retry-after</code>, không nhớ gì, và lỗi đi thẳng lên thành <code>LLM_UNAVAILABLE</code>.',
+      new: 'Lỗi mang thêm <code>retry_after</code> và <code>scope</code> (theo phút hay theo ngày), đọc từ header và body. <code>LadderProvider</code> bắt lỗi này, ghi vào kho quota rồi chuyển sang bậc kế.' },
     { name: 'parse + citation', file: 'llm/output_parser.py · answer.py',
-      now: 'Bad JSON → <code>INVALID_LLM_OUTPUT</code>; a citation that does not match a sent chunk → <code>CITATION_INVALID</code>. No retry.',
-      new: "Unchanged, still no retry. Add one line that records the bad output in the model's health log, so repeat offenders get demoted." },
+      now: 'JSON sai trả về <code>INVALID_LLM_OUTPUT</code>; citation không khớp chunk đã gửi trả về <code>CITATION_INVALID</code>. Không retry.',
+      new: 'Giữ nguyên, vẫn không retry. Chỉ thêm một dòng ghi lỗi output vào sổ theo dõi của model, để model nào sai lặp lại sẽ bị hạ bậc.' },
   ];
   let flowMode = 'now', flowStep = 0;
   function drawFlow() {
@@ -261,7 +330,7 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
       return `<li class="${cls}">${i + 1}. ${esc(f.name)}<small>${esc(f.file)}</small></li>`;
     }).join('');
     const f = FLOW[flowStep];
-    $('flow-cap').innerHTML = (flowMode === 'new' && f.new) ? `<b>New way:</b> ${f.new}` : (flowMode === 'new' ? `<b>Same as old:</b> ${f.now}` : f.now);
+    $('flow-cap').innerHTML = (flowMode === 'new' && f.new) ? `<b>Cách mới:</b> ${f.new}` : (flowMode === 'new' ? `<b>Giữ như cũ:</b> ${f.now}` : f.now);
     $('flow-count').textContent = `${flowStep + 1}/${FLOW.length}`;
     $('flow-back').disabled = flowStep === 0;
     $('flow-next').disabled = flowStep === FLOW.length - 1;
@@ -273,58 +342,109 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
   $('flow-next').onclick = () => { flowStep++; drawFlow(); };
   drawFlow();
 
-  /* ---------- 2. gate ---------- */
-  // Illustrative eval results; replace with the project's 20-question run.
+  /* ---------- 2. gate (SEA-HELM VI, 2026-09-18; best variant per model) ---------- */
   const CANDS = [
-    { name: 'Model F', grounded: 90, cite: 95, json: 99, p95: 26, lite: false },
-    { name: 'Model A', grounded: 88, cite: 96, json: 99, p95: 14, lite: false },
-    { name: 'Model B', grounded: 82, cite: 93, json: 98, p95: 9, lite: false },
-    { name: 'Model C', grounded: 78, cite: 90, json: 97, p95: 7, lite: false },
-    { name: 'Model D', grounded: 72, cite: 84, json: 92, p95: 5, lite: false },
-    { name: 'Model E-lite', grounded: 64, cite: 80, json: 95, p95: 3, lite: true },
+    { name: 'Opus 4.8', org: 'Anthropic', vi: 78.70, k: 88.12, nlr: 83.78, ifs: 91.93, flagship: true, lat: 14 },
+    { name: 'Gemini 3.1 Pro Preview', org: 'Google', vi: 78.66, k: 90.62, nlr: 82.63, ifs: 91.87, flagship: true, lat: 14 },
+    { name: 'Gemini 3.8 Flash', org: 'Google', vi: 78.40, k: 91.88, nlr: 80.20, ifs: 93.92, lat: 5 },
+    { name: 'Qwen 3.5 397B', org: 'Alibaba', vi: 78.15, k: 86.20, nlr: 76.58, ifs: 96.24, lat: 9 },
+    { name: 'GPT 6 Astra', org: 'OpenAI', vi: 77.86, k: 92.94, nlr: 82.70, ifs: 95.98, flagship: true, lat: 14 },
+    { name: 'Gemini 3.5 Flash', org: 'Google', vi: 77.80, k: 91.68, nlr: 80.16, ifs: 90.24, lat: 5 },
+    { name: 'Gemini 3.6 Flash', org: 'Google', vi: 77.62, k: 89.70, nlr: 81.04, ifs: 89.50, lat: 5 },
+    { name: 'GPT 5.6 Sol', org: 'OpenAI', vi: 77.06, k: 89.36, nlr: 79.20, ifs: 95.32, lat: 8 },
+    { name: 'Sonnet 5', org: 'Anthropic', vi: 77.03, k: 82.62, nlr: 82.14, ifs: 90.88, lat: 8 },
+    { name: 'Gemini 3.1 Flash Lite', org: 'Google', vi: 75.24, k: 85.37, nlr: 77.91, ifs: 93.12, lite: 'lite', lat: 3 },
+    { name: 'Qwen 3.8 Flash Next', org: 'Alibaba', vi: 74.93, k: 85.71, nlr: 74.66, ifs: 95.71, lat: 5 },
+    { name: 'GPT 5.4 mini', org: 'OpenAI', vi: 72.74, k: 84.05, nlr: 71.11, ifs: 94.53, lite: 'mini', lat: 4 },
+    { name: 'GPT OSS 120B', org: 'OpenAI', vi: 69.81, k: 74.79, nlr: 71.74, ifs: 88.25, lat: 6 },
+    { name: 'Mistral Medium 3.5', org: 'Mistral AI', vi: 68.82, k: 77.99, nlr: 69.46, ifs: 86.44, lat: 6 },
+    { name: 'Haiku 4.5', org: 'Anthropic', vi: 67.67, k: 72.46, nlr: 69.17, ifs: 82.31, lat: 4 },
+    { name: 'Llama 4 Maverick', org: 'Meta', vi: 60.14, k: 70.33, nlr: 61.53, ifs: 91.22, lat: 6 },
+    { name: 'GPT-4o', org: 'OpenAI', vi: null, note: 'Không còn trên SEA-HELM, đời cũ' },
+    { name: 'Qwen2.5-7B', org: 'Alibaba', vi: null, note: 'Chỉ có VMLU: 57,5' },
+    { name: 'PhoGPT 7B5', org: 'VinAI', vi: null, note: 'Chỉ có VMLU: 24,0' },
   ];
   const MAX_RUNGS = 4;
-  const score = (m) => 0.6 * m.grounded + 0.3 * m.cite + 0.1 * m.json;
+  const score = (m) => 0.4 * m.vi + 0.3 * m.k + 0.2 * m.nlr + 0.1 * m.ifs;
   let ladder = [];
   function gate() {
-    const g = +$('g-min').value, c = +$('c-min').value, j = +$('j-min').value, p = +$('p-max').value;
-    $('g-out').textContent = g; $('c-out').textContent = c + '%'; $('j-out').textContent = j + '%'; $('p-out').textContent = p + ' s';
+    const v = +$('v-min').value, k = +$('k-min').value, n = +$('n-min').value, cap = +$('cap').value;
+    const flag = $('flag').checked, hide = $('hide').checked;
+    $('v-out').textContent = vn(v, 1); $('k-out').textContent = k; $('n-out').textContent = n; $('c-out').textContent = cap;
     const rows = CANDS.map((m) => {
-      let why = '';
-      if (m.lite) why = 'Name has lite';
-      else if (m.grounded < g) why = `Grounding ${m.grounded} < ${g}`;
-      else if (m.cite < c) why = `Citations ${m.cite}% < ${c}%`;
-      else if (m.json < j) why = `JSON ${m.json}% < ${j}%`;
-      else if (m.p95 > p) why = `p95 ${m.p95} s > ${p} s`;
-      return { ...m, s: score(m), why };
+      let why = '', tone = '';
+      if (m.vi === null) { why = m.note; tone = 'tone-bad'; }
+      else if (m.lite) { why = `Tên có "${m.lite}": luật dự án loại`; tone = 'tone-bad'; }
+      else if (m.vi < v) { why = `Tiếng Việt ${vn(m.vi)} < ${vn(v, 1)}`; tone = 'tone-bad'; }
+      else if (m.k < k) { why = `Knowledge ${vn(m.k)} < ${k}`; tone = 'tone-bad'; }
+      else if (m.nlr < n) { why = `Suy luận ${vn(m.nlr)} < ${n}`; tone = 'tone-bad'; }
+      else if (m.flagship && !flag) { why = 'Flagship: đang tắt'; tone = 'tone-info'; }
+      return { ...m, s: m.vi === null ? 0 : score(m), why, tone };
     }).sort((a, b) => b.s - a.s);
+    const perOrg = {};
     let placed = 0;
     for (const r of rows) {
-      if (r.why) { r.tone = 'tone-bad'; continue; }
-      if (placed < MAX_RUNGS) { r.tone = 'tone-good'; r.rung = ++placed; r.why = `Rung ${r.rung} · p95 ${r.p95} s`; }
-      else { r.tone = 'tone-warn'; r.why = 'Passes, below top 4'; }
+      if (r.tone) continue;
+      if ((perOrg[r.org] || 0) >= cap) { r.tone = 'tone-warn'; r.why = `Đã đủ ${cap} bậc của ${r.org}`; continue; }
+      if (placed >= MAX_RUNGS) { r.tone = 'tone-warn'; r.why = 'Đạt, nhưng thang đã đủ 4 bậc'; continue; }
+      perOrg[r.org] = (perOrg[r.org] || 0) + 1;
+      r.rung = ++placed; r.tone = 'tone-good'; r.why = `Bậc ${r.rung}`;
     }
-    $('rank').innerHTML = rows.map((r) => `
+    $('rank').innerHTML = rows.filter((r) => !(hide && r.tone === 'tone-bad')).map((r) => `
       <div class="rank-row ${r.tone}">
-        <span class="rank-name">${esc(r.name)}</span>
-        <div class="rank-bar"><div class="rank-fill" style="width:${r.s.toFixed(1)}%"></div><span class="rank-txt">${r.s.toFixed(1)}</span></div>
+        <span class="rank-name">${esc(r.name)}<small>${esc(r.org)}</small></span>
+        <div class="rank-bar"><div class="rank-fill" style="width:${r.s.toFixed(1)}%"></div><span class="rank-txt">${r.vi === null ? 'không có điểm' : vn(r.s, 1)}</span></div>
+        ${r.vi === null ? '' : `<span class="rank-meta">Tiếng Việt ${vn(r.vi)} · Knowledge ${vn(r.k)} · NLR ${vn(r.nlr)} · IF ${vn(r.ifs)}</span>`}
         <span class="rank-why">${esc(r.why)}</span>
       </div>`).join('');
-    ladder = rows.filter((r) => r.rung).map((r) => ({ name: r.name, p95: r.p95, p50: Math.round(r.p95 * 6) / 10 }));
-    $('ladder-line').textContent = ladder.length ? ladder.map((r) => r.name).join(' → ') : 'empty: no model passes';
+    ladder = rows.filter((r) => r.rung).sort((a, b) => a.rung - b.rung).map((r) => ({ name: r.name, p50: r.lat }));
+    $('ladder-line').textContent = ladder.length ? ladder.map((r) => r.name).join(' → ') : 'trống, không model nào đạt';
     resetSim();
   }
-  ['g-min', 'c-min', 'j-min', 'p-max'].forEach((id) => { $(id).oninput = gate; });
+  ['v-min', 'k-min', 'n-min', 'cap'].forEach((id) => { $(id).oninput = gate; });
+  ['flag', 'hide'].forEach((id) => { $(id).onchange = gate; });
 
-  /* ---------- 3. ladder simulation ---------- */
+  /* ---------- 3. legal evidence (VLegal-Bench, accuracy %) ---------- */
+  const LEGAL_MODELS = [
+    { name: 'gpt-4o', kind: 'tone-info' },
+    { name: 'gemini-2.5-flash', kind: 'tone-info' },
+    { name: 'Qwen2.5-72B', kind: 'tone-info' },
+    { name: 'CMC-AI-Legal-32B', kind: 'tone-alt' },
+    { name: 'Qwen2.5-7B', kind: 'tone-bad' },
+    { name: 'Llama-2-7b', kind: 'tone-bad' },
+  ];
+  const TASKS = [
+    { id: '1.4', label: 'Nhớ điều luật', scores: [82.50, 81.40, 79.10, 87.91, 62.40, 19.20],
+      cap: 'Tác vụ 1.4, Article Recall: cho một tình huống, model phải nhớ ra đúng điều luật liên quan. Model API lớn đạt khoảng 80%, chỉ kém model fine-tune riêng cho luật vài điểm. Qwen2.5-7B tụt xuống 62% và Llama-2-7B chỉ còn 19%.' },
+    { id: '2.2', label: 'Nhận diện yếu tố', scores: [67.33, 64.00, 65.67, 61.33, 56.67, 27.02],
+      cap: 'Tác vụ 2.2, Legal Element Recognition: tìm ra chủ thể, hành vi và hậu quả pháp lý trong một đoạn văn. Ở tác vụ này, GPT-4o và Gemini 2.5 Flash còn nhỉnh hơn cả model fine-tune riêng cho luật.' },
+    { id: '1.5', label: 'Nhớ cấu trúc luật', scores: [24.25, 24.25, 21.88, 24.13, 21.75, 25.50],
+      cap: 'Tác vụ 1.5, Legal Schema Recall: nhớ cấu trúc chương, mục, điều của văn bản luật. Mọi model đều chỉ đạt khoảng 22–27%, gần như đoán ngẫu nhiên. Không nên tin vào trí nhớ của model; phải đưa nguyên văn điều khoản vào context.' },
+  ];
+  let task = 0;
+  function drawLegal() {
+    $('task-seg').innerHTML = TASKS.map((t, i) => `<button type="button" data-i="${i}" aria-pressed="${i === task}">${esc(t.label)}</button>`).join('');
+    $('task-seg').querySelectorAll('button').forEach((b) => { b.onclick = () => { task = +b.dataset.i; drawLegal(); }; });
+    const t = TASKS[task];
+    $('legal').innerHTML = LEGAL_MODELS.map((m, i) => `
+      <div class="rank-row ${m.kind}">
+        <span class="rank-name">${esc(m.name)}</span>
+        <div class="rank-bar"><div class="rank-fill" style="width:${t.scores[i]}%"></div><span class="rank-txt">${vn(t.scores[i])}%</span></div>
+      </div>`).join('');
+    $('task-cap').textContent = t.cap;
+  }
+  drawLegal();
+
+  /* ---------- 4. ladder simulation ---------- */
   const STATES = {
-    ready: 'Ready', day: 'Daily quota out', minute: 'Per-minute 8 s', busy: 'Overloaded 503',
-    stall: 'Stalled, silent', bad: 'Bad output', locked: 'Locked (remembered)', demoted: 'Demoted',
+    ready: 'Sẵn sàng', day: 'Hết quota ngày', minute: 'Rate limit phút (8 giây)', busy: 'Quá tải 503',
+    stall: 'Treo, không phản hồi', bad: 'Output sai', locked: 'Đã khoá (kho nhớ)', demoted: 'Đã hạ bậc',
   };
   const PICKABLE = ['ready', 'day', 'minute', 'busy', 'stall', 'bad'];
   const WAIT = 8, STALL = 8, FAST = 0.4, BUSY = 0.8, STRIKES = 3;
   let states = [], strikes = [], events = [], step = 0, request = 1;
   const r1 = (x) => Math.round(x * 10) / 10;
+  const s1 = (x) => String(r1(x)).replace('.', ',');
 
   function simulate(budget) {
     const ev = [];
@@ -333,34 +453,34 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
     for (let i = 0; i < ladder.length && !result; i++) {
       const r = ladder[i], st = states[i], left = r1(budget - t);
       if (st === 'locked' || st === 'demoted') {
-        push(i, 'tone-info', 'Skipped · 0 s', `${r.name} ${st === 'locked' ? 'is locked in the quota store' : 'was demoted after repeated bad output'}, so no request is sent.`, 0);
+        push(i, 'tone-info', 'Bỏ qua · 0 giây', `${r.name} ${st === 'locked' ? 'đang bị khoá trong kho quota' : 'đã bị hạ bậc vì trả output sai nhiều lần'}, nên thang không gửi request nào tới model này.`, 0);
         continue;
       }
       if (left < r.p50) {
-        push(i, 'tone-warn', 'No time', `${left} s left, less than the usual latency of ${r.name} (${r.p50} s). Skipped without a call.`, 0);
+        push(i, 'tone-warn', 'Không kịp', `Chỉ còn ${s1(left)} giây, ít hơn latency thường gặp của ${r.name} (${s1(r.p50)} giây). Thang bỏ qua bậc này mà không gọi.`, 0);
         continue;
       }
       called = true;
       if (st === 'ready') {
-        push(i, 'tone-good', `Answered · ${r.p50} s`, `${r.name} returns valid JSON with citations that match the sent chunks.`, r.p50);
+        push(i, 'tone-good', `Trả lời · ${s1(r.p50)} giây`, `${r.name} trả về JSON hợp lệ, và mọi citation đều khớp với các chunk đã gửi đi.`, r.p50);
         result = 'ok';
       } else if (st === 'day') {
-        push(i, 'tone-warn', 'Daily quota out', `${r.name} returns 429 with PerDay. Store: locked until the provider resets quota (Gemini: 15:00 Vietnam time). Move to the next rung.`, FAST, { lock: 'day' });
+        push(i, 'tone-warn', 'Hết quota ngày', `${r.name} trả 429 kèm dấu hiệu PerDay. Kho quota ghi lại: khoá model này tới lúc provider reset quota (với Gemini là 15:00 giờ Việt Nam). Thang chuyển sang bậc kế.`, FAST, { lock: 'day' });
       } else if (st === 'minute') {
         if (left - FAST - WAIT >= r.p50) {
-          push(i, 'tone-warn', `Wait ${WAIT} s`, `Per-minute 429, retry-after ${WAIT} s. There is time, so wait and call ${r.name} again instead of dropping a rung.`, FAST + WAIT);
-          push(i, 'tone-good', `Answered · ${r.p50} s`, `The second call on ${r.name} succeeds.`, r.p50);
+          push(i, 'tone-warn', `Chờ ${WAIT} giây`, `Rate limit theo phút, retry-after là ${WAIT} giây. Thời gian còn đủ, nên thang chờ rồi gọi lại đúng ${r.name} thay vì tụt xuống bậc thấp hơn.`, FAST + WAIT);
+          push(i, 'tone-good', `Trả lời · ${s1(r.p50)} giây`, `Lần gọi lại tới ${r.name} thành công.`, r.p50);
           result = 'ok';
         } else {
-          push(i, 'tone-warn', `Lock ${WAIT} s`, `Per-minute 429, but waiting ${WAIT} s leaves no time for ${r.name}. Lock briefly and move on.`, FAST, { lock: 'short' });
+          push(i, 'tone-warn', `Khoá ${WAIT} giây`, `Rate limit theo phút, nhưng nếu chờ ${WAIT} giây thì không còn đủ thời gian cho ${r.name}. Thang khoá ngắn model này rồi sang bậc kế.`, FAST, { lock: 'short' });
         }
       } else if (st === 'busy') {
-        push(i, 'tone-warn', 'Lock 1 min', `${r.name} returns 503. Lock for 1 minute, move to the next rung.`, BUSY, { lock: 'short' });
+        push(i, 'tone-warn', 'Khoá 1 phút', `${r.name} trả 503 (quá tải). Thang khoá model này 1 phút rồi chuyển sang bậc kế.`, BUSY, { lock: 'short' });
       } else if (st === 'stall') {
         const d = Math.min(STALL, left);
-        push(i, 'tone-bad', `Dropped at ${r1(d)} s`, `${r.name} sends nothing for ${r1(d)} s. Cancel, lock for 1 minute, move to the next rung.`, d, { lock: 'short' });
+        push(i, 'tone-bad', `Bỏ sau ${s1(d)} giây`, `${r.name} không trả về byte nào trong ${s1(d)} giây. Thang huỷ request, khoá model 1 phút rồi sang bậc kế.`, d, { lock: 'short' });
       } else if (st === 'bad') {
-        push(i, 'tone-bad', `Bad output · ${r.p50} s`, `${r.name} returns bad JSON or citations that do not match. Per spec: stop, return INVALID_LLM_OUTPUT, try no other rung. Record 1 strike in the health log.`, r.p50, { strike: true });
+        push(i, 'tone-bad', `Output sai · ${s1(r.p50)} giây`, `${r.name} trả JSON sai hoặc citation không khớp. Theo spec: dừng lại, trả INVALID_LLM_OUTPUT và không thử bậc khác. Lỗi được ghi một lần vào sổ theo dõi của model.`, r.p50, { strike: true });
         result = 'bad';
       }
     }
@@ -369,18 +489,17 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
   }
 
   const OUT = {
-    ok: ['tone-good', 'status: answered. The log names the model that answered.'],
-    bad: ['tone-bad', 'INVALID_LLM_OUTPUT · retryable=false'],
-    down: ['tone-warn', 'LLM_UNAVAILABLE · retryable=true. Out of rungs or out of time.'],
-    closed: ['tone-info', 'LLM_UNAVAILABLE at once, 0 requests sent. Report when the first rung returns.'],
-    empty: ['tone-bad', 'Empty ladder: no model passed the gate. Loading the config must fail.'],
+    ok: ['tone-good', 'status: answered. Log ghi rõ model nào đã trả lời.'],
+    bad: ['tone-bad', 'INVALID_LLM_OUTPUT, retryable=false.'],
+    down: ['tone-warn', 'LLM_UNAVAILABLE, retryable=true. Đã hết bậc hoặc hết thời gian.'],
+    closed: ['tone-info', 'LLM_UNAVAILABLE ngay lập tức, không gửi request nào. Báo cho người dùng giờ sớm nhất có model dùng lại được.'],
+    empty: ['tone-bad', 'Thang trống vì không model nào qua được cổng lọc. Lúc nạp cấu hình phải báo lỗi.'],
   };
-  let run = null;
 
   function drawSim() {
     const budget = +$('budget').value;
-    $('b-out').textContent = budget + ' s';
-    run = simulate(budget);
+    $('b-out').textContent = budget + ' giây';
+    const run = simulate(budget);
     events = run.ev;
     step = Math.min(step, events.length);
     const shown = events.slice(0, step);
@@ -391,18 +510,17 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
       const opts = (locked ? [states[i]] : PICKABLE).map((k) => `<option value="${k}" ${k === states[i] ? 'selected' : ''}>${STATES[k]}</option>`).join('');
       return `<div class="rung ${cur && cur.i === i ? 'is-active' : ''}">
         <span class="rung-no">${i + 1}</span>
-        <div><span class="rung-name">${esc(r.name)}</span> <span class="note">p50 ${r.p50} s</span>
-          <span class="rung-chip ${last ? last.tone : ''}">${last ? esc(last.chip) : 'Not reached'}</span>
-          ${strikes[i] ? `<span class="rung-strike">Bad outputs: ${strikes[i]}/${STRIKES}</span>` : ''}</div>
-        <select class="mc-field" data-i="${i}" aria-label="State of ${esc(r.name)}" ${locked ? 'disabled' : ''}>${opts}</select>
+        <div><span class="rung-name">${esc(r.name)}</span> <span class="note">~${s1(r.p50)} giây</span>
+          <span class="rung-chip ${last ? last.tone : ''}">${last ? esc(last.chip) : 'Chưa tới'}</span>
+          ${strikes[i] ? `<span class="rung-strike">Output sai: ${strikes[i]}/${STRIKES}</span>` : ''}</div>
+        <select class="mc-field" data-i="${i}" aria-label="Tình trạng của ${esc(r.name)}" ${locked ? 'disabled' : ''}>${opts}</select>
       </div>`;
-    }).join('') || '<p class="note">Empty ladder. Lower the thresholds above.</p>';
+    }).join('') || '<p class="note">Thang đang trống. Hãy hạ bớt ngưỡng ở phần chọn model.</p>';
     document.querySelectorAll('#rungs select').forEach((s) => { s.onchange = () => { states[+s.dataset.i] = s.value; step = 0; drawSim(); }; });
     const used = cur ? cur.t : 0;
     $('timefill').style.width = Math.min(100, (used / budget) * 100) + '%';
-    $('timefill').classList.toggle('over', used > budget);
-    $('time-line').textContent = `Request #${request} · used ${used} / ${budget} s`;
-    $('sim-cap').innerHTML = cur ? esc(cur.cap) : `Request #${request} enters the ladder. Press Next.`;
+    $('time-line').textContent = `Request #${request} · đã dùng ${s1(used)} / ${budget} giây`;
+    $('sim-cap').textContent = cur ? cur.cap : `Request #${request} bắt đầu đi vào thang. Bấm Tiếp.`;
     $('sim-count').textContent = `${step}/${events.length}`;
     $('sim-back').disabled = step === 0;
     $('sim-next').disabled = step >= events.length;
@@ -412,7 +530,7 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
     if (done) {
       const [tone, text] = OUT[run.result];
       $('outcome').className = `outcome ${tone}`;
-      $('outcome').textContent = `Result: ${text}`;
+      $('outcome').textContent = `Kết quả: ${text}`;
     }
   }
 
