@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en" data-palette="burgundy" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAG Model Ladder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* ---------- burgundy tokens (micro-cards-design.css) ---------- */
+[data-palette="burgundy"], [data-palette="burgundy"][data-theme="light"] {
+  --mc-bg: #F8F2F4; --mc-panel: #FDF9FA; --mc-surface: #F2E8EC; --mc-white: #FFFFFF; --mc-border: #E6D6DC;
+  --mc-text: #3B2E33; --mc-strong: #2B1F24; --mc-muted: #7F6A73; --mc-accent: #B57A8C; --mc-deep: #7E3F54;
+  --mc-on: #2B1F24; --mc-grad: linear-gradient(#B57A8C,#B57A8C); --mc-soft: #EEDCE2; --mc-grad-soft: linear-gradient(#EEDCE2,#EEDCE2);
+  --mc-mesh: radial-gradient(40vmax 30vmax at 10% 0%,rgba(181,122,140,0.08),transparent 70%),radial-gradient(36vmax 28vmax at 94% 12%,rgba(181,122,140,0.06),transparent 70%);
+  --mc-shadow: 0 12px 30px -8px rgba(126,63,84,0.18); --mc-glow: none;
+}
+[data-palette="burgundy"][data-theme="dark"] {
+  color-scheme: dark;
+  --mc-bg: #251F22; --mc-panel: #2F282C; --mc-surface: #382F34; --mc-white: #40363B; --mc-border: #52454B;
+  --mc-text: #F0E0E5; --mc-strong: #E8BCCA; --mc-muted: #A8919A; --mc-accent: #D49AAC; --mc-deep: #DDA7B8;
+  --mc-on: #251F22; --mc-grad: linear-gradient(#D49AAC,#D49AAC); --mc-grad-soft: linear-gradient(rgba(212,154,172,0.2),rgba(212,154,172,0.2));
+  --mc-soft: rgba(212,154,172,0.16);
+  --mc-mesh: radial-gradient(44vmax 34vmax at 12% 16%,rgba(102,74,83,0.6),transparent 70%),radial-gradient(38vmax 30vmax at 90% 26%,rgba(102,74,83,0.34),transparent 70%),radial-gradient(48vmax 36vmax at 62% 104%,rgba(102,74,83,0.42),transparent 72%);
+  --mc-shadow: 0 0 0 1px rgba(212,154,172,0.14),0 16px 44px -10px rgba(212,154,172,0.28);
+  --mc-glow: 0 0 6px rgba(212,154,172,0.24),0 0 14px rgba(212,154,172,0.08);
+}
+/* ---------- base (micro-cards-design.css) ---------- */
+.mc-page { margin: 0; min-height: 100vh; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: var(--mc-bg); color: var(--mc-text); }
+.mc-page::before { content: ''; position: fixed; inset: 0; z-index: -1; background: var(--mc-mesh); pointer-events: none; }
+.mc-btn { font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; padding: 9px 16px; border-radius: 12px; border: 1px solid var(--mc-border); background: var(--mc-white); color: var(--mc-deep); }
+.mc-btn:hover { border-color: var(--mc-accent); }
+.mc-btn:disabled { opacity: .5; cursor: not-allowed; }
+.mc-btn--primary { background: var(--mc-grad); border-color: transparent; color: var(--mc-on); box-shadow: var(--mc-glow); }
+.mc-field { width: 100%; box-sizing: border-box; font: inherit; font-size: 13px; padding: 7px 10px; border-radius: 10px; border: 1px solid var(--mc-border); background: var(--mc-white); color: var(--mc-text); }
+.mc-field:focus { outline: 2px solid var(--mc-accent); outline-offset: 0; }
+.mc-card { position: relative; overflow: hidden; display: flex; flex-direction: column; box-sizing: border-box; padding: 20px; border-radius: 16px; background: var(--mc-panel); border: 1px solid var(--mc-border); box-shadow: var(--mc-shadow); }
+.mc-card::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--mc-grad); pointer-events: none; }
+/* ---------- viz.css (rules used here) ---------- */
+:root { --ok: #2f7a55; --warn: #6d4c8a; --bad: #b23a48; --info: #3d6f96; --series-2: #3d7f88; --mono: ui-monospace, 'Cascadia Code', Consolas, monospace; --display: 'Noto Serif Display', Georgia, serif; }
+[data-theme="dark"] { --ok: #8fd6ae; --warn: #c9b3dc; --bad: #f09aa4; --info: #9cc6e6; --series-2: #8fd0d6; }
+h1, h2, h3, h4, p { margin: 0; }
+.studio-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.studio-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; min-width: 0; }
+.eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--mc-muted); }
+.viz-title { font-family: var(--display); font-size: 25px; font-weight: 500; line-height: 1.25; color: var(--mc-strong); text-wrap: balance; }
+.viz-source { font-size: 12px; font-weight: 700; color: var(--mc-deep); overflow-wrap: anywhere; }
+.viz-why { line-height: 1.55; }
+.viz-takeaways { display: grid; gap: 6px; line-height: 1.5; overflow-wrap: anywhere; }
+.viz-takeaways h4 { font-size: 13px; font-weight: 700; color: var(--mc-strong); }
+.viz-takeaways ul, .viz-takeaways ol { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.viz-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.seal { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 6px; border: 1px solid currentColor; }
+.seal::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.seal--ok { color: var(--ok); } .seal--warn { color: var(--warn); } .seal--bad { color: var(--bad); } .seal--info { color: var(--info); }
+.seal--calc { color: var(--mc-deep); border-style: dashed; }
+.stage { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; min-width: 0; overflow-wrap: anywhere; }
+.note { font-size: 12px; line-height: 1.5; color: var(--mc-muted); }
+.stat-line { font-weight: 700; color: var(--mc-strong); font-variant-numeric: tabular-nums; line-height: 1.5; }
+.num { font-weight: 700; color: var(--mc-deep); font-variant-numeric: tabular-nums; }
+.stp-caption { min-height: 3em; padding: 9px 12px; border-radius: 10px; background: var(--mc-surface); line-height: 1.5; font-variant-numeric: tabular-nums; }
+.stp-caption code, .lay-item code, .viz-takeaways code, .viz-why code { font-family: var(--mono); font-size: 12px; }
+.stp-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.stp-controls .mc-btn { padding: 6px 12px; }
+.stp-count { margin-left: auto; font-size: 12px; color: var(--mc-muted); font-variant-numeric: tabular-nums; }
+input[type=range] { width: 100%; margin: 0; accent-color: var(--mc-accent); }
+.ctl-row { display: flex; flex-wrap: wrap; gap: 10px 16px; }
+.ctl { flex: 1 1 170px; min-width: 0; display: grid; gap: 4px; font-size: 12px; font-weight: 600; color: var(--mc-muted); }
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--mc-muted); }
+.key { width: 14px; height: 10px; border-radius: 3px; display: inline-block; margin-left: 6px; }
+.key:first-child { margin-left: 0; }
+.tone-good { --tone: var(--ok); } .tone-bad { --tone: var(--bad); } .tone-warn { --tone: var(--warn); }
+.tone-info { --tone: var(--info); } .tone-accent { --tone: var(--mc-accent); } .tone-alt { --tone: var(--series-2); }
+.lay-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.lay-item { padding: 7px 10px; border-radius: 8px; background: var(--mc-surface); border: 1px solid var(--mc-border); line-height: 1.4; transition: background .2s, color .2s; }
+.lay-item.tone { background: color-mix(in srgb, var(--tone) 18%, var(--mc-surface)); border-color: var(--tone); color: var(--tone); }
+.lay-item.is-active { background: var(--mc-accent); color: var(--mc-on); border-color: var(--mc-deep); font-weight: 700; }
+.lay-item.tone.is-active { background: var(--tone); color: var(--mc-on); }
+.lay-item small { display: block; font-weight: 500; opacity: .85; }
+/* ---------- page-specific, from tokens only ---------- */
+body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
+.wrap { display: grid; gap: 16px; max-width: 780px; margin-inline: auto; }
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.top h1 { font-family: var(--display); font-size: 28px; font-weight: 500; color: var(--mc-strong); line-height: 1.2; }
+.seg { display: inline-flex; border: 1px solid var(--mc-border); border-radius: 999px; overflow: hidden; }
+.seg button { font: inherit; font-size: 12px; font-weight: 600; padding: 7px 14px; border: 0; background: transparent; color: var(--mc-text); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--mc-accent); color: var(--mc-on); }
+.rank { display: grid; gap: 6px; }
+.rank-row { display: grid; grid-template-columns: minmax(84px, 7.5em) minmax(0, 1fr); gap: 4px 10px; align-items: center; font-size: 13px; }
+.rank-name { font-weight: 700; color: var(--mc-strong); }
+.rank-bar { position: relative; height: 22px; border-radius: 6px; background: var(--mc-surface); overflow: hidden; }
+.rank-fill { position: absolute; inset: 0 auto 0 0; border-radius: 6px; background: color-mix(in srgb, var(--tone) 55%, transparent); transition: width .25s; }
+.rank-txt { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 12px; font-weight: 700; color: var(--mc-strong); white-space: nowrap; }
+.rank-why { grid-column: 2; font-size: 12px; font-weight: 600; color: var(--tone); }
+.rung { display: grid; grid-template-columns: 28px minmax(0, 1fr) minmax(120px, 44%); gap: 8px; align-items: center; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--mc-border); background: var(--mc-surface); }
+.rung.is-active { border-color: var(--mc-deep); box-shadow: 0 0 0 1px var(--mc-deep); }
+.rung-no { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; background: var(--mc-soft); color: var(--mc-deep); }
+.rung-name { font-weight: 700; color: var(--mc-strong); }
+.rung-chip { display: block; margin-top: 2px; font-size: 12px; font-weight: 600; color: var(--tone, var(--mc-muted)); }
+.rung-strike { font-size: 11px; font-weight: 600; color: var(--bad); }
+.timebar { position: relative; height: 14px; border-radius: 7px; background: var(--mc-surface); overflow: hidden; }
+.timefill { position: absolute; inset: 0 auto 0 0; background: var(--mc-accent); transition: width .25s; }
+.timefill.over { background: var(--bad); }
+.outcome { padding: 9px 12px; border-radius: 10px; border: 1px solid var(--tone); color: var(--tone); background: color-mix(in srgb, var(--tone) 14%, var(--mc-surface)); font-weight: 700; line-height: 1.45; }
+.fixes { display: grid; gap: 8px; }
+.fix { padding: 9px 12px; border-radius: 10px; background: var(--mc-surface); line-height: 1.5; border-left: 3px solid var(--tone, var(--mc-accent)); }
+.fix b { color: var(--mc-strong); }
+@media (max-width: 560px) {
+  .rung { grid-template-columns: 28px minmax(0, 1fr); }
+  .rung select { grid-column: 1 / -1; }
+  .mc-field { font-size: 16px; }
+}
+@media (pointer: coarse) { .mc-btn, .seg button, .mc-field { min-height: 44px; } input[type=range] { height: 32px; } }
+@media (prefers-reduced-motion: reduce) { .rank-fill, .timefill, .lay-item { transition: none; } }
+</style>
+</head>
+<body class="mc-page">
+<main class="wrap">
+  <div class="top">
+    <h1>Model ladder for Legal RAG</h1>
+  </div>
+
+  <!-- 1. Current call path vs proposal -->
+  <section class="mc-card studio-card">
+    <div class="studio-body">
+      <p class="eyebrow">Today · team2_rag</p>
+      <h2 class="viz-title">How a question reaches the LLM</h2>
+      <p class="viz-source">team2_rag/answer.py → llm/factory.py → llm/*_client.py</p>
+      <p class="viz-why">Press Next to walk each step. Switch to <b>Proposed</b> to see that only a few steps change; the rest of the pipeline stays as it is.</p>
+      <div class="viz-meta"><span class="seal seal--ok">Read from code</span><span class="seal seal--info">develop · 3d64c4d</span></div>
+      <div class="stage">
+        <div class="seg" role="group" aria-label="Mode">
+          <button type="button" id="mode-now" aria-pressed="true">Today</button>
+          <button type="button" id="mode-new" aria-pressed="false">Proposed</button>
+        </div>
+        <ol class="lay-list" id="flow"></ol>
+        <p class="stp-caption" id="flow-cap"></p>
+        <div class="stp-controls">
+          <button class="mc-btn" id="flow-back" type="button">Back</button>
+          <button class="mc-btn mc-btn--primary" id="flow-next" type="button">Next</button>
+          <span class="stp-count" id="flow-count"></span>
+        </div>
+      </div>
+      <div class="viz-takeaways"><h4>Key points</h4><ul>
+        <li>Today there is <b>one</b> fixed model from <code>LLM_PROVIDER</code>/<code>LLM_MODEL</code>. A 429, 5xx or timeout becomes an error at once: no switching, no quota memory.</li>
+        <li>The ladder should be one <code>LLMProvider</code> wrapping several providers, so <code>LLMService</code>, <code>answer.py</code> and the citation check need no change.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- 2. Model gate -->
+  <section class="mc-card studio-card">
+    <div class="studio-body">
+      <p class="eyebrow">Drop weak models · offline</p>
+      <h2 class="viz-title">Which models make the ladder</h2>
+      <p class="viz-source">docs/team2_rag/llm-proposal.md · 20-question eval set</p>
+      <p class="viz-why">Drag the thresholds. A model that fails any one is dropped; the rest are ranked by total score. The ladder takes the top 4.</p>
+      <div class="viz-meta"><span class="seal seal--warn">Illustrative numbers</span><span class="seal seal--calc">Score from formula</span></div>
+      <div class="stage">
+        <div class="ctl-row">
+          <label class="ctl">Grounding at least: <span class="num" id="g-out"></span><input type="range" id="g-min" min="60" max="95" value="75"></label>
+          <label class="ctl">Valid citations ≥ <span class="num" id="c-out"></span><input type="range" id="c-min" min="75" max="100" value="90"></label>
+          <label class="ctl">Valid JSON ≥ <span class="num" id="j-out"></span><input type="range" id="j-min" min="85" max="100" value="97"></label>
+          <label class="ctl">p95 latency ≤ <span class="num" id="p-out"></span><input type="range" id="p-max" min="4" max="30" value="20"></label>
+        </div>
+        <div class="rank" id="rank"></div>
+        <div class="legend"><span><span class="key" style="background:var(--ok)"></span> On the ladder</span><span><span class="key" style="background:var(--warn)"></span> Passes, below top 4</span><span><span class="key" style="background:var(--bad)"></span> Dropped</span></div>
+        <p class="stat-line">Ladder: <span class="num" id="ladder-line"></span></p>
+        <p class="note">Total = 0.6 × grounding + 0.3 × valid citations + 0.1 × valid JSON. Models A–F are placeholders; replace them with real results on the 20-question set.</p>
+      </div>
+      <div class="viz-takeaways"><h4>Key points</h4><ul>
+        <li>Rank by <b>the project's own legal eval</b>, not a general leaderboard: a model that is strong in general can still invent articles or cite the wrong chunk.</li>
+        <li>Hard rules run before any numbers: names with <code>lite</code>/<code>mini</code>/<code>nano</code> are dropped, and so is any model whose p95 exceeds the 30 s budget, since it would never answer in time.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- 3. Ladder simulation -->
+  <section class="mc-card studio-card">
+    <div class="studio-body">
+      <p class="eyebrow">Runtime · one request</p>
+      <h2 class="viz-title">What the ladder does when a model runs out</h2>
+      <p class="viz-source">Ladder from the section above · 30 s LLM budget (llm-proposal.md)</p>
+      <p class="viz-why">Set each rung's state and press Next to watch the request move down. Press <b>Next request</b> to see what the quota store remembers: a rung that ran out is not called again, and a rung with 3 bad outputs is demoted.</p>
+      <div class="viz-meta"><span class="seal seal--calc">Simulated with the proposed rules</span></div>
+      <div class="stage">
+        <label class="ctl">Time left for the LLM: <span class="num" id="b-out"></span><input type="range" id="budget" min="8" max="30" value="30"></label>
+        <div class="rank" id="rungs"></div>
+        <div class="timebar" aria-hidden="true"><div class="timefill" id="timefill"></div></div>
+        <p class="note" id="time-line"></p>
+        <p class="stp-caption" id="sim-cap"></p>
+        <div class="stp-controls">
+          <button class="mc-btn" id="sim-back" type="button">Back</button>
+          <button class="mc-btn mc-btn--primary" id="sim-next" type="button">Next</button>
+          <button class="mc-btn" id="sim-again" type="button">Next request</button>
+          <button class="mc-btn" id="sim-reset" type="button">Reset</button>
+          <span class="stp-count" id="sim-count"></span>
+        </div>
+        <div class="outcome" id="outcome" hidden></div>
+      </div>
+      <div class="viz-takeaways"><h4>Key points</h4><ul>
+        <li>Keep Team 3's spec: a bad output is <b>not</b> retried, not even on another rung. It is counted so the model can be demoted, not hidden.</li>
+        <li>Every wait and every rung draws on the same deadline. When there is no longer time, stop early with <code>LLM_UNAVAILABLE</code>, <code>retryable=true</code>.</li>
+        <li>When every rung is out, say so at once and send no request.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- 4. Porting ai-ladder -->
+  <section class="mc-card studio-card">
+    <div class="studio-body">
+      <p class="eyebrow">Porting ai-ladder to the server</p>
+      <h2 class="viz-title">What to keep, what to change</h2>
+      <div class="fixes">
+        <div class="fix tone-good"><b>Keep:</b> fixed order from best down, skip rungs known to be out, read <code>retry-after</code>/<code>retryDelay</code>/<code>PerDay</code>, Gemini's daily quota ends at midnight Pacific (15:00 Vietnam time in winter), back off further when the provider gives no time, and never swap a model pinned by hand.</div>
+        <div class="fix tone-accent"><b>Where quota lives:</b> <code>localStorage</code> → a locked JSON file (e.g. <code>data/.llm_quota.json</code>) shared by all workers. Key it by <code>sha256(key)[:8]</code> instead of the key's last 6 characters.</div>
+        <div class="fix tone-accent"><b>Never cut the context:</b> ai-ladder trims text to fit (<code>fit</code>). In law, cutting a clause changes its meaning. When the config loads, reject any rung whose context window is smaller than rung 1's largest prompt.</div>
+        <div class="fix tone-bad"><b>413 does not lock the model:</b> ai-ladder locks a model for 10 minutes on 413, but 413 means this request is too large, not that the model is down. Skip the rung for this request only.</div>
+        <div class="fix tone-bad"><b>A 400 must not silently drop thinking:</b> ai-ladder resends without <code>reasoning_effort</code>, falling back to the model default, which may be low. On the server this is a config error: catch it in a startup smoke test instead of changing behaviour quietly.</div>
+        <div class="fix tone-bad"><b>Wait on 429 inside the deadline:</b> ai-ladder waits up to 20 s. Here, wait only when the time left still covers that rung's latency.</div>
+        <div class="fix tone-warn"><b>Team decision needed:</b> <code>llm-proposal.md</code> says "do not switch provider on error", and <code>settings.validate()</code> requires <code>LLM_MAX_RETRIES=0</code>. The ladder changes the Week 1 decision, so update the doc and add an on/off switch (empty <code>LLM_LADDER</code> = today's behaviour).</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  /* ---------- 1. flow ---------- */
+  const FLOW = [
+    { name: 'generate_answer', file: 'answer.py',
+      now: "Without an <code>llm_service</code> argument it reads the config and builds one. This is the only entry point that calls a real LLM; Team 3's <code>service.query()</code> is still a mock." },
+    { name: 'load_settings', file: 'config/settings.py',
+      now: 'Reads <code>.env</code> and the environment: <code>LLM_PROVIDER</code>, <code>LLM_MODEL</code>, one key per provider. <code>validate()</code> enforces timeout ≤ 30 s and <code>LLM_MAX_RETRIES=0</code>.',
+      new: "Add <code>LLM_LADDER</code> pointing at <code>configs/llm_ladder.json</code>. Empty means exactly today's behaviour: one model, no switching." },
+    { name: 'create_llm_service', file: 'llm/factory.py',
+      now: '<code>_REGISTRY</code> picks exactly one adapter: <code>openai</code>, <code>gemini</code> or <code>qwen</code>.',
+      new: 'With a ladder, return a <code>LadderProvider</code> wrapping the adapters in eval order. <code>LLMService</code> never knows there is a ladder.' },
+    { name: 'build_context', file: 'prompts/context.py · llm/tokens.py',
+      now: 'Joins up to 5 chunks. Only OpenAI has a token counter (tiktoken); other providers fall back to a rough 9000-character budget.',
+      new: 'Build the context once for rung 1. Every lower rung must have a context window that holds that prompt, checked when the config loads.' },
+    { name: 'LLMService.ask', file: 'llm/service.py',
+      now: 'Builds the prompt, calls <code>provider.complete()</code> exactly once, parses the output, logs provider/model/tokens/latency.' },
+    { name: 'Adapter + HTTP', file: 'llm/*_client.py · llm/http.py',
+      now: 'POST via urllib, JSON mode, temperature 0, 30 s timeout. Gemini calls native <code>generateContent</code>; OpenAI/Qwen call <code>/chat/completions</code>.' },
+    { name: 'raise_for_status', file: 'llm/base.py',
+      now: '429 → <code>LLMRateLimitError</code>, 5xx → <code>LLMProviderError</code>. Does not read <code>retry-after</code>, remembers nothing, surfaces straight up as <code>LLM_UNAVAILABLE</code>.',
+      new: 'Errors also carry <code>retry_after</code> and <code>scope</code> (minute/day) read from headers and body. <code>LadderProvider</code> catches them, writes the quota store and moves to the next rung.' },
+    { name: 'parse + citation', file: 'llm/output_parser.py · answer.py',
+      now: 'Bad JSON → <code>INVALID_LLM_OUTPUT</code>; a citation that does not match a sent chunk → <code>CITATION_INVALID</code>. No retry.',
+      new: "Unchanged, still no retry. Add one line that records the bad output in the model's health log, so repeat offenders get demoted." },
+  ];
+  let flowMode = 'now', flowStep = 0;
+  function drawFlow() {
+    $('flow').innerHTML = FLOW.map((f, i) => {
+      const changed = flowMode === 'new' && f.new;
+      const cls = ['lay-item', changed ? 'tone tone-accent' : '', i === flowStep ? 'is-active' : ''].join(' ');
+      return `<li class="${cls}">${i + 1}. ${esc(f.name)}<small>${esc(f.file)}</small></li>`;
+    }).join('');
+    const f = FLOW[flowStep];
+    $('flow-cap').innerHTML = (flowMode === 'new' && f.new) ? `<b>Change:</b> ${f.new}` : f.now;
+    $('flow-count').textContent = `${flowStep + 1}/${FLOW.length}`;
+    $('flow-back').disabled = flowStep === 0;
+    $('flow-next').disabled = flowStep === FLOW.length - 1;
+  }
+  const setMode = (m) => { flowMode = m; $('mode-now').setAttribute('aria-pressed', m === 'now'); $('mode-new').setAttribute('aria-pressed', m === 'new'); drawFlow(); };
+  $('mode-now').onclick = () => setMode('now');
+  $('mode-new').onclick = () => setMode('new');
+  $('flow-back').onclick = () => { flowStep--; drawFlow(); };
+  $('flow-next').onclick = () => { flowStep++; drawFlow(); };
+  drawFlow();
+
+  /* ---------- 2. gate ---------- */
+  // Illustrative eval results; replace with the project's 20-question run.
+  const CANDS = [
+    { name: 'Model F', grounded: 90, cite: 95, json: 99, p95: 26, lite: false },
+    { name: 'Model A', grounded: 88, cite: 96, json: 99, p95: 14, lite: false },
+    { name: 'Model B', grounded: 82, cite: 93, json: 98, p95: 9, lite: false },
+    { name: 'Model C', grounded: 78, cite: 90, json: 97, p95: 7, lite: false },
+    { name: 'Model D', grounded: 72, cite: 84, json: 92, p95: 5, lite: false },
+    { name: 'Model E-lite', grounded: 64, cite: 80, json: 95, p95: 3, lite: true },
+  ];
+  const MAX_RUNGS = 4;
+  const score = (m) => 0.6 * m.grounded + 0.3 * m.cite + 0.1 * m.json;
+  let ladder = [];
+  function gate() {
+    const g = +$('g-min').value, c = +$('c-min').value, j = +$('j-min').value, p = +$('p-max').value;
+    $('g-out').textContent = g; $('c-out').textContent = c + '%'; $('j-out').textContent = j + '%'; $('p-out').textContent = p + ' s';
+    const rows = CANDS.map((m) => {
+      let why = '';
+      if (m.lite) why = 'Name has lite';
+      else if (m.grounded < g) why = `Grounding ${m.grounded} < ${g}`;
+      else if (m.cite < c) why = `Citations ${m.cite}% < ${c}%`;
+      else if (m.json < j) why = `JSON ${m.json}% < ${j}%`;
+      else if (m.p95 > p) why = `p95 ${m.p95} s > ${p} s`;
+      return { ...m, s: score(m), why };
+    }).sort((a, b) => b.s - a.s);
+    let placed = 0;
+    for (const r of rows) {
+      if (r.why) { r.tone = 'tone-bad'; continue; }
+      if (placed < MAX_RUNGS) { r.tone = 'tone-good'; r.rung = ++placed; r.why = `Rung ${r.rung} · p95 ${r.p95} s`; }
+      else { r.tone = 'tone-warn'; r.why = 'Passes, below top 4'; }
+    }
+    $('rank').innerHTML = rows.map((r) => `
+      <div class="rank-row ${r.tone}">
+        <span class="rank-name">${esc(r.name)}</span>
+        <div class="rank-bar"><div class="rank-fill" style="width:${r.s.toFixed(1)}%"></div><span class="rank-txt">${r.s.toFixed(1)}</span></div>
+        <span class="rank-why">${esc(r.why)}</span>
+      </div>`).join('');
+    ladder = rows.filter((r) => r.rung).map((r) => ({ name: r.name, p95: r.p95, p50: Math.round(r.p95 * 6) / 10 }));
+    $('ladder-line').textContent = ladder.length ? ladder.map((r) => r.name).join(' → ') : 'empty: no model passes';
+    resetSim();
+  }
+  ['g-min', 'c-min', 'j-min', 'p-max'].forEach((id) => { $(id).oninput = gate; });
+
+  /* ---------- 3. ladder simulation ---------- */
+  const STATES = {
+    ready: 'Ready', day: 'Daily quota out', minute: 'Per-minute 8 s', busy: 'Overloaded 503',
+    stall: 'Stalled, silent', bad: 'Bad output', locked: 'Locked (remembered)', demoted: 'Demoted',
+  };
+  const PICKABLE = ['ready', 'day', 'minute', 'busy', 'stall', 'bad'];
+  const WAIT = 8, STALL = 8, FAST = 0.4, BUSY = 0.8, STRIKES = 3;
+  let states = [], strikes = [], events = [], step = 0, request = 1;
+  const r1 = (x) => Math.round(x * 10) / 10;
+
+  function simulate(budget) {
+    const ev = [];
+    let t = 0, called = false, result = null;
+    const push = (i, tone, chip, cap, dt, after = {}) => { t = r1(t + dt); ev.push({ i, tone, chip, cap, t, ...after }); };
+    for (let i = 0; i < ladder.length && !result; i++) {
+      const r = ladder[i], st = states[i], left = r1(budget - t);
+      if (st === 'locked' || st === 'demoted') {
+        push(i, 'tone-info', 'Skipped · 0 s', `${r.name} ${st === 'locked' ? 'is locked in the quota store' : 'was demoted after repeated bad output'}, so no request is sent.`, 0);
+        continue;
+      }
+      if (left < r.p50) {
+        push(i, 'tone-warn', 'No time', `${left} s left, less than the usual latency of ${r.name} (${r.p50} s). Skipped without a call.`, 0);
+        continue;
+      }
+      called = true;
+      if (st === 'ready') {
+        push(i, 'tone-good', `Answered · ${r.p50} s`, `${r.name} returns valid JSON with citations that match the sent chunks.`, r.p50);
+        result = 'ok';
+      } else if (st === 'day') {
+        push(i, 'tone-warn', 'Daily quota out', `${r.name} returns 429 with PerDay. Store: locked until the provider resets quota (Gemini: 15:00 Vietnam time). Move to the next rung.`, FAST, { lock: 'day' });
+      } else if (st === 'minute') {
+        if (left - FAST - WAIT >= r.p50) {
+          push(i, 'tone-warn', `Wait ${WAIT} s`, `Per-minute 429, retry-after ${WAIT} s. There is time, so wait and call ${r.name} again instead of dropping a rung.`, FAST + WAIT);
+          push(i, 'tone-good', `Answered · ${r.p50} s`, `The second call on ${r.name} succeeds.`, r.p50);
+          result = 'ok';
+        } else {
+          push(i, 'tone-warn', `Lock ${WAIT} s`, `Per-minute 429, but waiting ${WAIT} s leaves no time for ${r.name}. Lock briefly and move on.`, FAST, { lock: 'short' });
+        }
+      } else if (st === 'busy') {
+        push(i, 'tone-warn', 'Lock 1 min', `${r.name} returns 503. Lock for 1 minute, move to the next rung.`, BUSY, { lock: 'short' });
+      } else if (st === 'stall') {
+        const d = Math.min(STALL, left);
+        push(i, 'tone-bad', `Dropped at ${r1(d)} s`, `${r.name} sends nothing for ${r1(d)} s. Cancel, lock for 1 minute, move to the next rung.`, d, { lock: 'short' });
+      } else if (st === 'bad') {
+        push(i, 'tone-bad', `Bad output · ${r.p50} s`, `${r.name} returns bad JSON or citations that do not match. Per spec: stop, return INVALID_LLM_OUTPUT, try no other rung. Record 1 strike in the health log.`, r.p50, { strike: true });
+        result = 'bad';
+      }
+    }
+    if (!result) result = !ladder.length ? 'empty' : called ? 'down' : 'closed';
+    return { ev, t, result };
+  }
+
+  const OUT = {
+    ok: ['tone-good', 'status: answered. The log names the model that answered.'],
+    bad: ['tone-bad', 'INVALID_LLM_OUTPUT · retryable=false'],
+    down: ['tone-warn', 'LLM_UNAVAILABLE · retryable=true. Out of rungs or out of time.'],
+    closed: ['tone-info', 'LLM_UNAVAILABLE at once, 0 requests sent. Report when the first rung returns.'],
+    empty: ['tone-bad', 'Empty ladder: no model passed the gate. Loading the config must fail.'],
+  };
+  let run = null;
+
+  function drawSim() {
+    const budget = +$('budget').value;
+    $('b-out').textContent = budget + ' s';
+    run = simulate(budget);
+    events = run.ev;
+    step = Math.min(step, events.length);
+    const shown = events.slice(0, step);
+    const cur = step ? events[step - 1] : null;
+    $('rungs').innerHTML = ladder.map((r, i) => {
+      const last = [...shown].reverse().find((e) => e.i === i);
+      const locked = states[i] === 'locked' || states[i] === 'demoted';
+      const opts = (locked ? [states[i]] : PICKABLE).map((k) => `<option value="${k}" ${k === states[i] ? 'selected' : ''}>${STATES[k]}</option>`).join('');
+      return `<div class="rung ${cur && cur.i === i ? 'is-active' : ''}">
+        <span class="rung-no">${i + 1}</span>
+        <div><span class="rung-name">${esc(r.name)}</span> <span class="note">p50 ${r.p50} s</span>
+          <span class="rung-chip ${last ? last.tone : ''}">${last ? esc(last.chip) : 'Not reached'}</span>
+          ${strikes[i] ? `<span class="rung-strike">Bad outputs: ${strikes[i]}/${STRIKES}</span>` : ''}</div>
+        <select class="mc-field" data-i="${i}" aria-label="State of ${esc(r.name)}" ${locked ? 'disabled' : ''}>${opts}</select>
+      </div>`;
+    }).join('') || '<p class="note">Empty ladder. Lower the thresholds above.</p>';
+    document.querySelectorAll('#rungs select').forEach((s) => { s.onchange = () => { states[+s.dataset.i] = s.value; step = 0; drawSim(); }; });
+    const used = cur ? cur.t : 0;
+    $('timefill').style.width = Math.min(100, (used / budget) * 100) + '%';
+    $('timefill').classList.toggle('over', used > budget);
+    $('time-line').textContent = `Request #${request} · used ${used} / ${budget} s`;
+    $('sim-cap').innerHTML = cur ? esc(cur.cap) : `Request #${request} enters the ladder. Press Next.`;
+    $('sim-count').textContent = `${step}/${events.length}`;
+    $('sim-back').disabled = step === 0;
+    $('sim-next').disabled = step >= events.length;
+    $('sim-again').disabled = step < events.length;
+    const done = step >= events.length;
+    $('outcome').hidden = !done;
+    if (done) {
+      const [tone, text] = OUT[run.result];
+      $('outcome').className = `outcome ${tone}`;
+      $('outcome').textContent = `Result: ${text}`;
+    }
+  }
+
+  function nextRequest() {
+    // What the quota store remembers for the next request.
+    for (const e of events) {
+      if (e.lock) states[e.i] = 'locked';
+      if (e.strike) {
+        strikes[e.i] = (strikes[e.i] || 0) + 1;
+        if (strikes[e.i] >= STRIKES) states[e.i] = 'demoted';
+      }
+    }
+    request++; step = 0; drawSim();
+  }
+  function resetSim() {
+    states = ladder.map(() => 'ready'); strikes = ladder.map(() => 0);
+    if (ladder.length) states[0] = 'day';
+    request = 1; step = 0; drawSim();
+  }
+  $('budget').oninput = () => { step = 0; drawSim(); };
+  $('sim-back').onclick = () => { step--; drawSim(); };
+  $('sim-next').onclick = () => { step++; drawSim(); };
+  $('sim-again').onclick = nextRequest;
+  $('sim-reset').onclick = resetSim;
+  gate();
+})();
+</script>
+</body>
+</html>
