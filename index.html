@@ -123,15 +123,15 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
   <!-- 1. Current call path vs proposal -->
   <section class="mc-card studio-card">
     <div class="studio-body">
-      <p class="eyebrow">Today · team2_rag</p>
+      <p class="eyebrow">Old way vs new way · team2_rag</p>
       <h2 class="viz-title">How a question reaches the LLM</h2>
       <p class="viz-source">team2_rag/answer.py → llm/factory.py → llm/*_client.py</p>
-      <p class="viz-why">Press Next to walk each step. Switch to <b>Proposed</b> to see that only a few steps change; the rest of the pipeline stays as it is.</p>
+      <p class="viz-why">Press Next to walk each step. Switch to <b>New: with ladder</b> to see that only a few steps change; the rest of the pipeline stays as it is.</p>
       <div class="viz-meta"><span class="seal seal--ok">Read from code</span><span class="seal seal--info">develop · 3d64c4d</span></div>
       <div class="stage">
         <div class="seg" role="group" aria-label="Mode">
-          <button type="button" id="mode-now" aria-pressed="true">Today</button>
-          <button type="button" id="mode-new" aria-pressed="false">Proposed</button>
+          <button type="button" id="mode-now" aria-pressed="true">Old: one model</button>
+          <button type="button" id="mode-new" aria-pressed="false">New: with ladder</button>
         </div>
         <ol class="lay-list" id="flow"></ol>
         <p class="stp-caption" id="flow-cap"></p>
@@ -142,7 +142,7 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
         </div>
       </div>
       <div class="viz-takeaways"><h4>Key points</h4><ul>
-        <li>Today there is <b>one</b> fixed model from <code>LLM_PROVIDER</code>/<code>LLM_MODEL</code>. A 429, 5xx or timeout becomes an error at once: no switching, no quota memory.</li>
+        <li>The old way has <b>one</b> fixed model from <code>LLM_PROVIDER</code>/<code>LLM_MODEL</code>. A 429, 5xx or timeout becomes an error at once: no switching, no quota memory.</li>
         <li>The ladder should be one <code>LLMProvider</code> wrapping several providers, so <code>LLMService</code>, <code>answer.py</code> and the citation check need no change.</li>
       </ul></div>
     </div>
@@ -218,7 +218,7 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
         <div class="fix tone-bad"><b>413 does not lock the model:</b> ai-ladder locks a model for 10 minutes on 413, but 413 means this request is too large, not that the model is down. Skip the rung for this request only.</div>
         <div class="fix tone-bad"><b>A 400 must not silently drop thinking:</b> ai-ladder resends without <code>reasoning_effort</code>, falling back to the model default, which may be low. On the server this is a config error: catch it in a startup smoke test instead of changing behaviour quietly.</div>
         <div class="fix tone-bad"><b>Wait on 429 inside the deadline:</b> ai-ladder waits up to 20 s. Here, wait only when the time left still covers that rung's latency.</div>
-        <div class="fix tone-warn"><b>Team decision needed:</b> <code>llm-proposal.md</code> says "do not switch provider on error", and <code>settings.validate()</code> requires <code>LLM_MAX_RETRIES=0</code>. The ladder changes the Week 1 decision, so update the doc and add an on/off switch (empty <code>LLM_LADDER</code> = today's behaviour).</div>
+        <div class="fix tone-warn"><b>Team decision needed:</b> <code>llm-proposal.md</code> says "do not switch provider on error", and <code>settings.validate()</code> requires <code>LLM_MAX_RETRIES=0</code>. The ladder changes the Week 1 decision, so update the doc and add an on/off switch (empty <code>LLM_LADDER</code> = the old one-model way).</div>
       </div>
     </div>
   </section>
@@ -235,7 +235,7 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
       now: "Without an <code>llm_service</code> argument it reads the config and builds one. This is the only entry point that calls a real LLM; Team 3's <code>service.query()</code> is still a mock." },
     { name: 'load_settings', file: 'config/settings.py',
       now: 'Reads <code>.env</code> and the environment: <code>LLM_PROVIDER</code>, <code>LLM_MODEL</code>, one key per provider. <code>validate()</code> enforces timeout ≤ 30 s and <code>LLM_MAX_RETRIES=0</code>.',
-      new: "Add <code>LLM_LADDER</code> pointing at <code>configs/llm_ladder.json</code>. Empty means exactly today's behaviour: one model, no switching." },
+      new: "Add <code>LLM_LADDER</code> pointing at <code>configs/llm_ladder.json</code>. Empty means the old way exactly: one model, no switching." },
     { name: 'create_llm_service', file: 'llm/factory.py',
       now: '<code>_REGISTRY</code> picks exactly one adapter: <code>openai</code>, <code>gemini</code> or <code>qwen</code>.',
       new: 'With a ladder, return a <code>LadderProvider</code> wrapping the adapters in eval order. <code>LLMService</code> never knows there is a ladder.' },
@@ -261,7 +261,7 @@ body.mc-page { padding: 16px; box-sizing: border-box; font-size: 14px; }
       return `<li class="${cls}">${i + 1}. ${esc(f.name)}<small>${esc(f.file)}</small></li>`;
     }).join('');
     const f = FLOW[flowStep];
-    $('flow-cap').innerHTML = (flowMode === 'new' && f.new) ? `<b>Change:</b> ${f.new}` : f.now;
+    $('flow-cap').innerHTML = (flowMode === 'new' && f.new) ? `<b>New way:</b> ${f.new}` : (flowMode === 'new' ? `<b>Same as old:</b> ${f.now}` : f.now);
     $('flow-count').textContent = `${flowStep + 1}/${FLOW.length}`;
     $('flow-back').disabled = flowStep === 0;
     $('flow-next').disabled = flowStep === FLOW.length - 1;
