@@ -1248,7 +1248,7 @@ code, .mono { font-family: var(--mono); font-size: 12px; }
 .tree .lay-item { display: grid; gap: 2px; transition: background .2s, color .2s; }
 .tree .lay-item small { font-size: 11px; color: var(--mc-muted); font-family: inherit; }
 .tree .lay-item.is-active small { color: inherit; opacity: .9; }
-.tree .lay-item.is-dim { opacity: .45; }
+.tree .lay-item.is-dim { opacity: .62; }
 .find-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; border: 1px solid var(--tone); color: var(--tone); margin-right: 6px; }
 @media (prefers-reduced-motion: reduce) { .lane-bar, .tree .lay-item { transition: none; } }
 @media (max-width: 420px) { .lanes { grid-template-columns: 50px repeat(8, minmax(0, 1fr)); } .lane-name { font-size: 11px; } }
@@ -1466,7 +1466,7 @@ function draw() {
       html += `<button class="lane-cell team-${t.id} ${state(d)}" type="button" data-day="${d}" aria-label="${t.name} ${DAYS[d]}: ${n} commit"><span class="lane-num">${n || ''}</span><span class="lane-bar" style="height:${h}px"></span></button>`;
     });
   });
-  html += '<span class="lane-name">→ develop</span>';
+  html += '<span class="lane-name">develop</span>';
   DAYS.forEach((_, d) => {
     const pips = INTO_DEVELOP.filter((x) => x[0] === d && shown.has(x[1]))
       .map((x) => `<span class="pip ${x[2] === 'pr' ? 'pip--pr' : 'pip--direct'}" title="${x[3]}"></span>`).join('');
