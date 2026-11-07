@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -357,26 +357,26 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
     <path d="M5 42h38"/>
     <rect class="lt" x="37" y="6" width="5" height="5" rx="1.2"/>
   </svg>
-  <h1 class="page-title"><span data-script="Lộ trình Upwork">Lộ trình Upwork</span></h1>
+  <h1 class="page-title"><span data-script="Upwork roadmap">Upwork roadmap</span></h1>
   <p class="page-quote"><span lang="en" id="subtitle"></span><span class="by" id="compiled"></span></p>
 </header>
 
 <main class="app">
   <div class="fresh" id="fresh"></div>
-  <nav class="nav" role="tablist" aria-label="Các phần">
-    <button class="tab" role="tab" data-act="tab" data-v="tiers">Lộ trình 5 bậc</button>
-    <button class="tab" role="tab" data-act="tab" data-v="jobs">Việc thật</button>
-    <button class="tab" role="tab" data-act="tab" data-v="tools">Cài công cụ</button>
-    <button class="tab" role="tab" data-act="tab" data-v="cost">Chi phí &amp; thu nhập</button>
-    <button class="tab" role="tab" data-act="tab" data-v="branches">Nhánh bậc 4</button>
-    <button class="mc-btn theme-btn" type="button" data-act="theme" id="theme-btn">Giao diện: tự động</button>
+  <nav class="nav" role="tablist" aria-label="Sections">
+    <button class="tab" role="tab" data-act="tab" data-v="tiers">Five tiers</button>
+    <button class="tab" role="tab" data-act="tab" data-v="jobs">Real jobs</button>
+    <button class="tab" role="tab" data-act="tab" data-v="tools">Tool setup</button>
+    <button class="tab" role="tab" data-act="tab" data-v="cost">Costs and income</button>
+    <button class="tab" role="tab" data-act="tab" data-v="branches">Tier 4 branches</button>
+    <button class="mc-btn theme-btn" type="button" data-act="theme" id="theme-btn">Theme: dark</button>
   </nav>
 
   <!-- A. Tier spine -->
   <div id="view-tiers" class="app" style="gap:16px">
     <section class="mc-card studio-card">
       <div class="studio-body">
-        <p class="eyebrow">Luận điểm của lộ trình</p>
+        <p class="eyebrow">The thesis of this roadmap</p>
         <p class="thesis" lang="en" id="thesis"></p>
         <div id="starting"></div>
       </div>
@@ -384,17 +384,17 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
 
     <section class="mc-card studio-card">
       <div class="studio-body">
-        <p class="eyebrow">Bậc thang giá theo thời gian</p>
-        <h2 class="viz-title">Năm bậc, từ chưa có thu nhập đến $60+/giờ</h2>
-        <p class="viz-why">Kéo thanh tốc độ để xem tổng thời gian dao động giữa kịch bản nhanh nhất và chậm nhất trong dữ liệu. Khung nét đứt là kịch bản chậm nhất. Chạm một bậc để mở chi tiết.</p>
+        <p class="eyebrow">Rate ladder over time</p>
+        <h2 class="viz-title">Five tiers, from no income to $60+ an hour</h2>
+        <p class="viz-why">Drag the pace slider to see how the total time moves between the fastest and the slowest durations in the data. The dashed outlines show the slowest case. Tap a tier to open its details.</p>
         <div class="viz-meta" id="ladder-meta"></div>
         <div class="stage">
           <div class="v-stack" id="ladder"></div>
-          <div class="legend"><span><i class="key" style="background:var(--mc-deep)"></i>Tiến độ checklist</span><span><i class="key" style="background:var(--ok)"></i>Bậc đã xong</span><span><i class="key" style="background:var(--mc-light)"></i>Bạn đang ở đây</span><span><i class="key" style="border:1px dashed var(--mc-muted)"></i>Kịch bản chậm nhất</span></div>
+          <div class="legend"><span><i class="key" style="background:var(--mc-deep)"></i>Checklist progress</span><span><i class="key" style="background:var(--ok)"></i>Tier finished</span><span><i class="key" style="background:var(--mc-light)"></i>You are here</span><span><i class="key" style="border:1px dashed var(--mc-muted)"></i>Slowest case</span></div>
           <div class="ctl-row">
-            <label class="ctl">Tốc độ: nhanh ↔ chậm · <span class="num" id="speed-out"></span><input type="range" min="0" max="100" step="1" data-in="speed" id="speed"></label>
+            <label class="ctl">Pace, fast to slow: <span class="num" id="speed-out"></span><input type="range" min="0" max="100" step="1" data-in="speed" id="speed"></label>
           </div>
-          <div class="spine" role="tablist" aria-label="Chọn bậc" id="spine"></div>
+          <div class="spine" role="tablist" aria-label="Choose a tier" id="spine"></div>
         </div>
       </div>
     </section>
@@ -406,21 +406,21 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
   <div id="view-jobs" class="app" style="gap:16px" hidden>
     <section class="mc-card studio-card">
       <div class="studio-body">
-        <p class="eyebrow">20 tin tuyển dụng thật · chụp ngày <span id="jobs-date"></span></p>
-        <h2 class="viz-title">Việc nào bạn nhận được ngay, việc nào còn thiếu gì</h2>
-        <p class="viz-why">Mỗi ô là một tin, xếp theo bậc cần đạt. Xanh lá là trong tầm với checklist hiện tại, tím là còn thiếu điều kiện ra bậc, đỏ gạch là bẫy. Kéo thanh giả định để xem bảng đổi màu khi bạn xong thêm bậc. Chạm một ô để đọc tin.</p>
+        <p class="eyebrow">20 real Upwork postings, captured on <span id="jobs-date"></span></p>
+        <h2 class="viz-title">Which jobs you can win now, and what stands in the way of the rest</h2>
+        <p class="viz-why">Each cell is one posting, placed in the tier you need to reach first. Green means it is within reach with your current checklist, purple means exit criteria are still missing, and struck-through red means it is a trap. Drag the assumption slider to see the board change as you finish more tiers. Tap a cell to read the posting.</p>
         <div class="viz-meta" id="reach-meta"></div>
         <div class="stage">
           <div class="reach" id="reach"></div>
           <div class="ctl-row">
-            <label class="ctl">Giả định đã xong: <span class="num" id="assume-out"></span><input type="range" min="0" max="5" step="1" data-in="assume" id="assume"></label>
+            <label class="ctl">Assume finished: <span class="num" id="assume-out"></span><input type="range" min="0" max="5" step="1" data-in="assume" id="assume"></label>
           </div>
           <p class="stat-line" id="reach-stat"></p>
         </div>
-        <div class="viz-takeaways"><h4>Đọc bảng này thế nào</h4><ul>
-          <li>Khoảng cách tới một việc là danh sách điều kiện ra bậc (exit criteria) bạn chưa tick, không phải số kỹ năng.</li>
-          <li>Cột T3 và T4 có nhiều việc nhất; đó là nơi luận điểm "nhảy sang nhánh AI sớm" được kiểm chứng.</li>
-          <li>Bốn tin bẫy nằm riêng ở cột cuối: học cách nhận ra chúng trong mười giây.</li>
+        <div class="viz-takeaways"><h4>How to read this board</h4><ul>
+          <li>The gap to a job is the list of exit criteria you have not ticked yet, not a count of skills.</li>
+          <li>The T3 and T4 columns hold the most jobs, which is where the "jump to the AI branch early" thesis gets tested.</li>
+          <li>The four traps sit apart in the last column. Learn to spot them in ten seconds.</li>
         </ul></div>
       </div>
     </section>
@@ -438,11 +438,11 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
   <div id="view-tools" class="app" style="gap:16px" hidden>
     <section class="mc-card studio-card">
       <div class="studio-body">
-        <p class="eyebrow">Cài đặt trên Windows</p>
-        <h2 class="viz-title" id="tools-title">Công cụ</h2>
-        <p class="viz-why">Lọc theo bậc. Mỗi lệnh có nút Chép. Khung viền xanh lá ở cuối mỗi công cụ là bài kiểm tra: lệnh đó chạy được thì bạn cài xong. Công cụ đã cài được làm mờ.</p>
+        <p class="eyebrow">Installing on Windows</p>
+        <h2 class="viz-title" id="tools-title">Tools</h2>
+        <p class="viz-why">Filter by tier. Every command has a Copy button. The green box at the end of each tool is the acceptance test: when that check works, the install is done. Tools you already have are dimmed.</p>
         <div class="tabs" id="tool-filters"></div>
-        <label class="chk small" style="justify-self:start"><input type="checkbox" data-in="hideInstalled" id="hide-inst"><span>Ẩn công cụ đã cài</span></label>
+        <label class="chk small" style="justify-self:start"><input type="checkbox" data-in="hideInstalled" id="hide-inst"><span>Hide installed tools</span></label>
         <div class="tools-list" id="tools-list"></div>
       </div>
     </section>
@@ -452,23 +452,23 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
   <div id="view-cost" class="app" style="gap:16px" hidden>
     <section class="mc-card studio-card">
       <div class="studio-body">
-        <p class="eyebrow">Mô phỏng chi phí Connects</p>
-        <h2 class="viz-title">Bao nhiêu Connects đổi được một hợp đồng</h2>
-        <p class="viz-why">Chọn bậc, kéo số proposal mỗi tháng và số Connects mỗi proposal. Tỉ lệ thắng mặc định lấy từ dữ liệu; kéo thanh thứ ba để đặt tỉ lệ của riêng bạn. Thanh viền vàng là ước tính của bạn so với chi phí tháng của lộ trình.</p>
+        <p class="eyebrow">Connects cost simulator</p>
+        <h2 class="viz-title">How many Connects it takes to win one contract</h2>
+        <p class="viz-why">Pick a tier, then drag the proposals per month and the Connects per proposal. The win rate defaults to the figure in the data; drag the third slider to set your own. The bar with the gold outline is your estimate, shown against the roadmap's monthly cost for each tier.</p>
         <div class="viz-meta" id="calc-meta"></div>
         <div class="stage">
           <div class="tabs" id="calc-tiers"></div>
           <div class="ctl-row">
-            <label class="ctl">Proposal / tháng: <span class="num" id="proposals-out"></span><input type="range" min="1" max="40" step="1" data-in="proposals" id="proposals"></label>
+            <label class="ctl">Proposals per month: <span class="num" id="proposals-out"></span><input type="range" min="1" max="40" step="1" data-in="proposals" id="proposals"></label>
             <label class="ctl">Connects / proposal: <span class="num" id="cpp-out"></span><input type="range" step="1" data-in="cpp" id="cpp"></label>
-            <label class="ctl">Số proposal cho 1 lần thắng: <span class="num" id="ppw-out"></span><input type="range" min="2" max="40" step="1" data-in="ppw" id="ppw"></label>
+            <label class="ctl">Proposals per win: <span class="num" id="ppw-out"></span><input type="range" min="2" max="40" step="1" data-in="ppw" id="ppw"></label>
           </div>
           <div class="stats" id="calc-stats"></div>
           <div class="hbars" id="calc-bars"></div>
-          <div class="legend"><span><i class="key seg-c"></i>Connects</span><span><i class="key seg-cl"></i>Cloud</span><span><i class="key seg-a"></i>API</span><span><i class="key seg-s"></i>Phần mềm</span></div>
+          <div class="legend"><span><i class="key seg-c"></i>Connects</span><span><i class="key seg-cl"></i>Cloud</span><span><i class="key seg-a"></i>API</span><span><i class="key seg-s"></i>Software</span></div>
           <p class="note" id="calc-note"></p>
           <div class="sec">
-            <p class="h3">Freelancer Plus có đáng không?</p>
+            <p class="h3">Is Freelancer Plus worth it?</p>
             <div class="tabs" id="plus-conn"></div>
             <div class="disagree" id="plus-disagree"></div>
             <p class="stat-line" id="plus-line"></p>
@@ -480,23 +480,23 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
 
     <section class="mc-card studio-card">
       <div class="studio-body">
-        <p class="eyebrow">Thu nhập thực nhận</p>
-        <h2 class="viz-title">Từ giá giờ đến tiền về tài khoản</h2>
-        <p class="viz-why">Kéo giá giờ và số giờ tính tiền mỗi tuần. Các thanh cho thấy phần bị trừ: phí dịch vụ Upwork, $2 Payoneer, 1.5% phí đổi sang VND. Chọn một ví dụ để nạp đúng số trong dữ liệu.</p>
+        <p class="eyebrow">Take-home income</p>
+        <h2 class="viz-title">From hourly rate to money in your account</h2>
+        <p class="viz-why">Drag the hourly rate and the billable hours per week. The bars show what is taken off: the Upwork service fee, the $2 Payoneer fee and the 1.5% cost of converting to VND. Pick an example to load the exact figures from the data.</p>
         <div class="viz-meta" id="pay-meta"></div>
         <div class="stage">
           <div class="tabs" id="pay-examples"></div>
           <div class="ctl-row">
-            <label class="ctl">Giá: <span class="num" id="rate-out"></span><input type="range" min="5" max="150" step="1" data-in="rate" id="rate"></label>
-            <label class="ctl">Giờ tính tiền / tuần: <span class="num" id="hours-out"></span><input type="range" min="1" max="40" step="1" data-in="hours" id="hours"></label>
-            <label class="ctl">Phí dịch vụ: <span class="num" id="fee-out"></span><input type="range" min="0" max="15" step="1" data-in="fee" id="fee"></label>
+            <label class="ctl">Rate: <span class="num" id="rate-out"></span><input type="range" min="5" max="150" step="1" data-in="rate" id="rate"></label>
+            <label class="ctl">Billable hours per week: <span class="num" id="hours-out"></span><input type="range" min="1" max="40" step="1" data-in="hours" id="hours"></label>
+            <label class="ctl">Service fee: <span class="num" id="fee-out"></span><input type="range" min="0" max="15" step="1" data-in="fee" id="fee"></label>
           </div>
           <div class="stats" id="pay-stats"></div>
           <div class="hbars" id="pay-bars"></div>
           <p class="note" id="pay-formula"></p>
         </div>
         <div class="sec">
-          <p class="h3">Bốn ví dụ trong dữ liệu, tính lại</p>
+          <p class="h3">The four examples in the data, recalculated</p>
           <div class="tbl-wrap"><table class="data-table" id="pay-table"></table></div>
           <p class="note" id="income-note" lang="en"></p>
         </div>
@@ -512,9 +512,9 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
   <div id="view-branches" class="app" style="gap:16px" hidden>
     <section class="mc-card studio-card">
       <div class="studio-body">
-        <p class="eyebrow">Bậc 4 · chọn một nhánh</p>
-        <h2 class="viz-title">Ba nhánh, và vì sao chỉ một nhánh nên đi trước</h2>
-        <p class="viz-why">Chọn nhánh để so sánh. Đọc kỹ phần "thị trường trả thật": nó có mặt để ngăn một lựa chọn sai.</p>
+        <p class="eyebrow">Tier 4 · choose one branch</p>
+        <h2 class="viz-title">Three branches, and why only one should come first</h2>
+        <p class="viz-why">Pick a branch to compare. Read the "what the market actually pays" section closely: it is there to stop a bad bet.</p>
         <div class="tbl-wrap"><table class="data-table" id="branch-compare"></table></div>
         <div class="tabs" id="branch-tabs"></div>
       </div>
@@ -524,8 +524,8 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
 
   <!-- G. Cross-cutting truths: always visible -->
   <section class="mc-card studio-card truths" aria-labelledby="truths-h">
-    <p class="eyebrow">Đúng ở mọi bậc</p>
-    <h2 class="viz-title" id="truths-h">Bảy sự thật xuyên suốt</h2>
+    <p class="eyebrow">True at every tier</p>
+    <h2 class="viz-title" id="truths-h">Seven cross-cutting truths</h2>
     <ol id="truths" lang="en"></ol>
   </section>
 
@@ -3058,7 +3058,7 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
   const DEFAULT = {
     checks: {}, installed: {}, tab: 'tiers', tier: null, tierSub: 'skills', jobFilter: 'all', toolFilter: 'all',
     hideInstalled: false, branch: (D.branches.find((b) => b.recommendedForThisLearner) || D.branches[0]).id,
-    theme: 'auto', speed: 50, assume: 0,
+    theme: 'dark', themeChosen: false, speed: 50, assume: 0,
     calc: { tier: 't2', proposals: 15, cpp: UM.connects.perProposalTypical, ppw: null, plusConn: UM.freelancerPlus.connectsIncluded },
     pay: { rate: ex0.rate, hours: ex0.billableHoursPerWeek, fee: 10, example: ex0.tier }
   };
@@ -3074,6 +3074,7 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
         const d = DEFAULT[k];
         state[k] = (d && typeof d === 'object' && !Array.isArray(d)) ? Object.assign({}, d, s[k]) : s[k];
       });
+      if (!state.themeChosen) state.theme = 'dark';
     } catch (e) { /* storage unavailable: defaults stay */ }
   }
   function save() { try { window.localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignore */ } }
@@ -3157,7 +3158,7 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
     }
     return out.sort((a, b) => a.start - b.start);
   }
-  const cmdRow = (text, multi) => `<div class="cmd">${multi ? `<pre><code>${esc(text)}</code></pre>` : `<code>${esc(text)}</code>`}<button class="copy" type="button" data-copy>Chép</button></div>`;
+  const cmdRow = (text, multi) => `<div class="cmd">${multi ? `<pre><code>${esc(text)}</code></pre>` : `<code>${esc(text)}</code>`}<button class="copy" type="button" data-copy>Copy</button></div>`;
   function renderStep(raw) {
     const step = clean(raw);
     if (step.includes('\\n')) {
@@ -3191,25 +3192,25 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
   function applyTheme() {
     const root = document.documentElement;
     if (state.theme === 'light' || state.theme === 'dark') root.setAttribute('data-theme', state.theme); else root.removeAttribute('data-theme');
-    $('theme-btn').textContent = 'Giao diện: ' + ({ auto: 'tự động', light: 'sáng', dark: 'tối' }[state.theme] || 'tự động');
+    $('theme-btn').textContent = 'Theme: ' + ({ auto: 'system', light: 'light', dark: 'dark' }[state.theme] || 'dark');
   }
 
   /* ---------- static: header, freshness, truths, sources ---------- */
   function renderStatic() {
     $('subtitle').textContent = D.meta.subtitle;
-    $('compiled').textContent = 'Dữ liệu ' + D.meta.compiledOn;
-    $('fresh').innerHTML = `<span class="seal seal--warn">Số liệu ngày ${esc(D.meta.compiledOn)}</span><span lang="en">${esc(D.meta.dataFreshnessWarning)}</span>`;
+    $('compiled').textContent = 'Data ' + D.meta.compiledOn;
+    $('fresh').innerHTML = `<span class="seal seal--warn">Figures from ${esc(D.meta.compiledOn)}</span><span lang="en">${esc(D.meta.dataFreshnessWarning)}</span>`;
     $('thesis').textContent = D.learner.strategicNote;
     $('jobs-date').textContent = D.meta.compiledOn;
     $('truths').innerHTML = D.crossCuttingTruths.map((t) => `<li><b>${esc(t.title)}</b><span>${esc(t.detail)}</span></li>`).join('');
-    $('sources').innerHTML = `<p><b>Nguồn dữ liệu</b> (${esc(D.meta.currency)}, tổng hợp ${esc(D.meta.compiledOn)})</p><ul>${D.sources.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>${s.note ? ' · ' + esc(s.note) : ''}</li>`).join('')}</ul><p>Tiến độ lưu trong trình duyệt này (localStorage). Mở ở máy khác sẽ không thấy.</p>`;
+    $('sources').innerHTML = `<p><b>Sources</b> (${esc(D.meta.currency)}, compiled ${esc(D.meta.compiledOn)})</p><ul>${D.sources.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>${s.note ? ' · ' + esc(s.note) : ''}</li>`).join('')}</ul><p>Your progress is saved in this browser only (localStorage). Another device or browser will not see it.</p>`;
     const L = D.learner;
-    $('starting').innerHTML = `<div class="sec"><p class="h3">Điểm xuất phát</p>
+    $('starting').innerHTML = `<div class="sec"><p class="h3">Starting point</p>
       <p class="small muted" lang="en">${esc(L.summary)}</p>
-      <div class="tbl-wrap"><table class="data-table" lang="en"><thead><tr><th>Đã làm</th><th>Trạng thái</th><th>Vì sao quan trọng</th></tr></thead><tbody>
-      ${L.alreadyBuilt.map((b) => `<tr><td><b>${esc(b.name)}</b></td><td><span class="tag ${b.status === 'built' ? 'tag--ok' : 'tag--light'}">${b.status === 'built' ? 'đã xong' : 'đang làm'}</span></td><td>${esc(b.relevance)}</td></tr>`).join('')}
+      <div class="tbl-wrap"><table class="data-table" lang="en"><thead><tr><th>Already built</th><th>Status</th><th>Why it matters</th></tr></thead><tbody>
+      ${L.alreadyBuilt.map((b) => `<tr><td><b>${esc(b.name)}</b></td><td><span class="tag ${b.status === 'built' ? 'tag--ok' : 'tag--light'}">${b.status === 'built' ? 'built' : 'in progress'}</span></td><td>${esc(b.relevance)}</td></tr>`).join('')}
       </tbody></table></div>
-      <p class="small"><span class="muted">Đã cài trên máy (${esc(L.os)}):</span> ${L.alreadyInstalled.map(esc).join(' · ')}</p></div>`;
+      <p class="small"><span class="muted">Already installed (${esc(L.os)}):</span> ${L.alreadyInstalled.map(esc).join(' · ')}</p></div>`;
   }
 
   /* ---------- tabs ---------- */
@@ -3236,7 +3237,7 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
       svg += `<line class="chart-grid" x1="${X0}" x2="${X1}" y1="${ys(r)}" y2="${ys(r)}"/>`;
       lab += `<span class="lab lab--y" style="${P(X0, ys(r))}">$${r}</span>`;
     });
-    for (let w = 0; w <= span; w += 26) lab += `<span class="lab lab--x" style="${P(xs(w), 240)}">${w === 0 ? '0 tuần' : w}</span>`;
+    for (let w = 0; w <= span; w += 26) lab += `<span class="lab lab--x" style="${P(xs(w), 240)}">${w === 0 ? '0 weeks' : w}</span>`;
     svg += `<line class="chart-axis" x1="${X0}" x2="${X1}" y1="${YB}" y2="${YB}"/>`;
     let cum = 0, cumMax = 0;
     TIERS.forEach((t, i) => {
@@ -3255,38 +3256,38 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
       if (i === cur && !done) {
         const nx = x0 + w * pr.f;
         svg += `<line class="lad-now is-lit" x1="${nx}" x2="${nx}" y1="${YT - 4}" y2="${YB + 14}"/><circle class="lad-now-dot is-lit" cx="${nx}" cy="${YB + 11}" r="4"/>`;
-        lab += `<span class="lab lab--now" style="${P(Math.min(Math.max(nx, X0 + 40), X1 - 40), YT - 10)}">Bạn ở đây</span>`;
+        lab += `<span class="lab lab--now" style="${P(Math.min(Math.max(nx, X0 + 40), X1 - 40), YT - 10)}">You are here</span>`;
       }
       cum += d; cumMax += t.durationWeeks.max;
     });
-    $('ladder').innerHTML = `<svg class="v-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Bậc giá theo số tuần">${svg}</svg><div class="v-labels">${lab}</div>`;
+    $('ladder').innerHTML = `<svg class="v-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Rate tiers by week">${svg}</svg><div class="v-labels">${lab}</div>`;
     $('speed').value = state.speed;
     const months = (cum / 4.345).toFixed(0);
-    $('speed-out').textContent = `${Math.round(cum)} tuần ≈ ${months} tháng`;
-    $('ladder-meta').innerHTML = `<span class="seal seal--calc">Tổng ${totalMin}–${totalMax} tuần theo durationWeeks</span>` +
-      (done ? '<span class="seal seal--ok">Đã xong cả 5 bậc</span>' : `<span class="seal seal--info">Đang ở ${TIERS[cur].id.toUpperCase()} · ${exitCount(TIERS[cur])}/${TIERS[cur].exitCriteria.length} điều kiện ra bậc</span>`);
+    $('speed-out').textContent = `${Math.round(cum)} weeks, about ${months} months`;
+    $('ladder-meta').innerHTML = `<span class="seal seal--calc">${totalMin}–${totalMax} weeks in total, from durationWeeks</span>` +
+      (done ? '<span class="seal seal--ok">All five tiers finished</span>' : `<span class="seal seal--info">Currently in ${TIERS[cur].id.toUpperCase()} · ${exitCount(TIERS[cur])}/${TIERS[cur].exitCriteria.length} exit criteria met</span>`);
   }
 
   function renderSpine() {
     const cur = currentTier(); const done = allDone();
     $('spine').innerHTML = TIERS.map((t, i) => {
       const pr = tierProgress(t); const ed = exitDone(t);
-      const status = ed ? '<span class="tag tag--ok">xong</span>' : (i === cur && !done ? '<span class="tag tag--light">đang ở đây</span>' : '');
+      const status = ed ? '<span class="tag tag--ok">done</span>' : (i === cur && !done ? '<span class="tag tag--light">you are here</span>' : '');
       return `<button class="spine-row" role="tab" type="button" aria-selected="${state.tier === t.id}" data-act="tier" data-v="${t.id}">
         <span class="spine-id" style="--ramp:${RAMP(i)}">${t.id.toUpperCase()}</span>
-        <span><span class="spine-name" lang="en">${esc(t.name)}</span> ${status}<br><span class="spine-meta">${esc(t.rateBand.label)} · ${t.durationWeeks.min}–${t.durationWeeks.max} tuần</span></span>
-        <span class="spine-prog"><span>${pr.n}/${pr.total} mục</span><span class="bar${ed ? ' is-done' : ''}"><i style="width:${(pr.f * 100).toFixed(0)}%"></i></span></span>
+        <span><span class="spine-name" lang="en">${esc(t.name)}</span> ${status}<br><span class="spine-meta">${esc(t.rateBand.label)} · ${t.durationWeeks.min}–${t.durationWeeks.max} weeks</span></span>
+        <span class="spine-prog"><span>${pr.n}/${pr.total} items</span><span class="bar${ed ? ' is-done' : ''}"><i style="width:${(pr.f * 100).toFixed(0)}%"></i></span></span>
       </button>`;
     }).join('');
   }
 
   /* ---------- A. tier detail ---------- */
-  const PB = { profile: 'Hồ sơ', doNotYet: 'Chưa nên làm', filters: 'Bộ lọc việc', bidding: 'Cách bid', delivery: 'Bàn giao', positioning: 'Định vị', contracts: 'Hợp đồng', rates: 'Định giá' };
+  const PB = { profile: 'Profile', doNotYet: 'Do not do yet', filters: 'Job filters', bidding: 'Bidding', delivery: 'Delivery', positioning: 'Positioning', contracts: 'Contracts', rates: 'Rates' };
   const chk = (key, text, extra) => `<label class="chk"${extra || ''}><input type="checkbox" data-key="${esc(key)}"${isOn(key) ? ' checked' : ''}><span lang="en">${esc(text)}</span></label>`;
 
   function renderTierDetail() {
     const t = TIER[state.tier]; const i = tierIdx(t.id);
-    const subs = [['skills', `Kỹ năng (${t.skills.length})`], ['projects', `Dự án (${t.projects.length})`], ['upwork', 'Upwork'], ['tools', `Công cụ (${t.toolIds.length})`], ['costs', 'Chi phí']];
+    const subs = [['skills', `Skills (${t.skills.length})`], ['projects', `Projects (${t.projects.length})`], ['upwork', 'Upwork'], ['tools', `Tools (${t.toolIds.length})`], ['costs', 'Costs']];
     if (!subs.some((s) => s[0] === state.tierSub)) state.tierSub = 'skills';
     let body = '';
     if (state.tierSub === 'skills') {
@@ -3294,7 +3295,7 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
         <p class="skill-name" lang="en">${esc(s.name)} <span class="small muted mono" data-skillcount="${esc(s.id)}"></span></p>
         <p class="small muted" lang="en">${esc(s.why)}</p>
         <div class="skill-grid">
-          <div class="proof"><b>Bằng chứng hoàn thành</b><span lang="en">${esc(s.proofOfSkill)}</span></div>
+          <div class="proof"><b>Proof you can do it</b><span lang="en">${esc(s.proofOfSkill)}</span></div>
           <div>${s.specifics.map((x) => chk(specKey(s, x), x)).join('')}</div>
         </div></div>`).join('');
     } else if (state.tierSub === 'projects') {
@@ -3302,42 +3303,42 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
         const inProg = /progress/i.test(p.status || '') || (p.id === 'p1' && builtByName('adventureworks'));
         return `<div class="project">
           <div class="project-head"><span class="tag tag--deep mono">${esc(p.id)}</span><span class="skill-name" lang="en">${esc(p.name)}</span>
-            ${inProg && !isOn(projKey(p)) ? '<span class="tag tag--light">đang làm</span>' : ''}${p.estHours ? `<span class="small muted mono">~${p.estHours} giờ</span>` : ''}</div>
+            ${inProg && !isOn(projKey(p)) ? '<span class="tag tag--light">in progress</span>' : ''}${p.estHours ? `<span class="small muted mono">about ${p.estHours} hours</span>` : ''}</div>
           <p lang="en">${esc(p.brief)}</p>
           ${p.dataset ? `<p class="small" lang="en"><span class="muted">Dataset:</span> ${esc(p.dataset)}</p>` : ''}
-          ${p.deliverables ? `<div><p class="small muted">Sản phẩm bàn giao</p><ul class="plain" lang="en">${p.deliverables.map((d) => `<li>${esc(d)}</li>`).join('')}</ul></div>` : ''}
-          ${p.gotchas ? `<div><p class="small muted">Bẫy kỹ thuật (gotchas)</p><ul class="plain" lang="en">${p.gotchas.map((d) => `<li>${esc(d)}</li>`).join('')}</ul></div>` : ''}
+          ${p.deliverables ? `<div><p class="small muted">Deliverables</p><ul class="plain" lang="en">${p.deliverables.map((d) => `<li>${esc(d)}</li>`).join('')}</ul></div>` : ''}
+          ${p.gotchas ? `<div><p class="small muted">Gotchas</p><ul class="plain" lang="en">${p.gotchas.map((d) => `<li>${esc(d)}</li>`).join('')}</ul></div>` : ''}
           <p class="why-care" lang="en">${esc(p.whyClientsCare)}</p>
-          ${chk(projKey(p), 'Hoàn thành: đã public và có link', ' lang="vi"')}
+          ${chk(projKey(p), 'Done: published, with a working link')}
         </div>`;
       }).join('');
     } else if (state.tierSub === 'upwork') {
       body = Object.entries(t.upworkPlaybook).map(([k, v]) => `<div class="sec"><p class="h3">${esc(PB[k] || k)}</p><ul class="plain" lang="en">${v.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>`).join('');
     } else if (state.tierSub === 'tools') {
       body = t.toolIds.length
-        ? `<p class="small muted">Chạm để mở hướng dẫn cài.</p><div class="chips">${t.toolIds.map((id) => TOOL[id] ? `<button class="chip-btn" type="button" data-act="gotool" data-v="${id}">${esc(TOOL[id].name)}${isInstalled(TOOL[id]) ? ' · đã cài' : ''}</button>` : '').join('')}</div>`
-        : `<p>Bậc này dùng bộ công cụ của nhánh bạn chọn. <button class="chip-btn" type="button" data-act="tab" data-v="branches">Xem 3 nhánh</button></p>`;
+        ? `<p class="small muted">Tap a tool to open its install guide.</p><div class="chips">${t.toolIds.map((id) => TOOL[id] ? `<button class="chip-btn" type="button" data-act="gotool" data-v="${id}">${esc(TOOL[id].name)}${isInstalled(TOOL[id]) ? ' · installed' : ''}</button>` : '').join('')}</div>`
+        : `<p>This tier uses the tool set of the branch you choose. <button class="chip-btn" type="button" data-act="tab" data-v="branches">See the three branches</button></p>`;
     } else {
       const c = t.costs;
-      body = `<dl class="kv"><dt>Phần mềm</dt><dd class="mono">${money(c.software)}/tháng</dd><dt>Connects</dt><dd class="mono">${money(c.connectsPerMonth)}/tháng</dd><dt>Khác</dt><dd class="mono">${money(c.other)}/tháng</dd></dl>
+      body = `<dl class="kv"><dt>Software</dt><dd class="mono">${money(c.software)} per month</dd><dt>Connects</dt><dd class="mono">${money(c.connectsPerMonth)} per month</dd><dt>Other</dt><dd class="mono">${money(c.other)} per month</dd></dl>
         ${c.breakdown ? `<p class="small" lang="en">${esc(c.breakdown)}</p>` : ''}<p class="small muted" lang="en">${esc(c.note)}</p>
-        <p><button class="chip-btn" type="button" data-act="tab" data-v="cost">Mở máy tính chi phí</button></p>`;
+        <p><button class="chip-btn" type="button" data-act="tab" data-v="cost">Open the cost calculator</button></p>`;
     }
     const ed = exitDone(t);
     $('tier-detail').innerHTML = `<div class="studio-body">
-      <p class="eyebrow">Bậc ${t.id.toUpperCase()} · ${esc(t.rateBand.label)} · ${t.durationWeeks.min}–${t.durationWeeks.max} tuần</p>
+      <p class="eyebrow">Tier ${t.id.toUpperCase()} · ${esc(t.rateBand.label)} · ${t.durationWeeks.min}–${t.durationWeeks.max} weeks</p>
       <h2 class="viz-title" lang="en">${esc(t.name)}</h2>
       <p lang="en">${esc(t.goal)}</p>
-      <div class="sec" style="gap:6px"><p class="eyebrow">Tư duy ở bậc này</p><p class="mindset" lang="en">${esc(t.mindset)}</p></div>
+      <div class="sec" style="gap:6px"><p class="eyebrow">Mindset for this tier</p><p class="mindset" lang="en">${esc(t.mindset)}</p></div>
       <div class="exit-box${ed ? ' is-done' : ''}" id="exit-box">
-        <div class="exit-head"><p class="h3">Điều kiện ra bậc</p><span class="small mono" id="exit-count"></span></div>
-        <p class="small muted">Bậc chỉ tính là xong khi tick đủ các điều kiện này.</p>
+        <div class="exit-head"><p class="h3">Exit criteria</p><span class="small mono" id="exit-count"></span></div>
+        <p class="small muted">The tier counts as done only when every one of these is ticked.</p>
         ${t.exitCriteria.map((c) => chk(exitKey(t, c), c)).join('')}
       </div>
-      ${t.branchesRequired ? '<p><button class="mc-btn mc-btn--primary" type="button" data-act="tab" data-v="branches">Bậc này cần chọn nhánh: xem 3 nhánh</button></p>' : ''}
+      ${t.branchesRequired ? '<p><button class="mc-btn mc-btn--primary" type="button" data-act="tab" data-v="branches">This tier needs a branch: see the three options</button></p>' : ''}
       <div class="tabs subtabs" role="tablist">${subs.map(([k, l]) => `<button class="tab" role="tab" type="button" aria-selected="${state.tierSub === k}" data-act="tiersub" data-v="${k}">${l}</button>`).join('')}</div>
       <div>${body}</div>
-      <div class="mistakes"><h3>Sai lầm thường gặp</h3><ul lang="en">${t.commonMistakes.map((m) => `<li>${esc(m)}</li>`).join('')}</ul></div>
+      <div class="mistakes"><h3>Common mistakes</h3><ul lang="en">${t.commonMistakes.map((m) => `<li>${esc(m)}</li>`).join('')}</ul></div>
       <div class="chips">${i > 0 ? `<button class="mc-btn" type="button" data-act="tier" data-v="${TIERS[i - 1].id}">← ${TIERS[i - 1].id.toUpperCase()}</button>` : ''}${i < TIERS.length - 1 ? `<button class="mc-btn" type="button" data-act="tier" data-v="${TIERS[i + 1].id}">${TIERS[i + 1].id.toUpperCase()} →</button>` : ''}</div>
     </div>`;
     updateDetailCounts();
@@ -3345,7 +3346,7 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
   function updateDetailCounts() {
     const t = TIER[state.tier]; if (!t || !$('exit-count')) return;
     const n = exitCount(t);
-    $('exit-count').textContent = `${n}/${t.exitCriteria.length}` + (exitDone(t) ? ' · xong' : '');
+    $('exit-count').textContent = `${n}/${t.exitCriteria.length}` + (exitDone(t) ? ' · done' : '');
     $('exit-box').classList.toggle('is-done', exitDone(t));
     t.skills.forEach((s) => {
       const el = document.querySelector(`[data-skillcount="${s.id}"]`);
@@ -3360,7 +3361,7 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
   }
   function renderReach() {
     const cols = TIERS.map((t) => ({ id: t.id, label: t.id.toUpperCase(), jobs: [] }));
-    cols.push({ id: 'trap', label: 'Bẫy', jobs: [] });
+    cols.push({ id: 'trap', label: 'Traps', jobs: [] });
     D.realJobs.forEach((j) => { if (isTrap(j)) cols[cols.length - 1].jobs.push(j); else cols[parseReach(j.couldYouWinItAt).col].jobs.push(j); });
     const now = assumedCurrent();
     let ok = 0, gap = 0, trap = 0;
@@ -3371,9 +3372,9 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
         return `<button class="reach-chip ${tone}" type="button" data-act="gojob" data-v="${j.id}" title="${esc(j.title)}">${j.id}</button>`; }).join('')}
     </div>`).join('');
     $('assume').value = state.assume;
-    $('assume-out').textContent = state.assume === 0 ? 'không, chỉ dùng checklist' : `T0${state.assume > 1 ? '–T' + (state.assume - 1) : ''}`;
-    $('reach-stat').innerHTML = `Trong tầm: <span class="num">${ok}</span> · Còn thiếu điều kiện: <span class="num">${gap}</span> · Bẫy: <span class="num">${trap}</span>`;
-    $('reach-meta').innerHTML = `<span class="seal seal--calc">Tính từ couldYouWinItAt × checklist</span>` + (state.assume ? '<span class="seal seal--warn">Đang giả định, không phải tiến độ thật</span>' : '');
+    $('assume-out').textContent = state.assume === 0 ? 'nothing, checklist only' : `T0${state.assume > 1 ? '–T' + (state.assume - 1) : ''}`;
+    $('reach-stat').innerHTML = `Within reach: <span class="num">${ok}</span> · Criteria missing: <span class="num">${gap}</span> · Traps: <span class="num">${trap}</span>`;
+    $('reach-meta').innerHTML = `<span class="seal seal--calc">Computed from couldYouWinItAt and your checklist</span>` + (state.assume ? '<span class="seal seal--warn">Assumed, not your real progress</span>' : '');
   }
   function jobCard(j) {
     const trap = isTrap(j);
@@ -3382,57 +3383,57 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
     if (!trap) {
       const miss = jobGap(j);
       gapHtml = miss.length
-        ? `<div class="gap tone-warn"><p class="gap-title">Còn ${miss.length} điều kiện ra bậc giữa bạn và việc này</p><ul>${miss.map((m) => `<li>${tierTag(m.tier)}<span lang="en">${esc(m.text)}</span></li>`).join('')}</ul>${r.qualifier ? `<p class="small" lang="en"><span class="muted">Thêm:</span> ${esc(r.qualifier)}</p>` : ''}</div>`
-        : `<div class="gap tone-good"><p class="gap-title">Trong tầm với tiến độ hiện tại</p>${r.qualifier ? `<p class="small" lang="en"><span class="muted">Điều kiện kèm theo:</span> ${esc(r.qualifier)}</p>` : ''}</div>`;
+        ? `<div class="gap tone-warn"><p class="gap-title">${miss.length} exit criteria stand between you and this job</p><ul>${miss.map((m) => `<li>${tierTag(m.tier)}<span lang="en">${esc(m.text)}</span></li>`).join('')}</ul>${r.qualifier ? `<p class="small" lang="en"><span class="muted">Also:</span> ${esc(r.qualifier)}</p>` : ''}</div>`
+        : `<div class="gap tone-good"><p class="gap-title">Within reach with your current progress</p>${r.qualifier ? `<p class="small" lang="en"><span class="muted">Condition:</span> ${esc(r.qualifier)}</p>` : ''}</div>`;
     }
     const branch = j.branch ? D.branches.find((b) => b.id === j.branch) : null;
     return `<article class="job${trap ? ' job--trap' : ''}" id="job-${j.id}">
-      ${trap ? '<p class="trap-flag">Bẫy · đừng bid</p>' : ''}
+      ${trap ? '<p class="trap-flag">Trap · do not bid</p>' : ''}
       <div class="job-head"><p class="job-title" lang="en">${esc(j.title)}</p><p class="job-rate">${esc(j.rate)}</p>
         <p class="job-meta"><span class="tag mono">${esc(j.id)}</span><span class="tag">${esc(j.level)}</span><span class="tag">${esc(j.type)}</span>${j.tier !== 'skip' ? tierTag(j.tier) : ''}${branch ? `<button class="chip-btn" type="button" data-act="branch" data-v="${branch.id}" style="padding:1px 8px">${esc(branch.name)}</button>` : ''}<span>${esc(j.posted)}</span>${j.estTime ? `<span>· ${esc(j.estTime)}</span>` : ''}</p></div>
       <p class="job-brief" lang="en">${esc(j.clientBrief)}</p>
-      <p class="job-tells" lang="en"><b>Tin này nói gì</b>${esc(j.whatItTellsYou)}</p>
-      <p class="job-win" lang="en"><b>Cách thắng</b>${esc(j.howToWinIt)}</p>
-      <p class="small" lang="en"><span class="muted">Kỹ năng yêu cầu:</span> ${j.requiredSkills.map(esc).join(' · ')}</p>
-      <p class="small"><span class="muted">Nhận được từ:</span> <b class="mono" lang="en">${esc(j.couldYouWinItAt)}</b></p>
+      <p class="job-tells" lang="en"><b>What it tells you</b>${esc(j.whatItTellsYou)}</p>
+      <p class="job-win" lang="en"><b>How to win it</b>${esc(j.howToWinIt)}</p>
+      <p class="small" lang="en"><span class="muted">Required skills:</span> ${j.requiredSkills.map(esc).join(' · ')}</p>
+      <p class="small"><span class="muted">Winnable at:</span> <b class="mono" lang="en">${esc(j.couldYouWinItAt)}</b></p>
       ${gapHtml}
     </article>`;
   }
   function renderJobs() {
-    const F = [['all', 'Tất cả'], ['reach', 'Trong tầm'], ['t1', 'T1'], ['t2', 'T2'], ['t3', 'T3'], ['t4', 'T4'], ['trap', 'Bẫy']];
+    const F = [['all', 'All'], ['reach', 'Within reach'], ['t1', 'T1'], ['t2', 'T2'], ['t3', 'T3'], ['t4', 'T4'], ['trap', 'Traps']];
     $('job-filters').innerHTML = F.map(([k, l]) => `<button class="tab" type="button" aria-selected="${state.jobFilter === k}" data-act="jobfilter" data-v="${k}">${l}</button>`).join('');
     const j10 = JOB.j10;
-    $('range-note').innerHTML = `<b>Đọc khoảng giá:</b> một khoảng như <span class="mono">${esc(j10 ? j10.rate : '')}</span> là biên ngân sách của client cho mọi kiểu ứng viên, không phải mức bạn có thể đòi. Đầu trên dành cho hồ sơ có chứng chỉ và chuyên môn sâu. ${j10 ? '<button class="chip-btn" type="button" data-act="gojob" data-v="j10">Đọc phân tích j10</button>' : ''}`;
+    $('range-note').innerHTML = `<b>Reading a rate range:</b> a range such as <span class="mono">${esc(j10 ? j10.rate : '')}</span> is the client's budget span across every kind of candidate, not a rate you can simply ask for. The top end is for profiles with certifications and deep domain experience. ${j10 ? '<button class="chip-btn" type="button" data-act="gojob" data-v="j10">Read the j10 analysis</button>' : ''}`;
     const f = state.jobFilter;
     const sortKey = (j) => (parseReach(j.couldYouWinItAt).col || 0) * 100 + parseInt(j.id.slice(1), 10);
     const real = D.realJobs.filter((j) => !isTrap(j)).filter((j) => f === 'all' || (f === 'reach' ? jobGap(j).length === 0 : f !== 'trap' && j.tier === f)).sort((a, b) => sortKey(a) - sortKey(b));
     const traps = D.realJobs.filter(isTrap).filter((j) => f === 'all' || f === 'trap' || j.tier === f);
-    $('jobs-list').innerHTML = real.length ? real.map(jobCard).join('') : (f === 'trap' ? '' : '<p class="muted">Không có tin nào khớp bộ lọc này.</p>');
-    $('trap-zone').innerHTML = traps.length ? `<h3 class="h3">${traps.length} tin bẫy: học để nhận ra, không phải để bid</h3>${traps.map(jobCard).join('')}` : '';
+    $('jobs-list').innerHTML = real.length ? real.map(jobCard).join('') : (f === 'trap' ? '' : '<p class="muted">No postings match this filter.</p>');
+    $('trap-zone').innerHTML = traps.length ? `<h3 class="h3">${traps.length} trap postings: study them to recognise the pattern, never to bid</h3>${traps.map(jobCard).join('')}` : '';
   }
 
   /* ---------- C. tools ---------- */
   function renderTools() {
-    const F = [['all', 'Tất cả']].concat(TIERS.map((t) => [t.id, t.id.toUpperCase()]));
+    const F = [['all', 'All']].concat(TIERS.map((t) => [t.id, t.id.toUpperCase()]));
     $('tool-filters').innerHTML = F.map(([k, l]) => `<button class="tab" type="button" aria-selected="${state.toolFilter === k}" data-act="toolfilter" data-v="${k}">${l}</button>`).join('');
     $('hide-inst').checked = !!state.hideInstalled;
     const list = D.tools.filter((t) => state.toolFilter === 'all' || t.usedInTiers.includes(state.toolFilter)).filter((t) => !(state.hideInstalled && isInstalled(t)));
     const have = D.tools.filter(isInstalled).length;
-    $('tools-title').textContent = `${D.tools.length} công cụ · ${have} đã cài`;
+    $('tools-title').textContent = `${D.tools.length} tools · ${have} installed`;
     $('tools-list').innerHTML = list.map((t) => {
       const pre = preinstalled(t); const inst = isInstalled(t);
-      const preTag = pre === 'yes' ? '<span class="tag tag--ok">có thể đã cài sẵn</span>' : pre === 'partial' ? `<span class="tag tag--light" lang="en">${esc(t.alreadyLikelyInstalled)}</span>` : '';
+      const preTag = pre === 'yes' ? '<span class="tag tag--ok">probably installed already</span>' : pre === 'partial' ? `<span class="tag tag--light" lang="en">${esc(t.alreadyLikelyInstalled)}</span>` : '';
       return `<article class="tool${inst ? ' is-have' : ''}" id="tool-${t.id}">
         <div class="tool-head"><span class="tool-name" lang="en">${esc(t.name)}</span><span class="chips"><span class="tag">${esc(t.category)}</span>${preTag}</span></div>
-        <p class="small"><span class="muted">Chi phí:</span> <span lang="en">${esc(t.cost)}</span></p>
+        <p class="small"><span class="muted">Cost:</span> ${esc(t.cost)}</p>
         <p lang="en">${esc(t.why)}</p>
         <ol class="steps" lang="en">${t.install.windows.map((s) => `<li>${renderStep(s)}</li>`).join('')}</ol>
-        <div class="verify"><b>Xong khi lệnh này chạy được</b><div lang="en">${renderStep(t.verify)}</div></div>
-        <div class="tool-foot"><span>Dùng ở: ${t.usedInTiers.map((x) => `<button class="chip-btn" type="button" data-act="tier" data-v="${x}" style="padding:1px 8px">${x.toUpperCase()}</button>`).join(' ')}</span>
-          <a href="${esc(t.docs)}" target="_blank" rel="noopener">Tài liệu chính thức</a>
-          <label class="chk" style="margin-left:auto"><input type="checkbox" data-inst="${t.id}"${inst ? ' checked' : ''}><span>Đã cài trên máy</span></label></div>
+        <div class="verify"><b>You are done when this works</b><div lang="en">${renderStep(t.verify)}</div></div>
+        <div class="tool-foot"><span>Used in: ${t.usedInTiers.map((x) => `<button class="chip-btn" type="button" data-act="tier" data-v="${x}" style="padding:1px 8px">${x.toUpperCase()}</button>`).join(' ')}</span>
+          <a href="${esc(t.docs)}" target="_blank" rel="noopener">Official docs</a>
+          <label class="chk" style="margin-left:auto"><input type="checkbox" data-inst="${t.id}"${inst ? ' checked' : ''}><span>Installed on my machine</span></label></div>
       </article>`;
-    }).join('') || '<p class="muted">Đã cài hết công cụ của bậc này.</p>';
+    }).join('') || '<p class="muted">Every tool for this tier is already installed.</p>';
   }
 
   /* ---------- E. cost calculator ---------- */
@@ -3444,30 +3445,30 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
     $('calc-tiers').innerHTML = Object.keys(WR).map((k) => `<button class="tab" type="button" aria-selected="${c.tier === k}" data-act="calctier" data-v="${k}">${k.toUpperCase()} · ${esc(TIER[k].rateBand.label)}</button>`).join('');
     $('proposals').value = c.proposals; $('proposals-out').textContent = c.proposals;
     $('cpp').min = cmin; $('cpp').max = cmax; $('cpp').value = c.cpp; $('cpp-out').textContent = c.cpp;
-    $('ppw').value = ppw; $('ppw-out').textContent = `${ppw}` + (c.ppw ? ' (của bạn)' : ' (mặc định dữ liệu)');
+    $('ppw').value = ppw; $('ppw-out').textContent = `${ppw}` + (c.ppw ? ' (yours)' : ' (data default)');
     const connects = c.proposals * c.cpp;
     const spend = connects * CPC;
     const wins = c.proposals / ppw;
     const plus = UM.freelancerPlus.pricePerMonth + Math.max(0, connects - c.plusConn) * CPC;
     const row = D.costModel.monthlyByTier.find((m) => m.tier === c.tier);
     $('calc-stats').innerHTML = `
-      <div class="stat"><small>Connects cần</small><span class="big">${connects}</span></div>
-      <div class="stat is-lit-box"><small>Chi phí mua lẻ / tháng</small><span class="big">${money(spend, 2)}</span></div>
-      <div class="stat"><small>Hợp đồng kỳ vọng / tháng</small><span class="big">${wins.toFixed(wins < 10 ? 2 : 1)}</span></div>
-      <div class="stat"><small>Chi phí Connects / 1 hợp đồng</small><span class="big">${money(spend / wins, 2)}</span></div>`;
-    const rows = D.costModel.monthlyByTier.map((m) => ({ label: m.tier.toUpperCase() + ' lộ trình', segs: [['seg-c', m.connects], ['seg-cl', m.cloud], ['seg-a', m.apis], ['seg-s', m.software]], total: m.total, sel: m.tier === c.tier }));
-    rows.push({ label: 'Bạn (Connects)', segs: [['seg-c', spend]], total: spend, you: true });
+      <div class="stat"><small>Connects needed</small><span class="big">${connects}</span></div>
+      <div class="stat is-lit-box"><small>Cost buying Connects, per month</small><span class="big">${money(spend, 2)}</span></div>
+      <div class="stat"><small>Expected contracts per month</small><span class="big">${wins.toFixed(wins < 10 ? 2 : 1)}</span></div>
+      <div class="stat"><small>Connects cost per contract won</small><span class="big">${money(spend / wins, 2)}</span></div>`;
+    const rows = D.costModel.monthlyByTier.map((m) => ({ label: m.tier.toUpperCase() + ' roadmap', segs: [['seg-c', m.connects], ['seg-cl', m.cloud], ['seg-a', m.apis], ['seg-s', m.software]], total: m.total, sel: m.tier === c.tier }));
+    rows.push({ label: 'You (Connects)', segs: [['seg-c', spend]], total: spend, you: true });
     const max = Math.max(...rows.map((r) => r.total), 1);
     $('calc-bars').innerHTML = rows.map((r) => `<div class="hbar${r.you ? ' is-you' : ''}${r.sel ? ' is-sel' : ''}"><span class="hbar-lab">${esc(r.label)}</span><span class="hbar-track">${r.segs.map(([k, v]) => v > 0 ? `<i class="${k}" style="width:${(v / max * 100).toFixed(2)}%"></i>` : '').join('')}</span><span class="hbar-val">${money(r.total, r.you ? 2 : 0)}</span></div>`).join('');
     const diff = spend - row.connects;
-    $('calc-note').innerHTML = `<span lang="en">${esc(WR[c.tier].note)}</span> Lộ trình tính Connects ${c.tier.toUpperCase()} là <b class="mono">${money(row.connects)}</b>/tháng; ước tính của bạn ${diff >= 0 ? 'cao hơn' : 'thấp hơn'} <b class="mono">${money(Math.abs(diff), 2)}</b>. <span lang="en">${esc(row.note)}</span> Chưa trừ Connects miễn phí (xem bảng bên dưới). Giá ${money(CPC, 2)}/Connect.`;
-    $('calc-meta').innerHTML = `<span class="seal seal--calc">${c.proposals} × ${c.cpp} × ${money(CPC, 2)}</span><span class="seal seal--warn">Giá Connects ngày ${esc(D.meta.compiledOn)}</span>`;
+    $('calc-note').innerHTML = `<span lang="en">${esc(WR[c.tier].note)}</span> The roadmap budgets <b class="mono">${money(row.connects)}</b> a month for Connects at ${c.tier.toUpperCase()}; your estimate is <b class="mono">${money(Math.abs(diff), 2)}</b> ${diff >= 0 ? 'higher' : 'lower'}. <span lang="en">${esc(row.note)}</span> Free Connects are not subtracted (see the table below). Price: ${money(CPC, 2)} per Connect.`;
+    $('calc-meta').innerHTML = `<span class="seal seal--calc">${c.proposals} × ${c.cpp} × ${money(CPC, 2)}</span><span class="seal seal--warn">Connects price as of ${esc(D.meta.compiledOn)}</span>`;
     const FP = UM.freelancerPlus;
     const alt = FP.connectsIncluded === 100 ? 80 : FP.connectsIncluded;
-    $('plus-conn').innerHTML = [FP.connectsIncluded, alt].map((v) => `<button class="tab" type="button" aria-selected="${c.plusConn === v}" data-act="plusconn" data-v="${v}">Plus kèm ${v} Connects</button>`).join('');
-    $('plus-disagree').innerHTML = `<b>Nguồn không thống nhất:</b> <span lang="en">${esc(FP.sourceDisagreement)}</span>`;
+    $('plus-conn').innerHTML = [FP.connectsIncluded, alt].map((v) => `<button class="tab" type="button" aria-selected="${c.plusConn === v}" data-act="plusconn" data-v="${v}">Plus with ${v} Connects</button>`).join('');
+    $('plus-disagree').innerHTML = `<b>Sources disagree:</b> <span lang="en">${esc(FP.sourceDisagreement)}</span>`;
     const better = plus < spend;
-    $('plus-line').innerHTML = `Mua lẻ <span class="num">${money(spend, 2)}</span> · Plus ${money(FP.pricePerMonth, 2)} + phần vượt ${c.plusConn} Connects = <span class="num">${money(plus, 2)}</span> → ${better ? 'Plus rẻ hơn' : 'mua lẻ rẻ hơn'} <span class="num">${money(Math.abs(spend - plus), 2)}</span>/tháng`;
+    $('plus-line').innerHTML = `Buying Connects: <span class="num">${money(spend, 2)}</span> · Plus: ${money(FP.pricePerMonth, 2)} plus anything over ${c.plusConn} Connects = <span class="num">${money(plus, 2)}</span>. ${better ? 'Plus is cheaper' : 'Buying is cheaper'} by <span class="num">${money(Math.abs(spend - plus), 2)}</span> a month.`;
     $('plus-breakeven').textContent = FP.breakeven;
   }
 
@@ -3478,34 +3479,34 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
   }
   function renderPay() {
     const p = state.pay; const EX = D.costModel.incomeMath.examples;
-    $('pay-examples').innerHTML = EX.map((e) => `<button class="tab" type="button" aria-selected="${p.example === e.tier && p.rate === e.rate && p.hours === e.billableHoursPerWeek && p.fee === 10}" data-act="example" data-v="${e.tier}">Ví dụ ${e.tier.toUpperCase()} · $${e.rate}/giờ</button>`).join('');
-    $('rate').value = p.rate; $('rate-out').textContent = `$${p.rate}/giờ`;
-    $('hours').value = p.hours; $('hours-out').textContent = `${p.hours} giờ`;
+    $('pay-examples').innerHTML = EX.map((e) => `<button class="tab" type="button" aria-selected="${p.example === e.tier && p.rate === e.rate && p.hours === e.billableHoursPerWeek && p.fee === 10}" data-act="example" data-v="${e.tier}">Example ${e.tier.toUpperCase()} · $${e.rate}/hr</button>`).join('');
+    $('rate').value = p.rate; $('rate-out').textContent = `$${p.rate}/hr`;
+    $('hours').value = p.hours; $('hours-out').textContent = `${p.hours} hours`;
     $('fee').value = p.fee; $('fee-out').textContent = `${p.fee}%`;
     const r = payCalc(p.rate, p.hours, p.fee);
     const lost = r.gross ? (r.gross - r.net) / r.gross * 100 : 0;
     $('pay-stats').innerHTML = `
-      <div class="stat"><small>Gross / tháng</small><span class="big">${money(r.gross)}</span></div>
-      <div class="stat is-net is-lit-box"><small>Thực nhận / tháng</small><span class="big">${money(Math.round(r.net))}</span></div>
-      <div class="stat"><small>Bị trừ</small><span class="big">${money(Math.round(r.gross - r.net))}</span></div>
-      <div class="stat"><small>Tỉ lệ mất</small><span class="big">${lost.toFixed(1)}%</span></div>`;
+      <div class="stat"><small>Gross per month</small><span class="big">${money(r.gross)}</span></div>
+      <div class="stat is-net is-lit-box"><small>Take-home per month</small><span class="big">${money(Math.round(r.net))}</span></div>
+      <div class="stat"><small>Deducted</small><span class="big">${money(Math.round(r.gross - r.net))}</span></div>
+      <div class="stat"><small>Share lost</small><span class="big">${lost.toFixed(1)}%</span></div>`;
     const max = Math.max(r.gross, 1);
     const pct = (v) => (Math.max(v, 0) / max * 100).toFixed(2) + '%';
     let off = 0; const bars = [];
     bars.push(`<div class="hbar"><span class="hbar-lab">Gross</span><span class="hbar-track"><i class="seg-gross" style="width:${pct(r.gross)}"></i></span><span class="hbar-val">${money(r.gross)}</span></div>`);
-    [['Phí dịch vụ ' + p.fee + '%', r.fee], ['Payoneer', r.pay], ['FX 1.5%', r.fx]].forEach(([l, v]) => {
+    [['Service fee ' + p.fee + '%', r.fee], ['Payoneer', r.pay], ['FX 1.5%', r.fx]].forEach(([l, v]) => {
       const startPct = ((r.gross - off - v) / max * 100);
       bars.push(`<div class="hbar"><span class="hbar-lab">− ${esc(l)}</span><span class="hbar-track"><i class="seg-gap" style="width:${Math.max(startPct, 0).toFixed(2)}%"></i><i class="seg-fee" style="width:${pct(v)}"></i></span><span class="hbar-val">−${money(v, v < 10 ? 2 : 0)}</span></div>`);
       off += v;
     });
-    bars.push(`<div class="hbar is-you"><span class="hbar-lab">= Thực nhận</span><span class="hbar-track"><i class="seg-net" style="width:${pct(r.net)}"></i></span><span class="hbar-val">${money(Math.round(r.net))}</span></div>`);
+    bars.push(`<div class="hbar is-you"><span class="hbar-lab">= Take-home</span><span class="hbar-track"><i class="seg-net" style="width:${pct(r.net)}"></i></span><span class="hbar-val">${money(Math.round(r.net))}</span></div>`);
     $('pay-bars').innerHTML = bars.join('');
-    $('pay-formula').innerHTML = `Công thức trong dữ liệu: <span class="mono" lang="en">${esc(D.costModel.incomeMath.formula)}</span>. Gross = giá × giờ/tuần × 4 tuần (đúng như các ví dụ). Làm tròn tới đô.`;
+    $('pay-formula').innerHTML = `Formula from the data: <span class="mono">${esc(D.costModel.incomeMath.formula)}</span>. Gross is rate × hours per week × 4 weeks, which is how the examples are built. Results are rounded to the dollar.`;
     let match = 0;
     const rowsHtml = EX.map((e) => { const c = payCalc(e.rate, e.billableHoursPerWeek, 10); const ok = Math.round(c.gross) === e.grossMonth && Math.round(c.net) === e.afterFeesAndWithdrawal; if (ok) match++;
-      return `<tr><td>${tierTag(e.tier)}</td><td class="n">$${e.rate}</td><td class="n">${e.billableHoursPerWeek}</td><td class="n">${money(e.grossMonth)}</td><td class="n">${money(e.afterFeesAndWithdrawal)}</td><td class="n">${money(Math.round(c.net))}</td><td class="${ok ? 'is-hit' : 'is-miss'}" style="color:var(${ok ? '--ok' : '--bad'});font-weight:700">${ok ? 'khớp' : 'lệch'}</td></tr>`; }).join('');
-    $('pay-table').innerHTML = `<thead><tr><th>Bậc</th><th class="n">Giá</th><th class="n">Giờ/tuần</th><th class="n">Gross (dữ liệu)</th><th class="n">Thực nhận (dữ liệu)</th><th class="n">Tính lại</th><th></th></tr></thead><tbody>${rowsHtml}</tbody>`;
-    $('pay-meta').innerHTML = `<span class="seal ${match === EX.length ? 'seal--ok' : 'seal--bad'}">Khớp ${match}/${EX.length} ví dụ trong dữ liệu</span><span class="seal seal--calc">Tính toán</span>`;
+      return `<tr><td>${tierTag(e.tier)}</td><td class="n">$${e.rate}</td><td class="n">${e.billableHoursPerWeek}</td><td class="n">${money(e.grossMonth)}</td><td class="n">${money(e.afterFeesAndWithdrawal)}</td><td class="n">${money(Math.round(c.net))}</td><td class="${ok ? 'is-hit' : 'is-miss'}" style="color:var(${ok ? '--ok' : '--bad'});font-weight:700">${ok ? 'matches' : 'differs'}</td></tr>`; }).join('');
+    $('pay-table').innerHTML = `<thead><tr><th>Tier</th><th class="n">Rate</th><th class="n">Hours/week</th><th class="n">Gross (data)</th><th class="n">Take-home (data)</th><th class="n">Recalculated</th><th></th></tr></thead><tbody>${rowsHtml}</tbody>`;
+    $('pay-meta').innerHTML = `<span class="seal ${match === EX.length ? 'seal--ok' : 'seal--bad'}">Matches ${match} of ${EX.length} examples in the data</span><span class="seal seal--calc">Computed</span>`;
     $('income-note').textContent = D.costModel.incomeMath.note;
   }
 
@@ -3513,29 +3514,29 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
     const C = UM.connects, FP = UM.freelancerPlus;
     const li = (arr) => `<ul class="plain" lang="en">${arr.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`;
     $('mechanics').innerHTML = `
-      <p class="eyebrow">Cơ chế Upwork</p>
-      <h2 class="viz-title">Connects, phí, rút tiền và JSS</h2>
+      <p class="eyebrow">How Upwork works</p>
+      <h2 class="viz-title">Connects, fees, withdrawals and JSS</h2>
       <p class="small muted" lang="en">${esc(D.costModel.note)}</p>
       <div class="sec"><p class="h3">Connects</p>
-        <dl class="kv"><dt>Giá</dt><dd class="mono">${money(C.pricePerConnect, 2)} / Connect</dd><dt>Gói nhỏ nhất</dt><dd class="mono">${C.minimumBundle} Connects = ${money(C.minimumBundleCost, 2)}</dd><dt>Mỗi proposal</dt><dd class="mono">${C.perProposalRange[0]}–${C.perProposalRange[1]}, thường ${C.perProposalTypical}</dd></dl>
+        <dl class="kv"><dt>Price</dt><dd class="mono">${money(C.pricePerConnect, 2)} per Connect</dd><dt>Smallest bundle</dt><dd class="mono">${C.minimumBundle} Connects = ${money(C.minimumBundleCost, 2)}</dd><dt>Per proposal</dt><dd class="mono">${C.perProposalRange[0]}–${C.perProposalRange[1]}, typically ${C.perProposalTypical}</dd></dl>
         ${li(C.notes)}
-        <div class="tbl-wrap"><table class="data-table" lang="en"><thead><tr><th>Nguồn Connects miễn phí</th><th class="n">Số</th><th>Chu kỳ</th><th>Ghi chú</th></tr></thead><tbody>${C.freeSources.map((f) => `<tr><td>${esc(f.source)}</td><td class="n">${f.amount}</td><td>${esc(f.cadence)}</td><td>${esc(f.note || '')}</td></tr>`).join('')}</tbody></table></div>
+        <div class="tbl-wrap"><table class="data-table" lang="en"><thead><tr><th>Free Connects source</th><th class="n">Amount</th><th>Cadence</th><th>Note</th></tr></thead><tbody>${C.freeSources.map((f) => `<tr><td>${esc(f.source)}</td><td class="n">${f.amount}</td><td>${esc(f.cadence)}</td><td>${esc(f.note || '')}</td></tr>`).join('')}</tbody></table></div>
       </div>
-      <div class="sec"><p class="h3">Freelancer Plus · ${money(FP.pricePerMonth, 2)}/tháng</p>
-        <p>Kèm <b class="mono">${FP.connectsIncluded}</b> Connects theo dữ liệu, nhưng <span class="disagree" style="display:inline;padding:1px 6px" lang="en">${esc(FP.sourceDisagreement)}</span></p>
+      <div class="sec"><p class="h3">Freelancer Plus · ${money(FP.pricePerMonth, 2)} per month</p>
+        <p>The data says it includes <b class="mono">${FP.connectsIncluded}</b> Connects, but <span class="disagree" style="display:inline;padding:1px 6px" lang="en">${esc(FP.sourceDisagreement)}</span></p>
         ${li(FP.otherBenefits)}<p class="small" lang="en">${esc(FP.breakeven)}</p></div>
-      <div class="sec"><p class="h3">Phí dịch vụ · ${UM.serviceFee.range[0]}–${UM.serviceFee.range[1]}%</p><p lang="en">${esc(UM.serviceFee.note)}</p></div>
-      <div class="sec"><p class="h3">Rút tiền về Việt Nam</p>
-        <div class="tbl-wrap"><table class="data-table" lang="en"><thead><tr><th>Cách</th><th>Phí</th><th>Dùng ở VN</th><th>Ghi chú</th></tr></thead><tbody>${UM.withdrawalCosts.map((w) => `<tr><td>${esc(w.method)}</td><td class="mono">${esc(w.fee)}</td><td>${w.relevantToVietnam ? 'có' : '<span style="color:var(--bad)">hạn chế</span>'}</td><td>${esc(w.note || '')}</td></tr>`).join('')}</tbody></table></div>
-        <p class="small"><span class="muted">Công thức:</span> <span class="mono" lang="en">${esc(UM.trueTakeHome.formula)}</span></p>
+      <div class="sec"><p class="h3">Service fee · ${UM.serviceFee.range[0]}–${UM.serviceFee.range[1]}%</p><p lang="en">${esc(UM.serviceFee.note)}</p></div>
+      <div class="sec"><p class="h3">Withdrawing to Vietnam</p>
+        <div class="tbl-wrap"><table class="data-table" lang="en"><thead><tr><th>Method</th><th>Fee</th><th>Works in Vietnam</th><th>Note</th></tr></thead><tbody>${UM.withdrawalCosts.map((w) => `<tr><td>${esc(w.method)}</td><td class="mono">${esc(w.fee)}</td><td>${w.relevantToVietnam ? 'yes' : '<span style="color:var(--bad)">limited</span>'}</td><td>${esc(w.note || '')}</td></tr>`).join('')}</tbody></table></div>
+        <p class="small"><span class="muted">Formula:</span> <span class="mono" lang="en">${esc(UM.trueTakeHome.formula)}</span></p>
         <p class="small" lang="en">${esc(UM.trueTakeHome.worked_example)}</p></div>
-      <div class="sec"><p class="h3">Chi phí một lần</p>
-        <div class="tbl-wrap"><table class="data-table" lang="en"><thead><tr><th>Mục</th><th class="n">Chi phí</th><th>Khi nào đáng</th></tr></thead><tbody>${D.costModel.oneOffCosts.map((o) => `<tr><td>${esc(o.item)}</td><td class="n">${typeof o.cost === 'number' ? money(o.cost) : esc(o.cost)}</td><td>${esc(o.whenWorthIt)}</td></tr>`).join('')}</tbody></table></div></div>
-      <div class="sec"><p class="h3">Huy hiệu</p>
-        <div class="tbl-wrap"><table class="data-table" lang="en"><thead><tr><th>Huy hiệu</th><th>Yêu cầu</th><th>Giá trị</th></tr></thead><tbody>${UM.badges.map((b) => `<tr><td><b>${esc(b.name)}</b></td><td>${esc(b.requires)}</td><td>${esc(b.worth)}</td></tr>`).join('')}</tbody></table></div></div>
+      <div class="sec"><p class="h3">One-off costs</p>
+        <div class="tbl-wrap"><table class="data-table" lang="en"><thead><tr><th>Item</th><th class="n">Cost</th><th>When it is worth it</th></tr></thead><tbody>${D.costModel.oneOffCosts.map((o) => `<tr><td>${esc(o.item)}</td><td class="n">${typeof o.cost === 'number' ? money(o.cost) : esc(o.cost)}</td><td>${esc(o.whenWorthIt)}</td></tr>`).join('')}</tbody></table></div></div>
+      <div class="sec"><p class="h3">Badges</p>
+        <div class="tbl-wrap"><table class="data-table" lang="en"><thead><tr><th>Badge</th><th>Requires</th><th>Worth</th></tr></thead><tbody>${UM.badges.map((b) => `<tr><td><b>${esc(b.name)}</b></td><td>${esc(b.requires)}</td><td>${esc(b.worth)}</td></tr>`).join('')}</tbody></table></div></div>
       <div class="sec"><p class="h3">Job Success Score (JSS)</p>
         <p lang="en">${esc(UM.jss.what)}</p><p class="small muted" lang="en">${esc(UM.jss.appearsAfter)}</p>
-        <div class="mistakes"><h3>Cái bẫy</h3><p lang="en">${esc(UM.jss.trap)}</p></div>
+        <div class="mistakes"><h3>The trap</h3><p lang="en">${esc(UM.jss.trap)}</p></div>
         <p class="why-care" lang="en">${esc(UM.jss.advice)}</p></div>`;
   }
 
@@ -3544,36 +3545,36 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
     const B = D.branches;
     const jobsOf = (b) => D.realJobs.filter((j) => j.branch === b.id);
     $('branch-compare').innerHTML = `<thead><tr><th></th>${B.map((b) => `<th lang="en">${esc(b.name)}</th>`).join('')}</tr></thead><tbody>
-      <tr><td class="muted">Cho bạn</td>${B.map((b) => `<td>${b.recommendedForThisLearner ? '<span class="rec">Khuyến nghị</span>' : '<span class="tag">chưa nên đi trước</span>'}</td>`).join('')}</tr>
-      <tr><td class="muted">Tin thật trong dữ liệu</td>${B.map((b) => `<td class="mono">${jobsOf(b).length} tin</td>`).join('')}</tr>
-      <tr><td class="muted">Chứng chỉ</td>${B.map((b) => `<td lang="en">${b.certifications.map((c) => esc(c.name)).join('; ')}</td>`).join('')}</tr>
-      <tr><td class="muted">Chi phí công cụ</td>${B.map((b) => `<td lang="en">${esc(b.monthlyToolCost)}</td>`).join('')}</tr></tbody>`;
-    $('branch-tabs').innerHTML = B.map((b) => `<button class="tab" type="button" aria-selected="${state.branch === b.id}" data-act="branch" data-v="${b.id}">${esc(b.name)}${b.recommendedForThisLearner ? ' · khuyến nghị' : ''}</button>`).join('');
+      <tr><td class="muted">For you</td>${B.map((b) => `<td>${b.recommendedForThisLearner ? '<span class="rec">Recommended</span>' : '<span class="tag">not first</span>'}</td>`).join('')}</tr>
+      <tr><td class="muted">Real postings in the data</td>${B.map((b) => `<td class="mono">${jobsOf(b).length} postings</td>`).join('')}</tr>
+      <tr><td class="muted">Certifications</td>${B.map((b) => `<td lang="en">${b.certifications.map((c) => esc(c.name)).join('; ')}</td>`).join('')}</tr>
+      <tr><td class="muted">Tool cost</td>${B.map((b) => `<td lang="en">${esc(b.monthlyToolCost)}</td>`).join('')}</tr></tbody>`;
+    $('branch-tabs').innerHTML = B.map((b) => `<button class="tab" type="button" aria-selected="${state.branch === b.id}" data-act="branch" data-v="${b.id}">${esc(b.name)}${b.recommendedForThisLearner ? ' · recommended' : ''}</button>`).join('');
     const b = B.find((x) => x.id === state.branch) || B[0];
     const fp = b.flagshipProject;
     const certCost = (c) => typeof c.cost === 'number' ? money(c.cost) : esc(c.cost);
     $('branch-detail').innerHTML = `<div class="studio-body">
-      <p class="eyebrow">Nhánh bậc 4</p>
+      <p class="eyebrow">Tier 4 branch</p>
       <h2 class="viz-title" lang="en">${esc(b.name)}</h2>
       <div class="branch-hero">
-        ${b.recommendedForThisLearner ? `<span class="rec" style="justify-self:start">Khuyến nghị cho bạn</span><p class="why-not" lang="en">${esc(b.whyRecommended)}</p>` : `<p class="eyebrow">Vì sao chưa đi trước</p><p class="why-not" lang="en">${esc(b.whyNotFirst)}</p>`}
-        <div class="rate-reality"><b>Thị trường trả thật</b><span lang="en">${esc(b.rateReality)}</span></div>
+        ${b.recommendedForThisLearner ? `<span class="rec" style="justify-self:start">Recommended for you</span><p class="why-not" lang="en">${esc(b.whyRecommended)}</p>` : `<p class="eyebrow">Why not first</p><p class="why-not" lang="en">${esc(b.whyNotFirst)}</p>`}
+        <div class="rate-reality"><b>What the market actually pays</b><span lang="en">${esc(b.rateReality)}</span></div>
       </div>
       <div class="flagship">
-        <p class="eyebrow">Dự án chủ lực</p>
+        <p class="eyebrow">Flagship project</p>
         <p class="flagship-name" lang="en">${esc(fp.name)}</p>
-        <p class="wins" lang="en"><b>Vì sao nó thắng</b>${esc(fp.whyThisWins)}</p>
+        <p class="wins" lang="en"><b>Why this wins</b>${esc(fp.whyThisWins)}</p>
         <p lang="en">${esc(fp.brief)}</p>
         <ul class="plain" lang="en">${fp.deliverables.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>
       </div>
-      <div class="sec"><p class="h3">Kỹ năng của nhánh</p>
+      <div class="sec"><p class="h3">Branch skills</p>
         ${b.skills.map((s) => `<div class="skill"><p class="skill-name" lang="en">${esc(s.name)}</p>${s.whyThisMatters ? `<p class="small muted" lang="en">${esc(s.whyThisMatters)}</p>` : ''}<div>${s.specifics.map((x) => chk(bKey(b, s, x), x)).join('')}</div></div>`).join('')}
       </div>
-      <div class="sec"><p class="h3">Chứng chỉ</p>
-        <div class="tbl-wrap"><table class="data-table" lang="en"><thead><tr><th>Chứng chỉ</th><th class="n">Chi phí</th><th>Ghi chú</th></tr></thead><tbody>${b.certifications.map((c) => `<tr><td><b>${esc(c.name)}</b></td><td class="n">${certCost(c)}</td><td>${esc(c.note)}</td></tr>`).join('')}</tbody></table></div></div>
-      <div class="sec"><p class="h3">Công cụ</p><div class="chips">${b.toolIds.map((id) => TOOL[id] ? `<button class="chip-btn" type="button" data-act="gotool" data-v="${id}">${esc(TOOL[id].name)}</button>` : '').join('')}</div>
-        <p class="small" lang="en"><span class="muted">Chi phí/tháng:</span> ${esc(b.monthlyToolCost)}</p></div>
-      <div class="sec"><p class="h3">Tin thật thuộc nhánh này</p><div class="chips">${jobsOf(b).map((j) => `<button class="chip-btn" type="button" data-act="gojob" data-v="${j.id}">${j.id} · ${esc(j.rate)}</button>`).join('') || '<span class="muted">Không có</span>'}</div></div>
+      <div class="sec"><p class="h3">Certifications</p>
+        <div class="tbl-wrap"><table class="data-table" lang="en"><thead><tr><th>Certification</th><th class="n">Cost</th><th>Note</th></tr></thead><tbody>${b.certifications.map((c) => `<tr><td><b>${esc(c.name)}</b></td><td class="n">${certCost(c)}</td><td>${esc(c.note)}</td></tr>`).join('')}</tbody></table></div></div>
+      <div class="sec"><p class="h3">Tools</p><div class="chips">${b.toolIds.map((id) => TOOL[id] ? `<button class="chip-btn" type="button" data-act="gotool" data-v="${id}">${esc(TOOL[id].name)}</button>` : '').join('')}</div>
+        <p class="small" lang="en"><span class="muted">Monthly cost:</span> ${esc(b.monthlyToolCost)}</p></div>
+      <div class="sec"><p class="h3">Real postings in this branch</p><div class="chips">${jobsOf(b).map((j) => `<button class="chip-btn" type="button" data-act="gojob" data-v="${j.id}">${j.id} · ${esc(j.rate)}</button>`).join('') || '<span class="muted">None</span>'}</div></div>
     </div>`;
   }
 
@@ -3589,7 +3590,7 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
     const cp = e.target.closest('[data-copy]');
     if (cp) {
       const code = cp.parentElement.querySelector('code'); const text = code.textContent;
-      const done = (ok) => { cp.textContent = ok ? 'Đã chép' : 'Đã chọn · Ctrl+C'; cp.classList.toggle('is-ok', ok); setTimeout(() => { cp.textContent = 'Chép'; cp.classList.remove('is-ok'); }, 1800); };
+      const done = (ok) => { cp.textContent = ok ? 'Copied' : 'Selected · press Ctrl+C'; cp.classList.toggle('is-ok', ok); setTimeout(() => { cp.textContent = 'Copy'; cp.classList.remove('is-ok'); }, 1800); };
       const fallback = () => { try { const r = document.createRange(); r.selectNodeContents(code); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (err) { /* ignore */ } done(false); };
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => done(true), fallback);
@@ -3608,7 +3609,7 @@ code.inl { font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-r
       case 'branch': state.branch = v; state.tab = 'branches'; renderTabs(); renderBranches(); break;
       case 'gojob': state.tab = 'jobs'; if (state.jobFilter !== 'all') state.jobFilter = 'all'; renderTabs(); renderJobs(); flash($('job-' + v)); break;
       case 'gotool': state.tab = 'tools'; state.toolFilter = 'all'; state.hideInstalled = false; renderTabs(); renderTools(); flash($('tool-' + v)); break;
-      case 'theme': state.theme = { auto: 'light', light: 'dark', dark: 'auto' }[state.theme] || 'auto'; applyTheme(); break;
+      case 'theme': state.theme = { dark: 'light', light: 'auto', auto: 'dark' }[state.theme] || 'dark'; state.themeChosen = true; applyTheme(); break;
       case 'calctier': state.calc.tier = v; state.calc.ppw = null; renderCalc(); break;
       case 'plusconn': state.calc.plusConn = +v; renderCalc(); break;
       case 'example': { const ex = D.costModel.incomeMath.examples.find((x) => x.tier === v); if (ex) Object.assign(state.pay, { rate: ex.rate, hours: ex.billableHoursPerWeek, fee: 10, example: ex.tier }); renderPay(); break; }
