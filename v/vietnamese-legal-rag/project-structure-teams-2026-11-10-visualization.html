@@ -9,151 +9,206 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* Phong cách Micro Cards (Lamplighter Planner), palette sky, dark mode. Font giữ nguyên. */
 :root{
   color-scheme: dark;
-  --bg:#0c131d; --bg-2:#0f1824; --surface:#132031; --surface-2:#182839; --line:#223548; --line-2:#2c4359;
-  --text:#dce8f4; --muted:#8fa5bb; --faint:#5f758b;
-  --sky:#7cc3ec; --sky-strong:#9fd4f3; --sky-soft:rgba(124,195,236,.13); --sky-line:rgba(124,195,236,.38);
-  --t1:#7cc3ec; --t2:#86d4b8; --t3:#b4a7f0; --sh:#e2c88c;
-  --bad:#f2918a; --bad-soft:rgba(242,145,138,.12);
-  --warm:#e2c88c; --warm-soft:rgba(226,200,140,.12);
-  --radius:14px;
+  --bg:#202428; --panel:#2A2F34; --surface:#32383E; --white:#3A4147; --border:#48525A;
+  --text:#DFEAF2; --strong:#B5D6EB; --muted:#8FA2B0; --faint:#6E808D;
+  --accent:#A9D0E8; --accent-hover:#BEDDEF; --deep:#B3D6EC; --on:#202428; --c:#51646f;
+  --soft:rgba(169,208,232,.16); --grad-soft:rgba(169,208,232,.2);
+  --mesh:radial-gradient(44vmax 34vmax at 12% 16%,rgba(81,100,111,.6),transparent 70%),radial-gradient(38vmax 30vmax at 90% 26%,rgba(81,100,111,.34),transparent 70%),radial-gradient(48vmax 36vmax at 62% 104%,rgba(81,100,111,.42),transparent 72%);
+  --glass:linear-gradient(135deg,rgba(81,100,111,.3),rgba(255,255,255,.045) 48%,rgba(81,100,111,.16));
+  --rim:#deedf6; --rim-hi:rgba(222,237,246,.6); --rim-mid:rgba(222,237,246,.3); --rim-lo:rgba(222,237,246,.13);
+  --alt:rgba(255,255,255,.06); --alt-hover:rgba(255,255,255,.12); --alt-bd:rgba(255,255,255,.13);
+  --glow:0 0 6px rgba(169,208,232,.24),0 0 14px rgba(169,208,232,.08);
+  --glow-text:0 0 5px rgba(169,208,232,.22);
+  /* màu nhận diện team: chỉ dùng cho chấm nhỏ */
+  --t1:#A9D0E8; --t2:#9FC9C0; --t3:#C2B6E6; --sh:#D8C7A0;
+  --bad:#F2A09A; --bad-soft:rgba(242,160,154,.12); --bad-bd:rgba(242,160,154,.38);
   --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:72px}
-body{margin:0;background:var(--bg);color:var(--text);font:15.5px/1.68 "Be Vietnam Pro",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:var(--sky);text-decoration:none}
-a:hover{text-decoration:underline}
-code{font-family:var(--mono);font-size:.86em;background:var(--surface-2);border:1px solid var(--line);padding:1px 6px;border-radius:6px;color:var(--sky-strong);word-break:break-word}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font:15.5px/1.68 "Be Vietnam Pro",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--mesh);pointer-events:none}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-hover);text-decoration:underline}
+code{font-family:var(--mono);font-size:.86em;background:var(--alt);border:1px solid var(--alt-bd);padding:1px 6px;border-radius:6px;color:var(--strong);word-break:break-word}
 .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
 
+/* ---------- kính mờ có viền sáng (giống .mc-glass dark) ---------- */
+.card,.advice,.flow-detail,.team{
+  position:relative;border-radius:20px;background:var(--glass);border:1px solid transparent;
+  -webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%);
+  box-shadow:0 0 14px var(--rim-mid),0 0 46px var(--rim-lo),0 12px 36px rgba(0,0,0,.42),inset 0 0 12px var(--rim-mid),inset 0 0 44px var(--rim-lo);
+}
+.card::before,.advice::before,.flow-detail::before,.team::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;
+  background:linear-gradient(150deg,var(--rim),var(--rim-hi) 34%,var(--rim-mid) 62%,var(--rim));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+}
+
 /* header */
-header.hero{padding:56px 0 30px;background:radial-gradient(900px 340px at 15% -10%,rgba(124,195,236,.16),transparent 70%),radial-gradient(700px 300px at 95% 0%,rgba(180,167,240,.08),transparent 70%)}
-.eyebrow{font:500 12.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sky)}
-h1{font-size:clamp(28px,4.6vw,44px);line-height:1.15;margin:10px 0 14px;font-weight:700;letter-spacing:-.01em}
-h1 span{color:var(--sky)}
+header.hero{padding:56px 0 30px}
+.eyebrow{font:600 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--deep)}
+h1{font-size:clamp(28px,4.6vw,44px);line-height:1.15;margin:10px 0 14px;font-weight:700;letter-spacing:-.01em;color:var(--text)}
+h1 span{color:var(--deep);text-shadow:var(--glow-text)}
 .lead{color:var(--muted);max-width:760px;font-size:16.5px;margin:0}
 .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.pill{font:500 12.5px var(--mono);padding:4px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted);background:var(--bg-2)}
-.pill b{color:var(--text);font-weight:500}
+.pill{font:600 12.5px "Be Vietnam Pro",sans-serif;padding:6px 12px;border-radius:12px;border:1px solid var(--alt-bd);color:var(--muted);background:var(--alt)}
+.pill b{color:var(--text);font-weight:600}
 
-/* nav */
-nav.toc{position:sticky;top:0;z-index:20;background:rgba(12,19,29,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+/* nav: thanh kính */
+nav.toc{position:sticky;top:0;z-index:20;background:rgba(32,36,40,.72);-webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%);border-bottom:1px solid var(--alt-bd);box-shadow:0 8px 24px rgba(0,0,0,.25)}
 nav.toc .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;scrollbar-width:none}
 nav.toc .wrap::-webkit-scrollbar{display:none}
-nav.toc a{flex:none;font-size:13px;padding:5px 11px;border-radius:999px;color:var(--muted);border:1px solid transparent;white-space:nowrap}
-nav.toc a:hover{text-decoration:none;color:var(--text);border-color:var(--line-2)}
-nav.toc a.on{color:var(--bg);background:var(--sky);font-weight:600}
+nav.toc a{flex:none;font-size:13px;font-weight:600;padding:6px 13px;border-radius:12px;color:var(--muted);border:1px solid transparent;white-space:nowrap}
+nav.toc a:hover{text-decoration:none;color:var(--text);background:var(--alt);border-color:var(--alt-bd)}
+nav.toc a.on{color:var(--on);background:var(--accent);box-shadow:var(--glow)}
 
 /* sections */
-section.part{padding:46px 0 10px;border-top:1px solid var(--line)}
-section.part:first-of-type{border-top:0}
+section.part{padding:50px 0 10px}
 .part-head{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:6px}
-.num{font:600 13px var(--mono);color:var(--bg);background:var(--tc,var(--sky));border-radius:8px;padding:3px 9px;margin-top:6px}
-h2{font-size:clamp(22px,3vw,28px);margin:0;line-height:1.3;flex:1 1 220px;min-width:0;overflow-wrap:anywhere}
-.team-tag{font:500 12.5px var(--mono);border:1px solid var(--tc,var(--sky));color:var(--tc,var(--sky));border-radius:999px;padding:3px 10px;margin-top:6px;white-space:nowrap}
-.sub{color:var(--muted);margin:2px 0 22px;max-width:820px}
-.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:22px;align-items:start}
+.num{font:700 13px var(--mono);color:var(--on);background:var(--accent);box-shadow:var(--glow);border-radius:10px;padding:4px 10px;margin-top:5px}
+h2{font-size:clamp(22px,3vw,28px);margin:0;line-height:1.3;flex:1 1 220px;min-width:0;overflow-wrap:anywhere;color:var(--text)}
+.team-tag{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--grad-soft);color:var(--deep);border-radius:999px;padding:4px 11px;margin-top:7px;white-space:nowrap}
+.team-tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--tc,var(--accent))}
+.sub{color:var(--muted);margin:2px 0 24px;max-width:820px}
+.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:24px;align-items:start}
 .grid > *{min-width:0}
 @media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
-.card h3{font-size:14px;margin:0 0 10px;color:var(--muted);font-weight:600;letter-spacing:.02em;text-transform:uppercase}
+.card{padding:20px 22px}
+.card h3{font-size:11.5px;margin:0 0 12px;color:var(--deep);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 .prose p{margin:0 0 12px}
 .prose p:last-child{margin-bottom:0}
-.who{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.who .person{font:500 12.5px var(--mono);background:var(--bg-2);border:1px solid var(--line-2);border-radius:8px;padding:4px 9px;color:var(--text)}
-.who .person i{font-style:normal;color:var(--faint);margin-left:6px}
+.who{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.who .person{font:600 12.5px "Be Vietnam Pro",sans-serif;background:var(--alt);border:1px solid var(--alt-bd);border-radius:12px;padding:5px 11px;color:var(--text)}
+.who .person i{font-style:normal;font-weight:400;color:var(--muted);margin-left:6px}
 
 /* tree */
-.tree-card{padding:14px 0 12px;position:sticky;top:64px}
+.tree-card{padding:16px 0 14px;position:sticky;top:70px}
 @media (max-width:860px){.tree-card{position:static}}
-.tree-top{display:flex;justify-content:space-between;align-items:center;padding:0 16px 10px;gap:10px}
+.tree-top{display:flex;justify-content:space-between;align-items:center;padding:0 18px 10px;gap:10px}
 .tree-top h3{margin:0}
-.btn{font:500 12px "Be Vietnam Pro",sans-serif;color:var(--sky);background:transparent;border:1px solid var(--sky-line);border-radius:8px;padding:4px 10px;cursor:pointer}
-.btn:hover{background:var(--sky-soft)}
-.btn:focus-visible,.node:focus-visible,nav.toc a:focus-visible,.seg button:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
-.tree{font:13px/1.25 var(--mono);overflow-x:auto;padding:0 8px;max-height:620px;overflow-y:auto}
-.tree a.row{display:flex;align-items:center;gap:0;white-space:pre;color:var(--muted);padding:3px 8px;border-radius:6px;border-left:2px solid transparent}
-.tree a.row:hover{text-decoration:none;background:var(--surface-2);color:var(--text)}
+.btn{font:600 12.5px "Be Vietnam Pro",sans-serif;color:var(--text);background:var(--alt);border:1px solid var(--alt-bd);border-radius:12px;padding:6px 12px;cursor:pointer}
+.btn:hover{background:var(--alt-hover)}
+.btn:focus-visible,.node:focus-visible,nav.toc a:focus-visible,.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tree{font:13px/1.25 var(--mono);overflow-x:auto;padding:0 10px;max-height:620px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.tree a.row{display:flex;align-items:center;white-space:pre;color:var(--muted);padding:3px 8px;border-radius:8px;border-left:2px solid transparent}
+.tree a.row:hover{text-decoration:none;background:var(--alt);color:var(--text)}
 .tree .g{color:var(--faint)}
 .tree .ic{width:1.4em;display:inline-block;text-align:center}
-.tree a.dim{opacity:.42}
+.tree a.dim{opacity:.4}
 .tree a.path{color:var(--text)}
-.tree a.hl{background:color-mix(in srgb,var(--tc,var(--sky)) 15%,transparent);color:var(--tc,var(--sky));font-weight:500;border-left-color:var(--tc,var(--sky))}
+.tree a.hl{background:var(--soft);color:var(--strong);font-weight:500;border-left-color:var(--accent);text-shadow:var(--glow-text)}
 .tree a.warn{background:var(--bad-soft);color:var(--bad);border-left-color:var(--bad)}
-.tree .note{font:400 11.5px "Be Vietnam Pro",sans-serif;color:var(--faint);margin-left:10px;white-space:nowrap}
-.tree a.hl .note{color:color-mix(in srgb,var(--tc,var(--sky)) 75%,var(--muted))}
+.tree .note{font:400 11.5px "Be Vietnam Pro",sans-serif;color:var(--faint);margin-left:10px;white-space:nowrap;text-shadow:none}
+.tree a.hl .note{color:var(--muted)}
 .tree a.warn .note{color:var(--bad)}
 .tree .own{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:8px}
-.legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 16px 0;font-size:12px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 18px 0;font-size:12px;color:var(--muted)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
-.sw{width:10px;height:10px;border-radius:3px;display:inline-block}
+.sw{width:10px;height:10px;border-radius:50%;display:inline-block}
 
 /* stats */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:16px}
-.stat{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
-.stat .v{font:600 21px var(--mono);color:var(--tc,var(--sky))}
-.stat .v.bad{color:var(--bad)}
+.stat{background:var(--alt);border:1px solid var(--alt-bd);border-radius:16px;padding:12px 14px}
+.stat .v{font:700 21px var(--mono);color:var(--deep);text-shadow:var(--glow-text)}
+.stat .v.bad{color:var(--bad);text-shadow:none}
 .stat .k{font-size:12px;color:var(--muted);line-height:1.4}
 
-/* suggestions */
-.advice{margin:22px 0 8px;background:linear-gradient(180deg,rgba(226,200,140,.06),transparent);border:1px solid rgba(226,200,140,.28);border-radius:var(--radius);padding:16px 20px 6px}
-.advice h3{margin:0 0 10px;font-size:15px;color:var(--warm);display:flex;align-items:center;gap:8px}
+/* góp ý */
+.advice{margin:26px 0 8px;padding:18px 22px 8px}
+.advice h3{margin:0 0 10px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--deep);display:flex;align-items:center;gap:8px}
+.advice h3::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:var(--glow)}
 .advice ul{list-style:none;margin:0;padding:0}
-.advice li{padding:10px 0 12px;border-top:1px dashed var(--line-2);display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.advice li{padding:12px 0 14px;border-top:1px solid var(--alt-bd);display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
 .advice li:first-child{border-top:0}
-.lvl{font:600 11px var(--mono);padding:3px 8px;border-radius:6px;white-space:nowrap;margin-top:3px}
-.lvl.p0{background:var(--bad-soft);color:var(--bad);border:1px solid rgba(242,145,138,.4)}
-.lvl.p1{background:var(--warm-soft);color:var(--warm);border:1px solid rgba(226,200,140,.4)}
-.lvl.p2{background:var(--sky-soft);color:var(--sky);border:1px solid var(--sky-line)}
+.lvl{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:4px 9px;border-radius:999px;white-space:nowrap;margin-top:3px}
+.lvl.p0{background:var(--bad-soft);color:var(--bad);border:1px solid var(--bad-bd)}
+.lvl.p1{background:var(--grad-soft);color:var(--deep);border:1px solid rgba(169,208,232,.35)}
+.lvl.p2{background:var(--alt);color:var(--muted);border:1px solid var(--alt-bd)}
 .advice li p{margin:0}
-.advice li .fix{color:var(--muted);margin-top:4px;font-size:14.5px}
-.advice li .fix b{color:var(--text);font-weight:600}
+.advice li .fix{color:var(--muted);margin-top:5px;font-size:14.5px}
+.advice li .fix b{color:var(--strong);font-weight:600}
 
 /* pipeline */
-.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px 4px;margin:6px 0 14px}
-.node{flex:1 1 112px;min-width:104px;text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--tc);border-radius:12px;padding:10px 11px;color:var(--text);font:inherit;transition:transform .15s,border-color .15s,background .15s}
-.node:hover{transform:translateY(-2px);border-color:var(--line-2)}
-.node.on{background:color-mix(in srgb,var(--tc) 14%,var(--surface));border-color:var(--tc)}
-.node small{display:block;font:500 11px var(--mono);color:var(--tc)}
-.node strong{display:block;font-size:13.5px;line-height:1.3;margin-top:3px}
-.node.off{border-style:dashed;border-top-style:solid}
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px 4px;margin:6px 0 16px}
+.node{flex:1 1 112px;min-width:104px;text-align:left;cursor:pointer;background:var(--alt);border:1px solid var(--alt-bd);border-radius:16px;padding:11px 12px;color:var(--text);font:inherit;transition:transform .15s,box-shadow .15s,background .15s}
+.node:hover{transform:translateY(-2px);background:var(--alt-hover);box-shadow:0 0 10px var(--rim-mid),0 0 30px var(--rim-lo)}
+.node.on{background:var(--soft);border-color:rgba(169,208,232,.55);box-shadow:0 0 14px var(--rim-mid),0 0 40px var(--rim-lo),inset 0 0 10px var(--rim-lo)}
+.node small{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.node small::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--tc);flex:none}
+.node strong{display:block;font-size:13.5px;line-height:1.3;margin-top:4px;color:var(--strong)}
+.node.off{border-style:dashed;opacity:.8}
 .arrow{align-self:center;color:var(--faint);font-size:15px}
 @media (max-width:640px){.arrow{display:none}.node{flex-basis:44%}}
-.flow-detail{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--tc,var(--sky));border-radius:12px;padding:14px 18px;min-height:96px}
-.flow-detail h4{margin:0 0 6px;font-size:16px}
+.flow-detail{padding:16px 20px;min-height:96px}
+.flow-detail h4{margin:0 0 6px;font-size:16px;color:var(--strong)}
 .flow-detail p{margin:0 0 8px;color:var(--text)}
-.flow-detail .go{font-size:13.5px}
+.flow-detail .go{font-size:13.5px;font-weight:600}
 
-.teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:20px}
-.team{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;border-top:3px solid var(--tc)}
-.team h4{margin:0 0 4px;font-size:15.5px;color:var(--tc)}
+.teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:22px}
+.team{padding:16px 18px}
+.team h4{margin:0 0 4px;font-size:15.5px;color:var(--strong);display:flex;align-items:center;gap:8px}
+.team h4::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--tc);flex:none}
 .team p{margin:0;color:var(--muted);font-size:14px}
 
-/* charts */
-.seg{display:inline-flex;background:var(--bg-2);border:1px solid var(--line-2);border-radius:10px;padding:3px;gap:2px;flex-wrap:wrap}
-.seg button{font:500 12.5px "Be Vietnam Pro",sans-serif;color:var(--muted);background:transparent;border:0;border-radius:7px;padding:5px 10px;cursor:pointer}
-.seg button.on{background:var(--sky);color:var(--bg)}
+/* biểu đồ */
+.seg{display:inline-flex;background:var(--alt);border:1px solid var(--alt-bd);border-radius:12px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{font:600 12.5px "Be Vietnam Pro",sans-serif;color:var(--muted);background:transparent;border:0;border-radius:9px;padding:6px 11px;cursor:pointer}
+.seg button:hover{color:var(--text)}
+.seg button.on{background:var(--accent);color:var(--on);box-shadow:var(--glow)}
 .chart-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.bars{display:flex;flex-direction:column;gap:9px}
+.bars{display:flex;flex-direction:column;gap:10px}
 .bar{display:grid;grid-template-columns:150px 1fr 54px;align-items:center;gap:10px;font-size:13px}
 @media (max-width:520px){.bar{grid-template-columns:104px 1fr 48px;font-size:12px}}
 .bar .lab{color:var(--muted);font-family:var(--mono);font-size:12px;line-height:1.3}
-.bar .track{height:16px;background:var(--bg-2);border-radius:5px;position:relative;overflow:visible}
-.bar .fill{display:block;height:100%;border-radius:5px;background:var(--tc,var(--sky));transition:width .45s ease}
-.bar .fill.bad{background:var(--bad)}
-.bar .val{font:500 12.5px var(--mono);text-align:right}
-.target{position:absolute;top:-4px;bottom:-4px;width:0;border-left:2px dashed var(--warm)}
+.bar .track{height:14px;background:var(--alt);border:1px solid var(--alt-bd);border-radius:999px;position:relative}
+.bar .fill{display:block;height:100%;border-radius:999px;background:var(--accent);box-shadow:var(--glow);transition:width .45s ease}
+.bar .fill.bad{background:var(--bad);box-shadow:none}
+.bar .val{font:600 12.5px var(--mono);text-align:right;color:var(--text)}
+.target{position:absolute;top:-5px;bottom:-5px;width:0;border-left:2px dashed var(--rim-hi)}
 .chart-note{font-size:12.5px;color:var(--faint);margin-top:12px}
 
-.summary-list{counter-reset:s;list-style:none;padding:0;margin:0}
-.summary-list li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.summary-list{list-style:none;padding:0;margin:0;counter-reset:s}
+.summary-list li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:12px;padding:13px 0;border-top:1px solid var(--alt-bd)}
 .summary-list li:first-child{border-top:0}
-.summary-list li::before{content:counter(s);font:600 13px var(--mono);color:var(--bg);background:var(--sky);border-radius:8px;height:26px;display:grid;place-items:center}
+.summary-list li::before{content:counter(s);font:700 13px var(--mono);color:var(--on);background:var(--accent);box-shadow:var(--glow);border-radius:10px;height:26px;display:grid;place-items:center}
 .summary-list li p{margin:0}
 .summary-list li small{color:var(--muted);display:block;font-size:13px}
-footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px solid var(--line);margin-top:40px}
+/* quiz */
+.quiz-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.quiz-score{display:flex;align-items:center;gap:12px;font-size:13.5px;color:var(--muted)}
+.quiz-score b{font:700 15px var(--mono);color:var(--deep);text-shadow:var(--glow-text)}
+.quiz-prog{width:140px;height:8px;border-radius:999px;background:var(--alt);border:1px solid var(--alt-bd);overflow:hidden}
+.quiz-prog span{display:block;height:100%;width:0;background:var(--accent);box-shadow:var(--glow);transition:width .3s}
+.quiz-intro{color:var(--muted);font-size:14px;margin:0 0 18px}
+.qlist{display:flex;flex-direction:column;gap:16px}
+.q{padding:18px 20px}
+.q-head{display:flex;gap:12px;align-items:flex-start}
+.q-num{flex:none;font:700 12px var(--mono);color:var(--on);background:var(--accent);box-shadow:var(--glow);border-radius:9px;padding:3px 8px;margin-top:2px}
+.q-text{margin:0;font-weight:600;color:var(--text)}
+.q-tag{display:inline-block;margin-top:6px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.opts{display:grid;gap:8px;margin-top:14px}
+.opt{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;text-align:left;font:inherit;font-size:14.5px;line-height:1.5;color:var(--text);background:var(--alt);border:1px solid var(--alt-bd);border-radius:12px;padding:10px 12px;cursor:pointer;transition:background .15s,border-color .15s,box-shadow .15s}
+.opt:hover:not(:disabled){background:var(--alt-hover);border-color:rgba(169,208,232,.45)}
+.opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.opt:disabled{cursor:default}
+.opt .k{font:700 12px var(--mono);color:var(--deep);background:var(--grad-soft);border-radius:7px;height:22px;display:grid;place-items:center}
+.opt.right{background:var(--soft);border-color:var(--accent);box-shadow:0 0 12px var(--rim-mid),inset 0 0 10px var(--rim-lo)}
+.opt.right .k{background:var(--accent);color:var(--on)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad-bd)}
+.opt.wrong .k{background:var(--bad);color:var(--on)}
+.opt.fade{opacity:.5}
+.explain{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--alt);border:1px solid var(--alt-bd);font-size:14px;color:var(--text)}
+.explain .verdict{font-weight:700;margin-right:6px}
+.explain .verdict.ok{color:var(--deep)}
+.explain .verdict.no{color:var(--bad)}
+.explain .src{display:block;margin-top:6px;font-size:12.5px;color:var(--muted)}
+.quiz-done{margin-top:18px;padding:16px 20px}
+.quiz-done p{margin:0}
+footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px solid var(--alt-bd);margin-top:44px}
 </style>
 </head>
 <body>
@@ -184,13 +239,14 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
     <a href="#p7">7 · Fullstack</a>
     <a href="#p8">8 · Docs, tests, quy trình</a>
     <a href="#uu-tien">Ưu tiên</a>
+    <a href="#quiz">Quiz</a>
   </div>
 </nav>
 
 <main class="wrap">
 
 <!-- ================= TỔNG QUAN ================= -->
-<section class="part" id="tong-quan" style="--tc:var(--sky)">
+<section class="part" id="tong-quan" >
   <div class="part-head"><span class="num">0</span><h2>Tổng quan: một câu hỏi đi qua hệ thống như thế nào</h2></div>
   <p class="sub">Người dùng gõ câu hỏi về Luật Doanh nghiệp. Hệ thống tìm Điều/Khoản liên quan, đưa cho LLM viết câu trả lời có citation, kiểm lại citation, rồi hiển thị lên giao diện. Người đọc có thể bấm từng bước dưới đây để xem bước đó làm gì và thuộc team nào.</p>
 
@@ -403,7 +459,7 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <div class="card" style="margin-top:16px">
         <h3>Hallucination mức câu qua các lượt chạy (mục tiêu ≤ 5%)</h3>
         <div class="bars" id="halBars" style="--tc:var(--t2)"></div>
-        <p class="chart-note">Đường đứt nét màu vàng là mốc 5%. Mọi lượt đều mang nhãn exploratory. Nguồn: <code>docs/team2_rag/runs/</code> và <code>team2_rag/docs_2/week9/tasks.md</code> mục 8.</p>
+        <p class="chart-note">Đường đứt nét màu trắng là mốc 5%. Mọi lượt đều mang nhãn exploratory. Nguồn: <code>docs/team2_rag/runs/</code> và <code>team2_rag/docs_2/week9/tasks.md</code> mục 8.</p>
       </div>
       <div class="stats">
         <div class="stat"><div class="v">100%</div><div class="k">Citation Correctness (mốc ≥ 90%)</div></div>
@@ -435,7 +491,7 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
     <div>
       <div class="card prose">
         <p>Folder <code>backend/</code> là ứng dụng Spring Boot build bằng Maven. Package <code>ai/</code> gọi API của Team 2 qua <code>HttpAiClient</code> và đổi DTO từ snake_case sang camelCase. Package <code>chat/stream/</code> phát SSE cho frontend. Package <code>conversation/</code> lưu hội thoại bằng JPA, với schema trong <code>resources/db/chat-schema.sql</code>. Package <code>document/</code> phục vụ Viewer mở một Điều, còn <code>common/</code> gom exception và mã lỗi public.</p>
-        <p>Backend có hai profile. Profile <code>application-mock.properties</code> dùng AI giả và H2 để chạy nhanh khi dev. Profile <code>application-rag.properties</code> gọi RAG thật và dùng PostgreSQL.</p>
+        <p>Backend có hai profile. Profile <code>application-mock.properties</code> dùng AI giả và tắt hẳn kết nối database, nên hội thoại chỉ nằm trong bộ nhớ và mất khi tắt server. Profile <code>application-rag.properties</code> gọi Team 2 qua <code>RAG_BASE_URL</code> (mặc định cổng 8001) và lưu hội thoại vào PostgreSQL.</p>
         <p>Folder <code>frontend/</code> dùng React 18, Vite, TypeScript và Tailwind 4. Folder <code>src/api/</code> có <code>chatStream.ts</code> và <code>sse.ts</code> để đọc stream, <code>retryPolicy.ts</code> để thử lại khi lỗi mạng, và <code>errorText.ts</code> để hiện thông báo lỗi thống nhất. Component <code>citation/CitationCard.tsx</code> hiện thẻ trích dẫn, còn <code>document/DocumentViewer.tsx</code> mở nguyên văn Điều từ Article Store.</p>
         <p>Folder <code>tools/</code> chứa script đo latency (<code>measure_latency.py</code>, <code>latency_report.py</code>) và script đánh giá retrieval qua API. Ở tuần 9, HauNgoXuan merge PR #55 (commit <code>7e5825c</code>, người commit HauNgoXuan), trong đó VLRA-69 cho <code>HttpAiClient</code> nhận cả mã lỗi nội bộ lẫn public, còn VLRA-70 dùng chung text lỗi cho lỗi đã lưu.</p>
         <div class="who"><span class="person">Dinh Tuan / dinhtuanz<i>22 commit</i></span><span class="person">haunx / HauNgoXuan<i>13 commit</i></span><span class="person">Banh-Van-Hiep</span></div>
@@ -491,7 +547,7 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
 </section>
 
 <!-- ================= ƯU TIÊN ================= -->
-<section class="part" id="uu-tien" style="--tc:var(--sky)">
+<section class="part" id="uu-tien" >
   <div class="part-head"><span class="num">★</span><h2>Nếu chỉ làm được năm việc trong Sprint 7</h2></div>
   <p class="sub">Danh sách dưới đây xếp các góp ý "Nên làm sớm" theo mức ảnh hưởng đến độ tin cậy của kết quả.</p>
   <div class="card">
@@ -503,6 +559,23 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <li><div><p>Team 1 nên báo Recall theo nhóm câu đã review (0,783) thay vì con số tổng (0,912).</p><small>Phần 2 · đổi cách báo cáo, không cần sửa code retrieval.</small></div></li>
     </ol>
   </div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section class="part" id="quiz">
+  <div class="part-head"><span class="num">?</span><h2>Quiz: tự kiểm tra trước khi giảng viên hỏi</h2></div>
+  <p class="sub">Mỗi team có một bộ câu hỏi về chính phần việc của mình. Các câu hỏi không hỏi định nghĩa sách vở mà hỏi lý do của từng quyết định trong code, cách đọc số liệu và cách hệ thống xử lý tình huống khó. Người làm chọn một đáp án, trang sẽ chấm ngay và giải thích kèm file nguồn trong repo.</p>
+  <div class="quiz-bar">
+    <div class="seg" id="quizTabs" role="tablist" aria-label="Chọn team">
+      <button class="on" data-v="t1" role="tab">Team 1 · Data &amp; Retrieval</button>
+      <button data-v="t2" role="tab">Team 2 · RAG &amp; LLM</button>
+      <button data-v="t3" role="tab">Team 3 · Fullstack</button>
+    </div>
+    <div class="quiz-score"><span>Đúng <b id="qRight">0</b> / <span id="qTotal">0</span></span><span class="quiz-prog"><span id="qProg"></span></span><button class="btn" id="qReset">Làm lại</button></div>
+  </div>
+  <p class="quiz-intro" id="qIntro"></p>
+  <div class="qlist" id="qList"></div>
+  <div id="qDone"></div>
 </section>
 
 </main>
@@ -727,6 +800,158 @@ const HAL = [
 const MAX = 12;
 document.getElementById("halBars").innerHTML = HAL.map(([l,v])=>`
   <div class="bar"><span class="lab">${l}</span><span class="track"><span class="fill ${v>5?"bad":""}" style="width:${v/MAX*100}%"></span><span class="target" style="left:${5/MAX*100}%"></span></span><span class="val">${v.toFixed(2).replace(".",",")}%</span></div>`).join("");
+
+/* ---------- quiz ---------- */
+const QUIZ = {
+  t1: {
+    intro: "Team 1 nên trả lời được vì sao chọn RRF, cách đọc Recall theo nhóm câu hỏi, và vì sao Dev Set phải có hash.",
+    qs: [
+      {tag:"Hybrid RRF · tính toán", q:"Hàm rrf_fuse cộng trọng số / (k + rank) với k = 60, rank bắt đầu từ 1 và trọng số BM25 : Dense = 0,5 : 1. Chunk nào được xếp cao nhất?",
+       o:["Chunk X: hạng 1 ở BM25, không có trong danh sách Dense","Chunk Y: hạng 10 ở Dense, không có trong danh sách BM25","Chunk Z: hạng 30 ở cả BM25 lẫn Dense","Chunk W: hạng 5 ở BM25 và hạng 60 ở Dense"], a:2,
+       e:"Điểm của Z là 0,5/90 + 1/90 ≈ 0,01667. Điểm của W là 0,5/65 + 1/120 ≈ 0,01603, của Y là 1/70 ≈ 0,01429, còn của X chỉ 0,5/61 ≈ 0,00820. RRF thưởng cho chunk xuất hiện ở cả hai danh sách, nên một chunk hạng trung bình ở cả hai vẫn có thể thắng chunk hạng 1 ở một nhánh.",
+       s:"team1_data/retrieval/hybrid.py (rrf_fuse), retrieval_v2.json"},
+      {tag:"Hybrid RRF · lý do thiết kế", q:"Giảng viên hỏi: \"Sao nhóm không cộng thẳng điểm BM25 với điểm cosine của Dense cho đơn giản?\" Câu trả lời nào đúng nhất?",
+       o:["Vì BM25 không trả về điểm số, chỉ trả về thứ hạng","Vì hai loại điểm nằm trên hai thang đo khác nhau: BM25 không có trần và phụ thuộc độ dài câu hỏi, còn cosine nằm trong khoảng [-1, 1]. RRF chỉ dùng thứ hạng nên không cần chuẩn hóa điểm","Vì RRF không cần tính embedding nên chạy nhanh hơn","Vì cộng điểm luôn làm Recall@5 thấp hơn RRF trên mọi bộ dữ liệu"], a:1,
+       e:"BM25 trả điểm thật nhưng thang đo khác hẳn cosine, nên cộng thẳng sẽ để một nhánh lấn át nhánh kia. RRF bỏ qua độ lớn của điểm và chỉ dùng thứ hạng. RRF vẫn cần embedding vì nhánh Dense vẫn chạy, và không có gì bảo đảm RRF luôn thắng trên mọi bộ dữ liệu.",
+       s:"team1_data/retrieval/hybrid.py, docs/team1_data/hybrid-retrieval-proposal.md"},
+      {tag:"Đọc số liệu", q:"Báo cáo ghi cấu hình đã chốt đạt Recall@5 = 0,912. Giảng viên hỏi: \"Vậy retrieval đã tốt chưa?\" Câu trả lời nào trung thực nhất?",
+       o:["Đã tốt, vì Recall@5 vượt 0,9","Đã tốt, vì MRR@20 = 0,946 nghĩa là 94,6% câu hỏi có chunk đúng ở hạng 1","Chưa chắc: trên 40 câu Team 2 đã review, Recall@5 chỉ đạt 0,783, còn 70 câu draft đạt 0,986. Con số tổng đang bị nhóm draft kéo lên","Chưa tốt, vì Recall@20 thấp hơn Recall@5"], a:2,
+       e:"Nhóm câu draft có thể được soạn bám sát chunk nên dễ hơn câu hỏi thật. MRR là trung bình của 1/hạng của gold đầu tiên, không phải tỉ lệ câu đúng ở hạng 1. Recall@20 luôn lớn hơn hoặc bằng Recall@5 vì top-20 chứa top-5.",
+       s:"evaluation/retrieval/runs/vlra53-aiteamvn-weights/summary.md"},
+      {tag:"Tái lập kết quả", q:"Hai lượt chạy đánh giá retrieval chỉ được đem ra so sánh với nhau khi nào?",
+       o:["Khi hai lượt chạy cùng một commit","Khi hai lượt chạy cùng embedding model","Khi dev_set.sha256 và corpus.sha256 trong run.json của hai lượt giống nhau","Khi hai lượt chạy trên cùng một máy"], a:2,
+       e:"Recall chỉ có nghĩa khi đề và kho dữ liệu giống nhau. Hai commit khác nhau vẫn so sánh được nếu Dev Set và corpus không đổi. Ngược lại, cùng commit nhưng ai đó sửa golden hoặc chunk thì kết quả không còn so sánh được. Vì vậy run.json ghi hai hash này.",
+       s:"evaluation/retrieval/README.md mục 1, team1_data/evaluation/core.py"},
+      {tag:"Hash Dev Set", q:"Hash của Dev Set được tính trên JSON đã chuẩn hóa Unicode NFC. Vì sao bước NFC cần thiết với dữ liệu tiếng Việt?",
+       o:["Vì cùng một chữ có dấu như \"ệ\" có thể được lưu bằng một ký tự dựng sẵn hoặc bằng chữ \"e\" cộng các dấu tổ hợp. Nếu không chuẩn hóa, cùng một nội dung sẽ cho ra hai hash khác nhau","Vì sha256 chỉ nhận chuỗi đã chuẩn hóa NFC","Vì NFC bỏ dấu để BM25 so khớp dễ hơn","Vì NFC nén file JSON nhỏ hơn"], a:0,
+       e:"Một người soạn trên Windows và một người dán từ web có thể tạo ra hai cách mã hóa khác nhau cho cùng một chữ. NFC đưa cả hai về một dạng, nên hash chỉ đổi khi nội dung thật sự đổi. sort_keys và separators gọn đóng vai trò tương tự với thứ tự key và khoảng trắng.",
+       s:"team1_data/docs_1/week10/tasks.md mục 3.2, team1_data/golden/golden_phase1.manifest.json"},
+      {tag:"Câu ngoài phạm vi", q:"Một câu trong out_of_scope_v1.json hỏi về tội trộm cắp tài sản. Câu này phải được ghi như thế nào để Team 2 dùng chỉnh cổng từ chối?",
+       o:["expected_status là answered và gold_chunk_ids trỏ tới Điều gần nghĩa nhất trong Luật Doanh nghiệp","expected_status là insufficient_context, gold_chunk_ids và relevant_unit_groups rỗng, citation rỗng","expected_status là error vì câu hỏi sai lĩnh vực","Câu này không cần expected_status vì không được tính vào benchmark"], a:1,
+       e:"Corpus chỉ có văn bản về doanh nghiệp, nên hệ thống đúng phải từ chối bằng insufficient_context và không được trích dẫn gì. Nếu gắn gold vào một Điều \"gần nghĩa\", benchmark sẽ thưởng cho việc trả lời bịa.",
+       s:"team1_data/golden/out_of_scope_v1.json (33 câu)"},
+      {tag:"Article Store", q:"Ở tuần 10, Team 1 xuất thêm processed/articles.jsonl thay vì để Viewer tự nối các chunk lại thành một Điều. Lý do chính là gì?",
+       o:["Nối chunk chạy chậm hơn đọc file","Nối chunk làm lặp câu dẫn ở 48 Điều, mất tên Điều, và mất chú thích sửa đổi ở 46 Điều, nên Viewer không hiện đúng nguyên văn","Contract cấm Team 3 đọc chunks.jsonl","articles.jsonl giúp tăng Recall@5"], a:1,
+       e:"Mỗi chunk Khoản thường mang theo câu dẫn của Điều để có ngữ cảnh khi retrieval, nên ghép lại sẽ lặp câu dẫn. Article Store giữ nguyên văn Điều, tên Điều và chú thích [n]. File này không ảnh hưởng retrieval vì retrieval vẫn chạy trên chunks.jsonl.",
+       s:"data/doanh-nghiep/chunk_documents.py, team1_data/docs_1/week10/tasks.md mục 3.3"},
+      {tag:"Tokenizer", q:"Vì sao BM25 của nhóm tách từ bằng underthesea thay vì tách theo khoảng trắng?",
+       o:["Vì underthesea loại bỏ toàn bộ dấu tiếng Việt","Vì từ tiếng Việt thường gồm nhiều âm tiết như \"doanh nghiệp\" hay \"góp vốn\". Tách theo khoảng trắng biến chúng thành các âm tiết rời, làm IDF và so khớp bị sai lệch","Vì Lucene không chạy được với chuỗi có khoảng trắng","Vì underthesea sinh embedding cho BM25"], a:1,
+       e:"Âm tiết \"doanh\" và \"nghiệp\" xuất hiện riêng lẻ trong rất nhiều từ khác, nên điểm khớp theo âm tiết vừa nhiễu vừa sai trọng số. Tách theo từ giúp BM25 so khớp đúng đơn vị nghĩa.",
+       s:"team1_data/retrieval/tokenizer.py, retrieval_v2.json (tokenize_vi/underthesea)"}
+    ]
+  },
+  t2: {
+    intro: "Team 2 nên trả lời được vì sao tắt rerank, cách tính từng chỉ số và vì sao Citation Correctness 100% chưa đủ để nói hệ thống đúng.",
+    qs: [
+      {tag:"Reranker", q:"Vì sao Team 2 đặt RAG_RERANK=false làm mặc định?",
+       o:["Vì model BGE không hỗ trợ tiếng Việt","Vì contract với Team 3 không cho phép rerank","Vì trên 110 câu (nhãn exploratory), Hybrid thắng hoặc hòa reranker ở mọi chỉ số, nên rerank chỉ làm tăng latency mà không cải thiện kết quả","Vì rerank làm tăng tỉ lệ hallucination"], a:2,
+       e:"Quyết định này dựa trên số đo, không phải giới hạn kỹ thuật. Nhóm cũng đã quyết định không chạy lại trên Dev Set đóng băng vì chi phí Colab, nên kết luận vẫn mang nhãn exploratory. Đây là điểm giảng viên dễ hỏi tiếp.",
+       s:"docs/team2_rag/optimal_rag_configuration.md mục 5.1, team2_rag/runtime.py"},
+      {tag:"Reranker timeout", q:"Khi bật rerank mà BGE chạy quá 4 giây, pipeline xử lý thế nào?",
+       o:["Pipeline trả lỗi LLM_TIMEOUT cho backend","Pipeline trả insufficient_context","Pipeline thử rerank lại thêm một lần","Pipeline bỏ kết quả rerank và dùng lại thứ hạng của Hybrid, rồi vẫn gọi LLM bình thường"], a:3,
+       e:"Rerank chỉ là bước tối ưu thứ tự, nên khi quá hạn thì lùi về thứ hạng Hybrid sẽ tốt hơn làm hỏng cả lượt hỏi. Hành vi này có test riêng, và thời hạn được ghi vào log rag_config.",
+       s:"team2_rag/runtime.py (RAG_RERANK_TIMEOUT_SECONDS), team2_rag/docs_2/week9/tasks.md (T2-22)"},
+      {tag:"Tính chỉ số", q:"Một lượt benchmark có 30 câu: 26 câu answered, 4 câu insufficient_context. Trong 26 câu answered, 1 câu có ít nhất một claim không được nguồn hỗ trợ. Query-level Hallucination Rate bằng bao nhiêu?",
+       o:["1/30 ≈ 3,33%","1/26 ≈ 3,85%","5/30 ≈ 16,7%","Bằng số claim sai chia tổng số claim"], a:1,
+       e:"Mẫu số là số câu answered, vì câu bị từ chối không có kết luận nào để bịa. Chia cho tổng claim là Claim-level Hallucination, một chỉ số khác. Nếu không có câu answered nào, code ghi \"chưa đo\" thay vì 0% hay 100%.",
+       s:"team2_rag/verification/metrics.py (compute_benchmark_metrics)"},
+      {tag:"Contract", q:"Output của LLM có field claims, nhưng response gửi cho Team 3 không có field này. Vì sao?",
+       o:["Contract chỉ cho response gồm status, answer, citations. claims chỉ dùng nội bộ để Verification kiểm từng nhận định, và thêm field mà chưa duyệt sẽ làm vỡ schema phía Team 3","Vì claims chứa API key của Gemini","Vì frontend không đủ chỗ để hiện claims","Vì claims chỉ có khi status là insufficient_context"], a:0,
+       e:"Contract là thỏa thuận giữa các team. Thêm field trái phép có thể làm validator và parser phía backend từ chối response. Vì vậy parser nhận claims như field tùy chọn, rồi bỏ đi trước khi trả ra ngoài.",
+       s:"contracts/v0.1/rag_response.schema.json, team2_rag/llm/output_parser.py"},
+      {tag:"Mã lỗi", q:"Khi LLM sinh citation không hợp lệ, Team 2 trả CITATION_INVALID với HTTP 502 và mã public UPSTREAM_INVALID_RESPONSE. Vì sao chọn 502 mà không chọn 400?",
+       o:["Vì 400 chỉ dùng cho lỗi đăng nhập","Vì request của người dùng hoàn toàn hợp lệ, còn lỗi nằm ở dịch vụ phía sau (LLM sinh output sai). Mã 4xx sẽ ngụ ý người dùng gửi sai","Vì 502 khiến frontend tự động retry vô hạn","Vì Spring Boot không hỗ trợ mã 400"], a:1,
+       e:"Nhóm 4xx là lỗi phía client, nhóm 5xx là lỗi phía server hoặc upstream. Chọn đúng nhóm mã giúp Team 3 quyết định có cho người dùng thử lại hay không, và giúp log phân biệt lỗi người dùng với lỗi hệ thống.",
+       s:"contracts/v0.1/CONTRACT.md, team2_rag/errors.py, team2_rag/docs_2/week9/tasks.md (T2-23)"},
+      {tag:"Gỡ lỗi LLM", q:"Ở chế độ claims với top_k = 10, Gemini trả JSON bị cắt cụt và finish_reason là MAX_TOKENS. Nguyên nhân và cách nhóm đã xử lý là gì?",
+       o:["Context quá dài nên Gemini từ chối; nhóm giảm top_k xuống 3","Gemini bị lỗi mạng; nhóm thêm retry","max_output_tokens = 1500 không đủ chỗ cho answer cùng danh sách claims; nhóm nâng lên 4096 ở chế độ claims","Prompt thiếu ví dụ JSON; nhóm thêm few-shot"], a:2,
+       e:"MAX_TOKENS nghĩa là model dừng vì hết ngân sách output, không phải vì input quá dài. Claims làm output dài hơn nhiều so với chỉ có answer. Sau khi nâng lên 4096, nhóm chạy lại 3 câu lỗi và cả 3 đều qua.",
+       s:"team2_rag/docs_2/week9/tasks.md mục 8 (T2-18), team2_rag/config/llm_config.py"},
+      {tag:"Verification", q:"Câu gold_002 bị đánh dấu hallucination dù claim đúng theo luật. Nguyên nhân là gì?",
+       o:["LLM trích dẫn sai Điều","Bộ kiểm lexical đo độ trùng từ giữa claim và chunk. Chunk chỉ có dòng \"1. Doanh nghiệp.\" nên độ trùng chỉ 22,2%, dưới ngưỡng, dẫn tới báo nhầm","Golden của câu này bị sai","Câu hỏi nằm ngoài phạm vi corpus"], a:1,
+       e:"Chunk quá ngắn thì claim diễn đạt lại sẽ có ít từ chung, dù nghĩa vẫn đúng. Đây là giới hạn của heuristic lexical. Nếu bỏ báo nhầm này, tỉ lệ ước lượng giảm từ 7,14% còn khoảng 3,6%, nhưng con số này chưa được xác nhận bằng một lượt chạy lại.",
+       s:"team2_rag/verification/verifier.py, docs/team2_rag/citation_rubric.md, docs_2/week9/tasks.md (T2-27)"},
+      {tag:"Diễn giải kết quả", q:"Giảng viên hỏi: \"Citation Correctness đạt 100%, vậy câu trả lời của hệ thống đúng luật chưa?\" Câu trả lời nào chính xác?",
+       o:["Đúng, vì mọi citation đều hợp lệ","Đúng, vì Coverage cũng trên 96%","Chưa chắc: Correctness chỉ chứng minh citation khớp với chunk đã gửi cho LLM. Việc nguồn có thật sự hỗ trợ kết luận phải xem Coverage và Hallucination, và Golden còn 70/110 câu chưa được soát pháp lý","Không đúng, vì Correctness phải đạt 90% mới hợp lệ"], a:2,
+       e:"Một câu trả lời có thể trích đúng chunk nhưng kết luận vượt quá nội dung chunk. Ngoài ra, chunk đúng có thể không nằm trong context, như lỗi thật ở gold_026. Mọi con số hiện vẫn mang nhãn exploratory.",
+       s:"team2_rag/answer.py, docs/team2_rag/citation-specification.md, metrics.py"}
+    ]
+  },
+  t3: {
+    intro: "Team 3 nên trả lời được cách backend chống tạo lượt hỏi trùng, cách ánh xạ lỗi của Team 2 và luồng SSE cho từng trạng thái.",
+    qs: [
+      {tag:"Idempotency", q:"Frontend gửi một lượt hỏi nhưng gặp CLIENT_TIMEOUT, tức không biết server đã xử lý hay chưa. Khi người dùng bấm \"Thử lại\", frontend nên làm gì?",
+       o:["Tạo client_request_id mới để chắc chắn server nhận như một lượt mới","Gửi lại với đúng client_request_id cũ. Backend sẽ trả kết quả đã lưu, hoặc báo REQUEST_IN_PROGRESS nếu lượt đó còn đang chạy, nên không sinh lượt trùng và không gọi AI lại","Tải lại trang để xóa trạng thái","Không cho thử lại vì timeout là lỗi vĩnh viễn"], a:1,
+       e:"shouldReuseRequestId trả true khi kết quả chưa rõ (outcomeUnknown) hoặc khi lỗi là REQUEST_IN_PROGRESS. Chỉ khi server trả lời rõ là lượt đó thất bại thì mới dùng ID mới. Nhờ vậy, một câu hỏi không bị tính phí LLM hai lần.",
+       s:"team3_fullstack/frontend/src/api/retryPolicy.ts, conversation/ConversationService.java"},
+      {tag:"Idempotency", q:"Một request dùng lại client_request_id đã có, nhưng nội dung câu hỏi khác lần trước. Backend trả gì?",
+       o:["Backend trả kết quả cũ của lần trước","Backend ghi đè câu hỏi cũ bằng câu hỏi mới","Backend trả 409 REQUEST_ID_CONFLICT với retryable = false","Backend trả 409 REQUEST_IN_PROGRESS với retryable = true"], a:2,
+       e:"Cùng ID nhưng khác câu hỏi (hoặc khác hội thoại) là dấu hiệu lỗi phía client, nên thử lại cũng vô ích. REQUEST_IN_PROGRESS chỉ dành cho trường hợp cùng ID, cùng câu hỏi và lượt đó còn đang chạy.",
+       s:"team3_fullstack/backend/.../conversation/ConversationService.java, persistence/ChatStore.java"},
+      {tag:"Ánh xạ lỗi", q:"Team 2 trả HTTP 503 với mã LLM_UNAVAILABLE. HttpAiClient của backend trả gì cho frontend?",
+       o:["503 SERVICE_UNAVAILABLE với retryable = true và một thông báo chung, không lộ tên provider","503 LLM_UNAVAILABLE kèm nguyên văn lỗi của Gemini","500 INTERNAL_ERROR","200 với status insufficient_context"], a:0,
+       e:"HttpAiClient gom RETRIEVAL_UNAVAILABLE, LLM_UNAVAILABLE và SERVICE_UNAVAILABLE thành một mã public. Contract cấm trả lỗi thô của provider hay stack trace ra ngoài. Lỗi hệ thống cũng không được đội lốt thành insufficient_context.",
+       s:"team3_fullstack/backend/.../ai/HttpAiClient.java (UNAVAILABLE_CODES), contracts/v0.1/CONTRACT.md mục 4"},
+      {tag:"Ánh xạ lỗi", q:"Team 2 trả một lỗi 4xx (không phải 404 khi mở Điều) cho request mà backend gửi sang. Backend nên hiểu và xử lý thế nào?",
+       o:["Đây là lỗi của người dùng, nên trả 400 cho frontend","Đây là dấu hiệu backend gửi sai contract sang Team 2, tức lỗi tích hợp. Backend trả 502 UPSTREAM_CONTRACT_ERROR","Backend tự động retry 3 lần","Backend bỏ qua lỗi và trả câu trả lời rỗng"], a:1,
+       e:"Người dùng chỉ gửi câu hỏi tới backend. Request sang Team 2 do backend tự dựng, nên nếu Team 2 từ chối thì lỗi nằm ở phần tích hợp. Mã 502 giúp nhóm phát hiện ngay contract đang lệch giữa hai bên.",
+       s:"team3_fullstack/backend/.../ai/HttpAiClient.java (nhánh status 4xx)"},
+      {tag:"SSE", q:"Khi RAG trả status insufficient_context, luồng SSE gửi cho frontend có dạng nào?",
+       o:["Một event error vì hệ thống không trả lời được","Nhiều event delta chứa câu \"Không đủ thông tin\" rồi tới complete","Event meta trước, rồi một event complete; không có delta, không có citation hay marker C1..Cn","Không có event nào, chỉ có HTTP 204"], a:2,
+       e:"insufficient_context là một kết quả hợp lệ, không phải lỗi hệ thống, nên luồng kết thúc bằng complete chứ không phải error. Mỗi luồng có đúng một event kết thúc (complete hoặc error), và meta luôn đi trước. Frontend cần hiện trạng thái này như một thông báo, không hiện như lỗi.",
+       s:"contracts/v0.1/CONTRACT.md mục 4, contracts/v0.1/chat_stream.schema.json"},
+      {tag:"Profile", q:"Để demo với RAG thật, backend phải chạy profile nào và cần những gì?",
+       o:["Profile mock, vì profile này có H2 lưu hội thoại","Profile rag: backend gọi Team 2 qua RAG_BASE_URL (mặc định http://localhost:8001) và cần PostgreSQL qua SPRING_DATASOURCE_URL","Profile mặc định, vì backend tự phát hiện Team 2","Profile rag nhưng không cần database, vì hội thoại nằm trong bộ nhớ"], a:1,
+       e:"Profile mock tắt hẳn DataSource và JPA, nên hội thoại chỉ nằm trong bộ nhớ và AI là giả. Nếu quên bật PostgreSQL khi chạy profile rag, backend sẽ lỗi kết nối database (connection timeout 2 giây) trước khi kịp gọi tới Team 2.",
+       s:"team3_fullstack/backend/src/main/resources/application-mock.properties, application-rag.properties"},
+      {tag:"Hiệu năng NFR-09", q:"Giảng viên hỏi về chỉ tiêu hiệu năng của Viewer. Câu nào nêu đúng các mốc NFR-09 mà nhóm đang đo?",
+       o:["Toàn bộ câu trả lời phải xong trong 1 giây","Java → AI ≤ 10 giây, phía frontend ≤ 15 giây, và get_article đạt p95 ≤ 200 ms khi mở Điều từ citation","Chỉ cần p50 ≤ 15 giây, không cần p95","get_article ≤ 10 giây vì phải đọc cả Điều"], a:1,
+       e:"Mốc 10 giây đo từ backend gọi AI đến khi nhận kết quả. Mốc 15 giây tính thêm phần mạng và render phía trình duyệt. Mở Điều chỉ đọc Article Store nên phải nhanh hơn nhiều. Nhóm đo p95 thay vì trung bình để không bỏ sót các lượt chậm.",
+       s:"team1_data/docs_1/week10/tasks.md (VLRA-71), docs/team3_fullstack/performance-measurement.md, tools/measure_latency.py"}
+    ]
+  }
+};
+let qTeam = "t1";
+const qState = {t1:{}, t2:{}, t3:{}};
+const LETTERS = ["A","B","C","D"];
+function renderQuiz(){
+  const set = QUIZ[qTeam], st = qState[qTeam];
+  document.getElementById("qIntro").textContent = set.intro;
+  document.getElementById("qList").innerHTML = set.qs.map((q,i)=>{
+    const picked = st[i];
+    const done = picked !== undefined;
+    const opts = q.o.map((t,j)=>{
+      let c = "opt";
+      if (done){ if (j===q.a) c+=" right"; else if (j===picked) c+=" wrong"; else c+=" fade"; }
+      return `<button class="${c}" data-q="${i}" data-o="${j}" ${done?"disabled":""}><span class="k">${LETTERS[j]}</span><span>${esc(t)}</span></button>`;
+    }).join("");
+    const ex = done ? `<div class="explain"><span class="verdict ${picked===q.a?"ok":"no"}">${picked===q.a?"Chính xác.":"Chưa đúng. Đáp án là "+LETTERS[q.a]+"."}</span>${esc(q.e)}<span class="src">Nguồn: ${esc(q.s)}</span></div>` : "";
+    return `<div class="card q"><div class="q-head"><span class="q-num">${i+1}</span><div><p class="q-text">${esc(q.q)}</p><span class="q-tag">${esc(q.tag)}</span></div></div><div class="opts">${opts}</div>${ex}</div>`;
+  }).join("");
+  const answered = Object.keys(st).length, right = Object.entries(st).filter(([i,v])=>set.qs[i].a===v).length, total = set.qs.length;
+  document.getElementById("qRight").textContent = right;
+  document.getElementById("qTotal").textContent = total;
+  document.getElementById("qProg").style.width = (answered/total*100)+"%";
+  const doneEl = document.getElementById("qDone");
+  if (answered === total){
+    const pct = right/total;
+    const msg = pct >= .85 ? "Team đã nắm chắc phần việc của mình. Nên luyện thêm cách nói lý do bằng lời của mình, vì giảng viên thường hỏi tiếp \"tại sao\"."
+      : pct >= .6 ? "Team nắm được phần lớn, nhưng nên đọc lại các file nguồn của những câu sai trước buổi hỏi đáp."
+      : "Team nên dành một buổi đọc lại code và kế hoạch tuần, nhất là các file được ghi ở phần \"Nguồn\" của từng câu sai.";
+    doneEl.innerHTML = `<div class="card quiz-done"><p><b>Kết quả: ${right}/${total} câu đúng.</b> ${msg}</p></div>`;
+  } else doneEl.innerHTML = "";
+}
+document.getElementById("qList").addEventListener("click", e=>{
+  const b = e.target.closest(".opt"); if (!b || b.disabled) return;
+  qState[qTeam][+b.dataset.q] = +b.dataset.o;
+  renderQuiz();
+});
+document.querySelectorAll("#quizTabs button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("#quizTabs button").forEach(x=>{x.classList.toggle("on",x===b); x.setAttribute("aria-selected", x===b);});
+  qTeam = b.dataset.v; renderQuiz();
+}));
+document.getElementById("qReset").addEventListener("click",()=>{ qState[qTeam] = {}; renderQuiz(); });
+renderQuiz();
 
 /* ---------- scrollspy ---------- */
 const links = [...document.querySelectorAll("#toc a")];
