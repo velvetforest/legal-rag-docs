@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Structure Teams 2026-11-10 Visualization</title>
+<meta name="description" content="Giải thích từng phần của Vietnamese Legal RAG: folder nào làm gì, team nào phụ trách, số liệu hiện tại và góp ý cải thiện.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: dark;
+  --bg:#0c131d; --bg-2:#0f1824; --surface:#132031; --surface-2:#182839; --line:#223548; --line-2:#2c4359;
+  --text:#dce8f4; --muted:#8fa5bb; --faint:#5f758b;
+  --sky:#7cc3ec; --sky-strong:#9fd4f3; --sky-soft:rgba(124,195,236,.13); --sky-line:rgba(124,195,236,.38);
+  --t1:#7cc3ec; --t2:#86d4b8; --t3:#b4a7f0; --sh:#e2c88c;
+  --bad:#f2918a; --bad-soft:rgba(242,145,138,.12);
+  --warm:#e2c88c; --warm-soft:rgba(226,200,140,.12);
+  --radius:14px;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--text);font:15.5px/1.68 "Be Vietnam Pro",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--sky);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font-family:var(--mono);font-size:.86em;background:var(--surface-2);border:1px solid var(--line);padding:1px 6px;border-radius:6px;color:var(--sky-strong);word-break:break-word}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+
+/* header */
+header.hero{padding:56px 0 30px;background:radial-gradient(900px 340px at 15% -10%,rgba(124,195,236,.16),transparent 70%),radial-gradient(700px 300px at 95% 0%,rgba(180,167,240,.08),transparent 70%)}
+.eyebrow{font:500 12.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sky)}
+h1{font-size:clamp(28px,4.6vw,44px);line-height:1.15;margin:10px 0 14px;font-weight:700;letter-spacing:-.01em}
+h1 span{color:var(--sky)}
+.lead{color:var(--muted);max-width:760px;font-size:16.5px;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.pill{font:500 12.5px var(--mono);padding:4px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted);background:var(--bg-2)}
+.pill b{color:var(--text);font-weight:500}
+
+/* nav */
+nav.toc{position:sticky;top:0;z-index:20;background:rgba(12,19,29,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;scrollbar-width:none}
+nav.toc .wrap::-webkit-scrollbar{display:none}
+nav.toc a{flex:none;font-size:13px;padding:5px 11px;border-radius:999px;color:var(--muted);border:1px solid transparent;white-space:nowrap}
+nav.toc a:hover{text-decoration:none;color:var(--text);border-color:var(--line-2)}
+nav.toc a.on{color:var(--bg);background:var(--sky);font-weight:600}
+
+/* sections */
+section.part{padding:46px 0 10px;border-top:1px solid var(--line)}
+section.part:first-of-type{border-top:0}
+.part-head{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.num{font:600 13px var(--mono);color:var(--bg);background:var(--tc,var(--sky));border-radius:8px;padding:3px 9px;margin-top:6px}
+h2{font-size:clamp(22px,3vw,28px);margin:0;line-height:1.3;flex:1 1 220px;min-width:0;overflow-wrap:anywhere}
+.team-tag{font:500 12.5px var(--mono);border:1px solid var(--tc,var(--sky));color:var(--tc,var(--sky));border-radius:999px;padding:3px 10px;margin-top:6px;white-space:nowrap}
+.sub{color:var(--muted);margin:2px 0 22px;max-width:820px}
+.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:22px;align-items:start}
+.grid > *{min-width:0}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+.card h3{font-size:14px;margin:0 0 10px;color:var(--muted);font-weight:600;letter-spacing:.02em;text-transform:uppercase}
+.prose p{margin:0 0 12px}
+.prose p:last-child{margin-bottom:0}
+.who{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.who .person{font:500 12.5px var(--mono);background:var(--bg-2);border:1px solid var(--line-2);border-radius:8px;padding:4px 9px;color:var(--text)}
+.who .person i{font-style:normal;color:var(--faint);margin-left:6px}
+
+/* tree */
+.tree-card{padding:14px 0 12px;position:sticky;top:64px}
+@media (max-width:860px){.tree-card{position:static}}
+.tree-top{display:flex;justify-content:space-between;align-items:center;padding:0 16px 10px;gap:10px}
+.tree-top h3{margin:0}
+.btn{font:500 12px "Be Vietnam Pro",sans-serif;color:var(--sky);background:transparent;border:1px solid var(--sky-line);border-radius:8px;padding:4px 10px;cursor:pointer}
+.btn:hover{background:var(--sky-soft)}
+.btn:focus-visible,.node:focus-visible,nav.toc a:focus-visible,.seg button:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+.tree{font:13px/1.25 var(--mono);overflow-x:auto;padding:0 8px;max-height:620px;overflow-y:auto}
+.tree a.row{display:flex;align-items:center;gap:0;white-space:pre;color:var(--muted);padding:3px 8px;border-radius:6px;border-left:2px solid transparent}
+.tree a.row:hover{text-decoration:none;background:var(--surface-2);color:var(--text)}
+.tree .g{color:var(--faint)}
+.tree .ic{width:1.4em;display:inline-block;text-align:center}
+.tree a.dim{opacity:.42}
+.tree a.path{color:var(--text)}
+.tree a.hl{background:color-mix(in srgb,var(--tc,var(--sky)) 15%,transparent);color:var(--tc,var(--sky));font-weight:500;border-left-color:var(--tc,var(--sky))}
+.tree a.warn{background:var(--bad-soft);color:var(--bad);border-left-color:var(--bad)}
+.tree .note{font:400 11.5px "Be Vietnam Pro",sans-serif;color:var(--faint);margin-left:10px;white-space:nowrap}
+.tree a.hl .note{color:color-mix(in srgb,var(--tc,var(--sky)) 75%,var(--muted))}
+.tree a.warn .note{color:var(--bad)}
+.tree .own{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:8px}
+.legend{display:flex;flex-wrap:wrap;gap:12px;padding:10px 16px 0;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:16px}
+.stat{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stat .v{font:600 21px var(--mono);color:var(--tc,var(--sky))}
+.stat .v.bad{color:var(--bad)}
+.stat .k{font-size:12px;color:var(--muted);line-height:1.4}
+
+/* suggestions */
+.advice{margin:22px 0 8px;background:linear-gradient(180deg,rgba(226,200,140,.06),transparent);border:1px solid rgba(226,200,140,.28);border-radius:var(--radius);padding:16px 20px 6px}
+.advice h3{margin:0 0 10px;font-size:15px;color:var(--warm);display:flex;align-items:center;gap:8px}
+.advice ul{list-style:none;margin:0;padding:0}
+.advice li{padding:10px 0 12px;border-top:1px dashed var(--line-2);display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.advice li:first-child{border-top:0}
+.lvl{font:600 11px var(--mono);padding:3px 8px;border-radius:6px;white-space:nowrap;margin-top:3px}
+.lvl.p0{background:var(--bad-soft);color:var(--bad);border:1px solid rgba(242,145,138,.4)}
+.lvl.p1{background:var(--warm-soft);color:var(--warm);border:1px solid rgba(226,200,140,.4)}
+.lvl.p2{background:var(--sky-soft);color:var(--sky);border:1px solid var(--sky-line)}
+.advice li p{margin:0}
+.advice li .fix{color:var(--muted);margin-top:4px;font-size:14.5px}
+.advice li .fix b{color:var(--text);font-weight:600}
+
+/* pipeline */
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px 4px;margin:6px 0 14px}
+.node{flex:1 1 112px;min-width:104px;text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--tc);border-radius:12px;padding:10px 11px;color:var(--text);font:inherit;transition:transform .15s,border-color .15s,background .15s}
+.node:hover{transform:translateY(-2px);border-color:var(--line-2)}
+.node.on{background:color-mix(in srgb,var(--tc) 14%,var(--surface));border-color:var(--tc)}
+.node small{display:block;font:500 11px var(--mono);color:var(--tc)}
+.node strong{display:block;font-size:13.5px;line-height:1.3;margin-top:3px}
+.node.off{border-style:dashed;border-top-style:solid}
+.arrow{align-self:center;color:var(--faint);font-size:15px}
+@media (max-width:640px){.arrow{display:none}.node{flex-basis:44%}}
+.flow-detail{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--tc,var(--sky));border-radius:12px;padding:14px 18px;min-height:96px}
+.flow-detail h4{margin:0 0 6px;font-size:16px}
+.flow-detail p{margin:0 0 8px;color:var(--text)}
+.flow-detail .go{font-size:13.5px}
+
+.teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:20px}
+.team{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;border-top:3px solid var(--tc)}
+.team h4{margin:0 0 4px;font-size:15.5px;color:var(--tc)}
+.team p{margin:0;color:var(--muted);font-size:14px}
+
+/* charts */
+.seg{display:inline-flex;background:var(--bg-2);border:1px solid var(--line-2);border-radius:10px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{font:500 12.5px "Be Vietnam Pro",sans-serif;color:var(--muted);background:transparent;border:0;border-radius:7px;padding:5px 10px;cursor:pointer}
+.seg button.on{background:var(--sky);color:var(--bg)}
+.chart-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:150px 1fr 54px;align-items:center;gap:10px;font-size:13px}
+@media (max-width:520px){.bar{grid-template-columns:104px 1fr 48px;font-size:12px}}
+.bar .lab{color:var(--muted);font-family:var(--mono);font-size:12px;line-height:1.3}
+.bar .track{height:16px;background:var(--bg-2);border-radius:5px;position:relative;overflow:visible}
+.bar .fill{display:block;height:100%;border-radius:5px;background:var(--tc,var(--sky));transition:width .45s ease}
+.bar .fill.bad{background:var(--bad)}
+.bar .val{font:500 12.5px var(--mono);text-align:right}
+.target{position:absolute;top:-4px;bottom:-4px;width:0;border-left:2px dashed var(--warm)}
+.chart-note{font-size:12.5px;color:var(--faint);margin-top:12px}
+
+.summary-list{counter-reset:s;list-style:none;padding:0;margin:0}
+.summary-list li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.summary-list li:first-child{border-top:0}
+.summary-list li::before{content:counter(s);font:600 13px var(--mono);color:var(--bg);background:var(--sky);border-radius:8px;height:26px;display:grid;place-items:center}
+.summary-list li p{margin:0}
+.summary-list li small{color:var(--muted);display:block;font-size:13px}
+footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px solid var(--line);margin-top:40px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Vietnamese Legal RAG · nhánh develop</div>
+    <h1>Dự án được chia thành <span>8 phần</span>, ba team và một luồng RAG</h1>
+    <p class="lead">Trang này giải thích từng phần của repo theo thứ tự dữ liệu đi qua hệ thống. Mỗi phần có cây folder đúng như trên GitHub, trong đó folder liên quan được tô sáng. Người đọc có thể bấm vào bất kỳ dòng nào trong cây để mở folder đó trên GitHub. Cuối mỗi phần, trang nêu góp ý cải thiện kèm mức ưu tiên.</p>
+    <div class="meta">
+      <span class="pill">develop @ <b>bd49e3e</b> · merge bởi datdooo (PR #60)</span>
+      <span class="pill">cập nhật <b>10/11/2026</b></span>
+      <span class="pill"><b>1.554</b> file được track</span>
+      <span class="pill">Sprint 7 · hạn <b>16/11/2026</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Mục lục">
+  <div class="wrap" id="toc">
+    <a href="#tong-quan">Tổng quan</a>
+    <a href="#p1">1 · Dữ liệu</a>
+    <a href="#p2">2 · Retrieval</a>
+    <a href="#p3">3 · Golden set</a>
+    <a href="#p4">4 · Contracts</a>
+    <a href="#p5">5 · RAG &amp; LLM</a>
+    <a href="#p6">6 · Verification</a>
+    <a href="#p7">7 · Fullstack</a>
+    <a href="#p8">8 · Docs, tests, quy trình</a>
+    <a href="#uu-tien">Ưu tiên</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ================= TỔNG QUAN ================= -->
+<section class="part" id="tong-quan" style="--tc:var(--sky)">
+  <div class="part-head"><span class="num">0</span><h2>Tổng quan: một câu hỏi đi qua hệ thống như thế nào</h2></div>
+  <p class="sub">Người dùng gõ câu hỏi về Luật Doanh nghiệp. Hệ thống tìm Điều/Khoản liên quan, đưa cho LLM viết câu trả lời có citation, kiểm lại citation, rồi hiển thị lên giao diện. Người đọc có thể bấm từng bước dưới đây để xem bước đó làm gì và thuộc team nào.</p>
+
+  <div class="flow" id="flow"></div>
+  <div class="flow-detail" id="flowDetail" aria-live="polite"></div>
+
+  <div class="teams">
+    <div class="team" style="--tc:var(--t1)"><h4>Team 1 — Data &amp; Retrieval</h4><p>Team 1 xây corpus pháp luật, chunking, BM25, dense retrieval, Hybrid RRF, Golden set và đánh giá retrieval.</p></div>
+    <div class="team" style="--tc:var(--t2)"><h4>Team 2 — RAG &amp; LLM</h4><p>Team 2 phụ trách reranker, context builder, prompt, LLM client, citation verification và benchmark chất lượng câu trả lời.</p></div>
+    <div class="team" style="--tc:var(--t3)"><h4>Team 3 — Fullstack</h4><p>Team 3 làm backend Spring Boot, REST API/SSE, frontend React, document viewer và đo latency end-to-end.</p></div>
+    <div class="team" style="--tc:var(--sh)"><h4>Phần dùng chung</h4><p>Cả ba team cùng giữ <code>contracts/</code>, <code>docs/</code>, <code>tests/</code> và quy trình PR vào <code>develop</code>.</p></div>
+  </div>
+
+  <div class="card tree-card" style="margin-top:20px;position:static">
+    <div class="tree-top"><h3>Ai sở hữu folder nào (cấp gốc)</h3></div>
+    <div class="tree" data-tree="owner"></div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--t1)"></i>Team 1</span>
+      <span><i class="sw" style="background:var(--t2)"></i>Team 2</span>
+      <span><i class="sw" style="background:var(--t3)"></i>Team 3</span>
+      <span><i class="sw" style="background:var(--sh)"></i>Dùng chung</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 1. DỮ LIỆU ================= -->
+<section class="part" id="p1" style="--tc:var(--t1)">
+  <div class="part-head"><span class="num">1</span><h2>Dữ liệu pháp luật: từ văn bản gốc đến chunk</h2><span class="team-tag">Team 1</span></div>
+  <p class="sub">Phần này biến văn bản luật thành dữ liệu mà retrieval đọc được. Mọi phần phía sau đều phụ thuộc vào chất lượng của bước này.</p>
+  <div class="grid">
+    <div>
+      <div class="card prose">
+        <p>Team 1 lưu corpus chính trong <code>data/doanh-nghiep/</code>. Corpus này gồm 8 văn bản: Luật Doanh nghiệp 59/2020/QH14, Luật 76/2025/QH15, các Nghị định 122/2021, 168/2025, 288/2026, Thông tư 68/2025/TT-BTC và hai văn bản hợp nhất (VBHN 67 và VBHN 7566).</p>
+        <p>Mỗi văn bản đi qua ba tầng folder. Folder <code>raw/</code> giữ bản gốc tải về, folder <code>interim/</code> giữ text đã làm sạch, và folder <code>processed/</code> giữ kết quả cuối cùng. File <code>registry/documents.json</code> lưu metadata của từng văn bản như số hiệu, loại văn bản và tình trạng hiệu lực.</p>
+        <p>Script <code>chunk_documents.py</code> đọc <code>interim/</code> cùng registry, cắt văn bản theo đơn vị <b>Khoản</b>, rồi ghi ra <code>processed/chunks.jsonl</code> với 2.576 chunk. Từ tuần 10 (VLRA-71), script này còn ghi thêm <code>processed/articles.jsonl</code> với 635 Điều nguyên văn cho Article Store. Trước đó, Viewer phải nối chunk lại thành Điều nên bị lặp câu dẫn ở 48 Điều và mất chú thích sửa đổi ở 46 Điều.</p>
+        <p>Team 1 còn có corpus mở rộng trong <code>data/doanh-nghiep-mo-rong/</code>. Script <code>build_from_hf.py</code> tạo corpus này từ một dataset trên Hugging Face, gồm 1.000 file text trong <code>interim/</code> và file nén <code>processed/chunks.jsonl.gz</code>. Script <code>scripts/preprocess_legal_data.py</code> và <code>scripts/validate_chunks.py</code> lần lượt làm sạch dữ liệu và kiểm tra schema của chunk.</p>
+        <div class="who"><span class="person">velvetforest</span><span class="person">Banh-Van-Hiep</span><span class="person">dungsat1</span><span class="person">Claude<i>agent, qua PR của velvetforest</i></span></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="v">8</div><div class="k">văn bản trong corpus chính</div></div>
+        <div class="stat"><div class="v">2.576</div><div class="k">chunk (theo Khoản)</div></div>
+        <div class="stat"><div class="v">635</div><div class="k">Điều nguyên văn trong Article Store</div></div>
+        <div class="stat"><div class="v">≈55 MB</div><div class="k">dung lượng corpus mở rộng trong git</div></div>
+      </div>
+    </div>
+    <div class="card tree-card">
+      <div class="tree-top"><h3>Cấu trúc folder</h3><button class="btn" data-toggle>Mở toàn bộ cây</button></div>
+      <div class="tree" data-tree="p1"></div>
+    </div>
+  </div>
+  <div class="advice">
+    <h3>Góp ý cải thiện</h3>
+    <ul>
+      <li><span class="lvl p1">Nên làm</span><div><p>Corpus mở rộng chiếm khoảng 55 MB với hơn 1.000 file trong git. Mỗi người clone repo đều phải tải phần này, kể cả Team 2 và Team 3 không dùng đến.</p><p class="fix"><b>Đề xuất:</b> Team 1 nên chuyển <code>doanh-nghiep-mo-rong/interim/</code> sang Git LFS hoặc để <code>build_from_hf.py</code> tải lại khi cần, chỉ commit registry và <code>processing_report.json</code>.</p></div></li>
+      <li><span class="lvl p1">Nên làm</span><div><p>Registry còn thiếu <code>effective_date</code> cho 4 văn bản của corpus mở rộng (task T1-W10-4). Khi thiếu ngày hiệu lực, hệ thống không lọc được văn bản đã hết hiệu lực trước khi trả lời.</p><p class="fix"><b>Đề xuất:</b> Team 1 nên thêm một test bắt buộc mọi văn bản có <code>effective_date</code> hoặc ghi rõ lý do để trống.</p></div></li>
+      <li><span class="lvl p2">Gợi ý</span><div><p>Hai script <code>chunk_documents.py</code> và <code>build_from_hf.py</code> là code nhưng nằm trong <code>data/</code>, trong khi code Team 1 còn lại nằm ở <code>team1_data/</code> và <code>scripts/</code>.</p><p class="fix"><b>Đề xuất:</b> Team 1 nên chuyển hai script này vào <code>team1_data/</code> để <code>data/</code> chỉ chứa dữ liệu và việc import/test thống nhất hơn.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 2. RETRIEVAL ================= -->
+<section class="part" id="p2" style="--tc:var(--t1)">
+  <div class="part-head"><span class="num">2</span><h2>Retrieval: tìm đúng Khoản cho mỗi câu hỏi</h2><span class="team-tag">Team 1</span></div>
+  <p class="sub">Retrieval quyết định LLM được nhìn thấy gì. Nếu chunk đúng không lọt vào top-k, LLM không thể trả lời đúng dù prompt tốt đến đâu.</p>
+  <div class="grid">
+    <div>
+      <div class="card prose">
+        <p>Team 1 viết package <code>team1_data/retrieval/</code> với ba cách tìm kiếm. File <code>bm25.py</code> chạy BM25 kiểu Lucene (k1 = 1,2, b = 0,75) trên token do <code>tokenizer.py</code> tách bằng underthesea. Hai file <code>embedding.py</code> và <code>dense.py</code> chạy dense retrieval với model <code>AITeamVN/Vietnamese_Embedding</code> và khoảng cách cosine. File <code>hybrid.py</code> gộp hai danh sách bằng RRF với k = 60 và trọng số BM25 : Dense = 0,5 : 1.</p>
+        <p>File <code>retrieval_v2.json</code> ghi cấu hình đã chốt ở VLRA-53, trả về top_k = 20 từ tối đa 100 ứng viên. Team 2 đọc file này khi dựng runtime. Script <code>scripts/populate_qdrant.py</code> nạp embeddings đã tính sẵn vào Qdrant để không phải encode lại toàn bộ corpus.</p>
+        <p>Folder <code>evaluation/retrieval/</code> lưu cấu hình thử nghiệm trong <code>configs/</code> và kết quả từng lượt chạy trong <code>runs/</code> (từ <code>vlra49</code> đến <code>vlra53-aiteamvn-weights</code>). Mỗi lượt chạy ghi commit, sha256 của Dev Set và corpus, nên hai lượt chỉ được so sánh khi hai hash này trùng nhau.</p>
+        <div class="who"><span class="person">velvetforest</span><span class="person">Banh-Van-Hiep</span><span class="person">dungsat1</span><span class="person">Claude<i>agent</i></span></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>So sánh cấu hình trên Dev Set 110 câu (vlra53)</h3>
+        <div class="chart-controls">
+          <div class="seg" id="retGroup" role="group" aria-label="Nhóm câu hỏi">
+            <button class="on" data-v="all">Cả 110 câu</button>
+            <button data-v="rev">40 câu Team 2 đã review</button>
+            <button data-v="draft">70 câu draft</button>
+          </div>
+          <div class="seg" id="retMetric" role="group" aria-label="Chỉ số">
+            <button class="on" data-v="r5">Recall@5</button>
+            <button data-v="r20">Recall@20</button>
+          </div>
+        </div>
+        <div class="bars" id="retBars"></div>
+        <p class="chart-note" id="retNote"></p>
+      </div>
+    </div>
+    <div class="card tree-card">
+      <div class="tree-top"><h3>Cấu trúc folder</h3><button class="btn" data-toggle>Mở toàn bộ cây</button></div>
+      <div class="tree" data-tree="p2"></div>
+    </div>
+  </div>
+  <div class="advice">
+    <h3>Góp ý cải thiện</h3>
+    <ul>
+      <li><span class="lvl p0">Nên làm sớm</span><div><p>Cấu hình đã chốt đạt Recall@5 = 0,986 trên 70 câu draft nhưng chỉ đạt 0,783 trên 40 câu Team 2 đã review. Con số tổng 0,912 vì vậy đang bị nhóm draft kéo lên. Nhóm draft có thể được soạn bám sát nội dung chunk nên dễ hơn câu hỏi thật.</p><p class="fix"><b>Đề xuất:</b> Team 1 nên lấy nhóm đã review làm con số chính trong báo cáo và chọn cấu hình theo nhóm đó, còn con số tổng chỉ để tham khảo.</p></div></li>
+      <li><span class="lvl p2">Gợi ý</span><div><p>Mỗi lượt đánh giá dense mất khoảng 1.010 giây (≈17 phút) chỉ để build index cho 2.576 chunk.</p><p class="fix"><b>Đề xuất:</b> Runner nên cache embeddings theo <code>corpus.sha256</code> và tên model, để lượt chạy sau chỉ cần đọc lại vector.</p></div></li>
+      <li><span class="lvl p2">Gợi ý</span><div><p>README gốc vẫn ghi Team 1 làm việc ở <code>data/</code> và <code>scripts/</code>, đồng thời ghi <code>evaluation/</code> "chưa có code". Thực tế code chính của Team 1 nằm ở <code>team1_data/</code>, còn <code>evaluation/retrieval/</code> đã có 8 lượt chạy.</p><p class="fix"><b>Đề xuất:</b> Team 1 nên cập nhật mục "Team Responsibilities" và cây thư mục trong <code>README.md</code>.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 3. GOLDEN ================= -->
+<section class="part" id="p3" style="--tc:var(--t1)">
+  <div class="part-head"><span class="num">3</span><h2>Golden set: bộ đề chuẩn để chấm điểm</h2><span class="team-tag">Team 1 soạn · Team 2 review</span></div>
+  <p class="sub">Golden set là bộ câu hỏi có sẵn đáp án chuẩn. Cả retrieval lẫn RAG đều được chấm trên cùng bộ này, nên một lỗi ở đây làm sai mọi con số phía sau.</p>
+  <div class="grid">
+    <div>
+      <div class="card prose">
+        <p>Team 1 giữ bộ Dev Set trong <code>team1_data/golden/golden_phase1.json</code> với 110 câu. Mỗi câu ghi <code>gold_chunk_ids</code> (các Khoản chứa đáp án), <code>expected_status</code> và <code>review_status</code>. Ở tuần 10, Team 1 đóng băng bộ này (PR #57): mọi câu có <code>split: "dev"</code> và <code>relevant_unit_groups</code>, còn hash sha256 được ghi trong <code>golden_phase1.manifest.json</code>. Hash được tính trên JSON đã chuẩn hóa NFC nên không đổi khi ai đó chỉ sửa khoảng trắng.</p>
+        <p>File <code>out_of_scope_v1.json</code> chứa 33 câu ngoài phạm vi, dùng để Team 2 chỉnh cổng từ chối trả lời. File <code>edge_cases_v1.json</code> chứa các ca biên như câu hỏi mơ hồ hoặc nhắc lượt trước.</p>
+        <p>Module <code>team1_data/evaluation/</code> chạy bằng lệnh <code>python -m team1_data.evaluation check</code> hoặc <code>run</code>. Lệnh <code>check</code> kiểm schema, kiểm gold có tồn tại trong corpus và in hash. Lệnh <code>run</code> tính Recall@k, MRR@20, hit@5 rồi ghi kết quả vào <code>evaluation/retrieval/runs/</code>.</p>
+        <div class="who"><span class="person">velvetforest</span><span class="person">Banh-Van-Hiep</span><span class="person">datdooo<i>review 40 câu</i></span><span class="person">Claude<i>agent</i></span></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="v">110</div><div class="k">câu Dev Set, đã đóng băng</div></div>
+        <div class="stat"><div class="v bad">70</div><div class="k">câu còn <code>draft_needs_legal_review</code></div></div>
+        <div class="stat"><div class="v">33</div><div class="k">câu ngoài phạm vi (chờ soát pháp lý)</div></div>
+      </div>
+    </div>
+    <div class="card tree-card">
+      <div class="tree-top"><h3>Cấu trúc folder</h3><button class="btn" data-toggle>Mở toàn bộ cây</button></div>
+      <div class="tree" data-tree="p3"></div>
+    </div>
+  </div>
+  <div class="advice">
+    <h3>Góp ý cải thiện</h3>
+    <ul>
+      <li><span class="lvl p0">Nên làm sớm</span><div><p>Có 70/110 câu Dev Set và cả 33 câu ngoài phạm vi vẫn chưa được soát pháp lý. Chừng nào các câu này chưa được soát, mọi benchmark của Team 2 vẫn phải mang nhãn <code>exploratory</code>.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên lên lịch soát 10–15 câu mỗi ngày, ghi tên người soát vào từng câu và thêm test đếm số câu còn draft.</p></div></li>
+      <li><span class="lvl p1">Nên làm</span><div><p>Folder <code>team2_rag/data/golden/</code> vẫn giữ hai bản golden riêng (<code>golden_phase1_30cai.json</code>, <code>golden_sample_5qa.json</code>). Hai nguồn song song dễ lệch nhau, giống sự cố gold_016 và gold_021–025 mà Team 1 phải sửa ở tuần 10.</p><p class="fix"><b>Đề xuất:</b> Team 2 nên đọc thẳng từ <code>team1_data/golden/</code> và lấy tập 30 câu bằng một bộ lọc có kiểm hash, thay vì giữ bản sao.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 4. CONTRACTS ================= -->
+<section class="part" id="p4" style="--tc:var(--sh)">
+  <div class="part-head"><span class="num">4</span><h2>Contracts: thỏa thuận dữ liệu giữa các team</h2><span class="team-tag">Cả ba team</span></div>
+  <p class="sub">Contract cho phép ba team làm song song. Mỗi team được tự do bên trong folder của mình, miễn là dữ liệu đi qua ranh giới đúng schema.</p>
+  <div class="grid">
+    <div>
+      <div class="card prose">
+        <p>Folder <code>contracts/v0.1/</code> mô tả dữ liệu trao đổi bằng JSON Schema. File <code>retrieval_output.schema.json</code> mô tả kết quả Team 1 giao cho Team 2. Hai file <code>query_request.schema.json</code> và <code>rag_response.schema.json</code> mô tả API nội bộ giữa Team 2 và backend Team 3. Hai file <code>chat_stream.schema.json</code> và <code>error_response.schema.json</code> mô tả luồng SSE và lỗi public mà frontend nhận. File <code>internal_article.schema.json</code> mô tả 6 trường của một Điều nguyên văn cho Viewer.</p>
+        <p>Script <code>validate_public_contract.py</code> đọc các ví dụ trong <code>public_examples.json</code> và kiểm từng ví dụ theo schema. Team 2 báo validator đạt 76/76 ở tuần 9. File <code>CONTRACT.md</code> giải thích các quy tắc, ví dụ response gửi Team 3 chỉ có ba field <code>status</code>, <code>answer</code>, <code>citations</code>, và lỗi <code>CITATION_INVALID</code> được ánh xạ thành HTTP 502 với mã public <code>UPSTREAM_INVALID_RESPONSE</code>.</p>
+        <div class="who"><span class="person">datdooo</span><span class="person">Banh-Van-Hiep</span><span class="person">velvetforest</span><span class="person">dinhtuanz</span></div>
+      </div>
+    </div>
+    <div class="card tree-card" style="--tc:var(--sh)">
+      <div class="tree-top"><h3>Cấu trúc folder</h3><button class="btn" data-toggle>Mở toàn bộ cây</button></div>
+      <div class="tree" data-tree="p4"></div>
+      <div class="legend"><span><i class="sw" style="background:var(--bad)"></i>file có vấn đề cần sửa</span></div>
+    </div>
+  </div>
+  <div class="advice">
+    <h3>Góp ý cải thiện</h3>
+    <ul>
+      <li><span class="lvl p0">Nên làm sớm</span><div><p>File <code>.github/CODEOWNERS</code> trỏ tới <code>/src/team1_data/</code> và <code>/src/team2_rag/</code>, nhưng repo không có folder <code>src/</code>. GitHub vì vậy không tự request review cho Team 1 và Team 2 khi có PR sửa code của họ. Các tên <code>@team1-lead</code>, <code>@team2-lead</code> cũng là tên giữ chỗ, không phải user hay GitHub team thật.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên đổi đường dẫn thành <code>/team1_data/</code>, <code>/data/</code>, <code>/team2_rag/</code> và thay tên giữ chỗ bằng username thật.</p></div></li>
+      <li><span class="lvl p1">Nên làm</span><div><p>Folder <code>docs/team2_rag/schemas/</code> là bộ schema nháp cũ nhưng vẫn nằm cạnh tài liệu đang dùng. Người mới dễ validate nhầm theo bộ cũ này.</p><p class="fix"><b>Đề xuất:</b> Team 2 nên chuyển bộ này vào <code>docs/archive/</code> hoặc đặt một README cảnh báo ngay trong folder.</p></div></li>
+      <li><span class="lvl p2">Gợi ý</span><div><p>Validator contract hiện chỉ chạy tay, nên một PR đổi schema vẫn có thể merge mà không ai biết frontend hay backend bị vỡ.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên cho CI chạy <code>validate_public_contract.py</code> và cho test Java/TypeScript đọc chung <code>public_examples.json</code>.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 5. RAG & LLM ================= -->
+<section class="part" id="p5" style="--tc:var(--t2)">
+  <div class="part-head"><span class="num">5</span><h2>RAG &amp; LLM: từ chunk thành câu trả lời có citation</h2><span class="team-tag">Team 2</span></div>
+  <p class="sub">Team 2 nhận top-k chunk từ retrieval, chọn context, viết prompt, gọi LLM và ép output về đúng contract cho Team 3.</p>
+  <div class="grid">
+    <div>
+      <div class="card prose">
+        <p>File <code>team2_rag/runtime.py</code> đọc biến môi trường như <code>RAG_RERANK</code>, <code>RAG_BM25_ONLY</code>, <code>RAG_TOP_K</code> và timeout rerank 4 giây, rồi lắp các thành phần lại với nhau. File <code>reranker.py</code> chấm lại chunk bằng model BGE, nhưng Team 2 đã tắt rerank mặc định (<code>RAG_RERANK=false</code>) vì Hybrid thắng hoặc hòa ở mọi chỉ số trên 110 câu.</p>
+        <p>Folder <code>prompts/</code> dựng phần đầu vào cho LLM. File <code>context.py</code> gắn nhãn <code>C1..Cn</code> và metadata cho từng chunk, đồng thời giữ ngân sách token. File <code>templates.py</code> chứa System Prompt <code>prompt_v3</code>, yêu cầu LLM chỉ trả lời từ context, nêu điều kiện và ngoại lệ, và trả <code>insufficient_context</code> khi thiếu căn cứ.</p>
+        <p>Folder <code>llm/</code> có client cho Gemini, Ollama, OpenAI và Qwen, được chọn qua <code>factory.py</code>. File <code>output_parser.py</code> ép output về JSON gồm <code>status</code>, <code>answer</code>, <code>citations</code> và <code>claims</code> (field <code>claims</code> chỉ dùng nội bộ để kiểm chứng). File <code>pipeline.py</code> nối Retrieval → Context → LLM → Verification, còn <code>answer.py</code> kiểm citation có khớp chunk đã gửi rồi đánh lại nhãn.</p>
+        <p>Folder <code>api/</code> mở HTTP API cho backend Java: <code>app.py</code> chạy pipeline thật, còn <code>mock_app.py</code> trả dữ liệu giả để Team 3 phát triển song song. Team 2 đang dùng LLM <code>gemini-3.1-flash-lite</code>.</p>
+        <div class="who"><span class="person">datdooo<i>47 commit</i></span><span class="person">Banh-Van-Hiep<i>33 commit</i></span></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="v">94</div><div class="k">test Team 2 pass (05/11)</div></div>
+        <div class="stat"><div class="v">7/7</div><div class="k">ca thử tay prompt_v3 với LLM thật</div></div>
+        <div class="stat"><div class="v">4</div><div class="k">LLM provider được hỗ trợ</div></div>
+      </div>
+    </div>
+    <div class="card tree-card">
+      <div class="tree-top"><h3>Cấu trúc folder</h3><button class="btn" data-toggle>Mở toàn bộ cây</button></div>
+      <div class="tree" data-tree="p5"></div>
+    </div>
+  </div>
+  <div class="advice">
+    <h3>Góp ý cải thiện</h3>
+    <ul>
+      <li><span class="lvl p1">Nên làm</span><div><p><code>LLMService</code> không retry khi LLM trả JSON sai định dạng. Trong lượt chẩn đoán 08/11, hai lỗi còn lại đều thuộc loại này (citation sai nhãn, claim dùng <code>citation_id</code> ngoài danh sách).</p><p class="fix"><b>Đề xuất:</b> Team 2 nên thêm đúng một lượt retry với "repair prompt" kèm thông báo lỗi của parser, để sửa lỗi định dạng mà không làm latency tăng nhiều.</p></div></li>
+      <li><span class="lvl p2">Gợi ý</span><div><p>Gốc package có nhiều script chạy tay (<code>smoke_gemini.py</code>, <code>smoke_ollama.py</code>, <code>manual_prompt_check.py</code>, <code>run_query.py</code>, <code>validate_golden.py</code>) nằm lẫn với module lõi. Folder <code>clients/</code> chỉ có một file <code>__init__.py</code> rỗng.</p><p class="fix"><b>Đề xuất:</b> Team 2 nên gom script chạy tay vào <code>team2_rag/tools/</code> và xóa <code>clients/</code> nếu không còn kế hoạch dùng.</p></div></li>
+      <li><span class="lvl p2">Gợi ý</span><div><p>Tên model <code>gemini-3.1-flash-lite</code> vẫn chưa được Người 2 xác nhận, nên benchmark sau này có thể chạy trên model khác mà không ai để ý.</p><p class="fix"><b>Đề xuất:</b> Team 2 nên chốt tên và phiên bản model trong <code>config/llm_config.py</code> và ghi chúng vào log <code>rag_config</code> của mỗi lượt chạy.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 6. VERIFICATION ================= -->
+<section class="part" id="p6" style="--tc:var(--t2)">
+  <div class="part-head"><span class="num">6</span><h2>Verification &amp; benchmark: citation có thật sự chứng minh câu trả lời?</h2><span class="team-tag">Team 2</span></div>
+  <p class="sub">Một citation khớp metadata chưa chắc đã chứng minh được kết luận. Phần này kiểm từng claim với nguồn và đo tỉ lệ hallucination.</p>
+  <div class="grid">
+    <div>
+      <div class="card prose">
+        <p>Hàm <code>verify_response</code> trong <code>verification/verifier.py</code> chạy hai tầng. Tầng 1 kiểm cấu trúc citation. Tầng 2 so từng claim với chunk được trích bằng heuristic lexical, theo rubric 4 cấp trong <code>rubric.py</code> và tài liệu <code>docs/team2_rag/citation_rubric.md</code>.</p>
+        <p>File <code>metrics.py</code> tính Citation Correctness, Citation Coverage, Hallucination mức câu và Hallucination mức claim. Khi mẫu số bằng 0, code ghi "chưa đo" thay vì gán 100% giả tạo. Script <code>scripts/benchmark_rag_v2.py</code> chạy benchmark, notebook trong <code>notebooks/</code> chạy trên Colab T4, và kết quả được lưu trong <code>docs/team2_rag/runs/</code>.</p>
+        <div class="who"><span class="person">datdooo</span><span class="person">Banh-Van-Hiep</span></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>Hallucination mức câu qua các lượt chạy (mục tiêu ≤ 5%)</h3>
+        <div class="bars" id="halBars" style="--tc:var(--t2)"></div>
+        <p class="chart-note">Đường đứt nét màu vàng là mốc 5%. Mọi lượt đều mang nhãn exploratory. Nguồn: <code>docs/team2_rag/runs/</code> và <code>team2_rag/docs_2/week9/tasks.md</code> mục 8.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="v">100%</div><div class="k">Citation Correctness (mốc ≥ 90%)</div></div>
+        <div class="stat"><div class="v">96,7–98,0%</div><div class="k">Citation Coverage (mốc ≥ 85%)</div></div>
+        <div class="stat"><div class="v bad">6,7–11,1%</div><div class="k">Hallucination mức câu, Colab run2–4</div></div>
+      </div>
+    </div>
+    <div class="card tree-card">
+      <div class="tree-top"><h3>Cấu trúc folder</h3><button class="btn" data-toggle>Mở toàn bộ cây</button></div>
+      <div class="tree" data-tree="p6"></div>
+      <div class="legend"><span><i class="sw" style="background:var(--bad)"></i>file có vấn đề cần sửa</span></div>
+    </div>
+  </div>
+  <div class="advice">
+    <h3>Góp ý cải thiện</h3>
+    <ul>
+      <li><span class="lvl p0">Nên làm sớm</span><div><p>File <code>docs/team2_rag/rag_v2_benchmark_report.md</code> ghi Hallucination 3,85% kèm dấu "ĐẠT", nhưng con số này chỉ đến từ lượt <code>ctx=5</code> trên 26 câu. Ba lượt Colab mới hơn đo được 6,7–11,1% và lượt <code>top10-ctx10</code> đo được 7,14%, tức chưa lượt nào đạt mốc 5%. Người đọc report dễ hiểu nhầm là hệ thống đã đạt.</p><p class="fix"><b>Đề xuất:</b> Team 2 nên đặt bảng các lượt chạy mới nhất lên đầu report và đổi trạng thái thành "chưa đạt".</p></div></li>
+      <li><span class="lvl p1">Nên làm</span><div><p>Bộ kiểm lexical báo nhầm ở gold_002: chunk chỉ có dòng "1. Doanh nghiệp." nên độ trùng chỉ 22,2%, dù claim đúng theo nguồn. Báo nhầm kiểu này làm tỉ lệ hallucination bị tính cao hơn thực tế.</p><p class="fix"><b>Đề xuất:</b> Team 2 nên thêm tầng NLI hoặc LLM-as-judge chỉ cho những claim bị lexical gắn cờ, nhờ vậy chi phí vẫn thấp.</p></div></li>
+      <li><span class="lvl p1">Nên làm</span><div><p>Lỗi thật ở gold_026 xảy ra vì chunk đúng không nằm trong context gửi cho LLM. Lượt chạy cũ chỉ lưu chunk được trích dẫn, nên nhóm chưa đo được câu nào thật sự có đủ chunk đúng.</p><p class="fix"><b>Đề xuất:</b> Team 2 nên chạy lại cả 30 câu với runner đã sửa và báo thêm chỉ số "context recall" (tỉ lệ gold chunk có trong context).</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 7. FULLSTACK ================= -->
+<section class="part" id="p7" style="--tc:var(--t3)">
+  <div class="part-head"><span class="num">7</span><h2>Fullstack: backend Java, frontend React và Viewer</h2><span class="team-tag">Team 3</span></div>
+  <p class="sub">Team 3 đưa pipeline đến người dùng: nhận câu hỏi, gọi Team 2, stream câu trả lời, hiện citation và mở nguyên văn Điều luật.</p>
+  <div class="grid">
+    <div>
+      <div class="card prose">
+        <p>Folder <code>backend/</code> là ứng dụng Spring Boot build bằng Maven. Package <code>ai/</code> gọi API của Team 2 qua <code>HttpAiClient</code> và đổi DTO từ snake_case sang camelCase. Package <code>chat/stream/</code> phát SSE cho frontend. Package <code>conversation/</code> lưu hội thoại bằng JPA, với schema trong <code>resources/db/chat-schema.sql</code>. Package <code>document/</code> phục vụ Viewer mở một Điều, còn <code>common/</code> gom exception và mã lỗi public.</p>
+        <p>Backend có hai profile. Profile <code>application-mock.properties</code> dùng AI giả và H2 để chạy nhanh khi dev. Profile <code>application-rag.properties</code> gọi RAG thật và dùng PostgreSQL.</p>
+        <p>Folder <code>frontend/</code> dùng React 18, Vite, TypeScript và Tailwind 4. Folder <code>src/api/</code> có <code>chatStream.ts</code> và <code>sse.ts</code> để đọc stream, <code>retryPolicy.ts</code> để thử lại khi lỗi mạng, và <code>errorText.ts</code> để hiện thông báo lỗi thống nhất. Component <code>citation/CitationCard.tsx</code> hiện thẻ trích dẫn, còn <code>document/DocumentViewer.tsx</code> mở nguyên văn Điều từ Article Store.</p>
+        <p>Folder <code>tools/</code> chứa script đo latency (<code>measure_latency.py</code>, <code>latency_report.py</code>) và script đánh giá retrieval qua API. Ở tuần 9, HauNgoXuan merge PR #55 (commit <code>7e5825c</code>, người commit HauNgoXuan), trong đó VLRA-69 cho <code>HttpAiClient</code> nhận cả mã lỗi nội bộ lẫn public, còn VLRA-70 dùng chung text lỗi cho lỗi đã lưu.</p>
+        <div class="who"><span class="person">Dinh Tuan / dinhtuanz<i>22 commit</i></span><span class="person">haunx / HauNgoXuan<i>13 commit</i></span><span class="person">Banh-Van-Hiep</span></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="v">≤ 10 s</div><div class="k">mục tiêu NFR-09: Java → AI</div></div>
+        <div class="stat"><div class="v">≤ 15 s</div><div class="k">mục tiêu NFR-09: phía frontend</div></div>
+        <div class="stat"><div class="v">≤ 200 ms</div><div class="k">mục tiêu p95 của <code>get_article</code></div></div>
+      </div>
+    </div>
+    <div class="card tree-card">
+      <div class="tree-top"><h3>Cấu trúc folder</h3><button class="btn" data-toggle>Mở toàn bộ cây</button></div>
+      <div class="tree" data-tree="p7"></div>
+      <div class="legend"><span><i class="sw" style="background:var(--bad)"></i>file có vấn đề cần sửa</span></div>
+    </div>
+  </div>
+  <div class="advice">
+    <h3>Góp ý cải thiện</h3>
+    <ul>
+      <li><span class="lvl p1">Nên làm</span><div><p>File <code>frontend/vite.config.ts.timestamp-1793068941556-….mjs</code> là file tạm mà Vite sinh ra khi dev server dừng bất thường, và file này đã bị commit vào repo.</p><p class="fix"><b>Đề xuất:</b> Team 3 nên xóa file này và thêm dòng <code>vite.config.ts.timestamp-*</code> vào <code>.gitignore</code>.</p></div></li>
+      <li><span class="lvl p1">Nên làm</span><div><p>File <code>docker-compose.yml</code> ở gốc vẫn chỉ là placeholder, nên chưa có cách chạy cả hệ thống (frontend, backend, Team 2 API, PostgreSQL, Qdrant) bằng một lệnh. Việc đo NFR-09 end-to-end vì vậy phụ thuộc vào máy từng người.</p><p class="fix"><b>Đề xuất:</b> Team 3 nên viết compose cho các service này để cả nhóm đo latency trên cùng một môi trường.</p></div></li>
+      <li><span class="lvl p2">Gợi ý</span><div><p>Kế hoạch tuần 9 của Team 3 ghi "chưa phân công thành viên cho từng nhiệm vụ", nên khó biết ai chịu trách nhiệm VLRA-69 và VLRA-70.</p><p class="fix"><b>Đề xuất:</b> Team 3 nên gán assignee trên Jira và ghi tên vào bảng nhiệm vụ trong <code>docs_3/</code>.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 8. DOCS / TESTS ================= -->
+<section class="part" id="p8" style="--tc:var(--sh)">
+  <div class="part-head"><span class="num">8</span><h2>Docs, tests và quy trình làm việc</h2><span class="team-tag">Dùng chung</span></div>
+  <p class="sub">Phần này giữ cho ba team hiểu nhau: tài liệu thiết kế, kế hoạch từng tuần, test dùng chung và quy trình PR.</p>
+  <div class="grid">
+    <div>
+      <div class="card prose">
+        <p>Folder <code>docs/</code> chứa đặc tả chung như <code>ARCHITECTURE.md</code> và <code>CODING_CONVENTIONS.md</code>, cùng tài liệu thiết kế của từng team trong <code>docs/team1_data/</code>, <code>docs/team2_rag/</code> và <code>docs/team3_fullstack/</code>. Mỗi team còn giữ kế hoạch theo tuần ngay trong package của mình: <code>team1_data/docs_1/</code>, <code>team2_rag/docs_2/</code> và <code>team3_fullstack/docs_3/</code> (từ week4 đến week10).</p>
+        <p>Folder <code>tests/</code> ở gốc có 27 file test Python dùng chung, ví dụ test BM25, Hybrid, Article Store, Golden set và pipeline v2. File <code>tests/retriever_contract.py</code> định nghĩa contract mà mọi retriever phải thỏa. Ngoài ra, <code>team2_rag/tests/</code> có 24 file test nội bộ, còn Team 3 có test trong <code>team3_fullstack/tests/</code>, <code>frontend/tests/</code> và <code>backend/src/test/</code>.</p>
+        <p>Quy trình làm việc là <code>feature/*</code> → Pull Request → <code>develop</code> → <code>main</code>. Không ai được push thẳng vào <code>main</code> hay <code>develop</code>, và mỗi PR theo mẫu <code>.github/pull_request_template.md</code>.</p>
+      </div>
+    </div>
+    <div class="card tree-card" style="--tc:var(--sh)">
+      <div class="tree-top"><h3>Cấu trúc folder</h3><button class="btn" data-toggle>Mở toàn bộ cây</button></div>
+      <div class="tree" data-tree="p8"></div>
+      <div class="legend"><span><i class="sw" style="background:var(--bad)"></i>file có vấn đề cần sửa</span></div>
+    </div>
+  </div>
+  <div class="advice">
+    <h3>Góp ý cải thiện</h3>
+    <ul>
+      <li><span class="lvl p0">Nên làm sớm</span><div><p>Folder <code>.github/</code> không có workflow CI nào. Các con số như "94 test pass" hay "validator 76/76" hiện chỉ được chạy trên máy cá nhân, nên một PR có thể làm vỡ test mà không ai phát hiện trước khi merge.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên thêm GitHub Actions chạy <code>pytest tests team2_rag/tests</code>, <code>mvn test</code> và <code>npm test</code> cho mỗi PR vào <code>develop</code>.</p></div></li>
+      <li><span class="lvl p1">Nên làm</span><div><p>Tài liệu của một team đang nằm ở hai nơi, ví dụ <code>docs/team2_rag/</code> và <code>team2_rag/docs_2/</code>. Người mới khó biết đâu là bản thiết kế, đâu là nhật ký tuần.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên quy ước thiết kế ổn định nằm ở <code>docs/</code>, kế hoạch tuần nằm ở <code>docs_X/</code>, và README mỗi bên dẫn link sang bên kia.</p></div></li>
+      <li><span class="lvl p2">Gợi ý</span><div><p>README gốc nhắc đến folder <code>specs/</code> nhưng repo không có folder này. Cây thư mục trong README cũng thiếu <code>team1_data/</code>, <code>evaluation/retrieval/</code> và <code>notebooks/</code>.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên sinh lại cây thư mục trong README từ <code>git ls-files</code> mỗi khi cấu trúc thay đổi.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= ƯU TIÊN ================= -->
+<section class="part" id="uu-tien" style="--tc:var(--sky)">
+  <div class="part-head"><span class="num">★</span><h2>Nếu chỉ làm được năm việc trong Sprint 7</h2></div>
+  <p class="sub">Danh sách dưới đây xếp các góp ý "Nên làm sớm" theo mức ảnh hưởng đến độ tin cậy của kết quả.</p>
+  <div class="card">
+    <ol class="summary-list">
+      <li><div><p>Nhóm nên thêm CI chạy pytest, <code>mvn test</code>, <code>npm test</code> và validator contract cho mỗi PR.</p><small>Phần 8 và phần 4 · việc nhỏ, bảo vệ mọi phần còn lại.</small></div></li>
+      <li><div><p>Nhóm nên sửa đường dẫn trong <code>.github/CODEOWNERS</code> để Team 1 và Team 2 được tự động request review.</p><small>Phần 4 · sửa khoảng 5 dòng.</small></div></li>
+      <li><div><p>Team 2 nên cập nhật <code>rag_v2_benchmark_report.md</code> theo các lượt chạy mới nhất, vì Hallucination mức câu chưa đạt mốc 5%.</p><small>Phần 6 · tránh báo cáo sai trạng thái.</small></div></li>
+      <li><div><p>Nhóm nên soát pháp lý 70 câu draft và 33 câu ngoài phạm vi để benchmark bỏ được nhãn exploratory.</p><small>Phần 3 · việc lớn nhất, nên chia đều cho các thành viên.</small></div></li>
+      <li><div><p>Team 1 nên báo Recall theo nhóm câu đã review (0,783) thay vì con số tổng (0,912).</p><small>Phần 2 · đổi cách báo cáo, không cần sửa code retrieval.</small></div></li>
+    </ol>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Trang được dựng từ nhánh <code>develop</code> của <a href="https://github.com/Banh-Van-Hiep/vietnamese-legal-rag/tree/develop">Banh-Van-Hiep/vietnamese-legal-rag</a> tại commit <code>bd49e3e</code> (người commit: datdooo), ngày 10/11/2026. Số commit theo người được đếm bằng <code>git shortlog -sn --no-merges</code> trên từng folder. Số liệu retrieval lấy từ <code>evaluation/retrieval/runs/vlra53-aiteamvn-weights/summary.md</code>; số liệu RAG lấy từ <code>team2_rag/docs_2/week9/tasks.md</code> mục 8.
+  </div>
+</footer>
+
+<script>
+const REPO = "https://github.com/Banh-Van-Hiep/vietnamese-legal-rag";
+const BRANCH = "develop";
+
+/* Cây folder thật trên develop @ bd49e3e (rút gọn: chỉ giữ các file đáng chú ý). Key kết thúc bằng "/" là folder. */
+const TREE = {
+  ".github/": {"CODEOWNERS":null,"pull_request_template.md":null},
+  "configs/": {"README.md":null,"team2-api.env.example":null},
+  "contracts/": {"README.md":null,"v0.1/":{"CONTRACT.md":null,"query_request.schema.json":null,"rag_response.schema.json":null,"retrieval_output.schema.json":null,"internal_article.schema.json":null,"chat_stream.schema.json":null,"error_response.schema.json":null,"public_examples.json":null,"validate_public_contract.py":null}},
+  "data/": {
+    "doanh-nghiep/": {"raw/":{},"interim/":{},"processed/":{"chunks.jsonl":null,"articles.jsonl":null},"registry/":{"documents.json":null},"chunk_documents.py":null,"CATALOG.txt":null},
+    "doanh-nghiep-mo-rong/": {"interim/":{},"processed/":{"chunks.jsonl.gz":null,"processing_report.json":null},"registry/":{},"build_from_hf.py":null,"CATALOG.txt":null}
+  },
+  "docs/": {"ARCHITECTURE.md":null,"CODING_CONVENTIONS.md":null,"README.md":null,"team1_data/":{"retrieval-design.md":null,"chunk-format-spec.md":null,"metadata-specification.md":null},"team2_rag/":{"runs/":{"colab-4runs/":{},"top10-ctx10/":{}},"schemas/":{},"rag_v2_benchmark_report.md":null,"citation_rubric.md":null,"citation-specification.md":null,"optimal_rag_configuration.md":null,"prompt-design.md":null},"team3_fullstack/":{"fullstack-architecture.md":null,"public-api-specification.md":null,"performance-measurement.md":null}},
+  "evaluation/": {"README.md":null,"retrieval/":{"configs/":{},"runs/":{"vlra49/":{},"vlra52-aiteamvn/":{},"vlra53-aiteamvn-weights/":{}},"README.md":null}},
+  "notebooks/": {"reranker_evaluation_colab.ipynb":null},
+  "scripts/": {"preprocess_legal_data.py":null,"validate_chunks.py":null,"populate_qdrant.py":null,"eval_retrieval.py":null,"eval_reranker.py":null,"benchmark_rag_v2.py":null,"run_retrieval_tests.py":null},
+  "team1_data/": {
+    "retrieval/": {"bm25.py":null,"tokenizer.py":null,"embedding.py":null,"dense.py":null,"hybrid.py":null,"retrieval_v2.json":null},
+    "golden/": {"golden_phase1.json":null,"golden_phase1.manifest.json":null,"out_of_scope_v1.json":null,"edge_cases_v1.json":null},
+    "evaluation/": {"core.py":null,"__main__.py":null},
+    "docs_1/": {"week4/":{},"week9/":{},"week10/":{}}
+  },
+  "team2_rag/": {
+    "api/": {"app.py":null,"handlers.py":null,"mock_app.py":null},
+    "llm/": {"factory.py":null,"gemini_client.py":null,"ollama_client.py":null,"openai_client.py":null,"qwen_client.py":null,"output_parser.py":null,"tokens.py":null},
+    "prompts/": {"context.py":null,"templates.py":null,"builder.py":null,"render.py":null},
+    "verification/": {"verifier.py":null,"rubric.py":null,"metrics.py":null},
+    "config/": {"llm_config.py":null,"settings.py":null},
+    "clients/": {"__init__.py":null},
+    "data/": {"golden/":{"golden_phase1_30cai.json":null,"golden_sample_5qa.json":null},"evaluation/":{},"samples/":{}},
+    "docs_2/": {"week4/":{},"week9/":{}},
+    "tests/": {},
+    "pipeline.py":null,"runtime.py":null,"reranker.py":null,"answer.py":null,"articles.py":null,"service.py":null,
+    "smoke_gemini.py":null,"smoke_ollama.py":null,"manual_prompt_check.py":null,"run_query.py":null,"validate_golden.py":null
+  },
+  "team3_fullstack/": {
+    "backend/": {"src/main/java/com/legalai/backend/":{"ai/":{},"chat/":{"stream/":{}},"conversation/":{},"document/":{},"common/":{}},"src/main/resources/":{"application.properties":null,"application-mock.properties":null,"application-rag.properties":null,"db/":{"chat-schema.sql":null}},"src/test/":{},"pom.xml":null},
+    "frontend/": {"src/":{"api/":{"chatStream.ts":null,"sse.ts":null,"retryPolicy.ts":null,"errorText.ts":null,"publicContract.ts":null},"components/":{"chat/":{},"citation/":{"CitationCard.tsx":null},"document/":{"DocumentViewer.tsx":null}},"pages/":{},"hooks/":{}},"tests/":{},"package.json":null,"vite.config.ts":null,"vite.config.ts.timestamp-1793068941556-9a4a983948b938.mjs":null},
+    "tools/": {"measure_latency.py":null,"latency_report.py":null,"evaluate_retrieval_api.py":null},
+    "tests/": {},
+    "docs_3/": {"week4/":{},"week9/":{}}
+  },
+  "tests/": {"retriever_contract.py":null,"test_bm25_retrieval.py":null,"test_hybrid_retrieval.py":null,"test_article_store.py":null,"test_golden_phase1.py":null,"test_team2_pipeline_v2.py":null,"test_citation_verification.py":null},
+  ".env.example":null, "README.md":null, "docker-compose.yml":null, "pyproject.toml":null
+};
+
+/* Cấu hình cho từng cây: hl = tô sáng, warn = có vấn đề, notes = ghi chú ngắn */
+const VIEWS = {
+  owner: {
+    owner: {"data/":"t1","team1_data/":"t1","evaluation/":"t1","scripts/":"sh","team2_rag/":"t2","notebooks/":"t2","team3_fullstack/":"t3","contracts/":"sh","docs/":"sh","tests/":"sh",".github/":"sh","configs/":"sh"},
+    notes: {"data/":"corpus pháp luật","team1_data/":"retrieval, golden, evaluation","evaluation/":"kết quả đánh giá retrieval","scripts/":"script của Team 1 và Team 2","team2_rag/":"RAG pipeline, LLM, verification","notebooks/":"chạy benchmark trên Colab","team3_fullstack/":"backend, frontend, tools","contracts/":"schema giữa các team","docs/":"đặc tả chung + từng team","tests/":"test Python dùng chung",".github/":"CODEOWNERS, PR template","configs/":"file env mẫu","docker-compose.yml":"còn là placeholder"},
+    flat: true
+  },
+  p1: {
+    hl: ["data/doanh-nghiep/","data/doanh-nghiep/raw/","data/doanh-nghiep/interim/","data/doanh-nghiep/processed/","data/doanh-nghiep/registry/","data/doanh-nghiep/chunk_documents.py","data/doanh-nghiep/processed/chunks.jsonl","data/doanh-nghiep/processed/articles.jsonl","data/doanh-nghiep-mo-rong/","data/doanh-nghiep-mo-rong/build_from_hf.py","scripts/preprocess_legal_data.py","scripts/validate_chunks.py"],
+    warn: ["data/doanh-nghiep-mo-rong/interim/"],
+    notes: {"data/doanh-nghiep/raw/":"bản gốc 8 văn bản","data/doanh-nghiep/interim/":"text đã làm sạch","data/doanh-nghiep/processed/chunks.jsonl":"2.576 chunk","data/doanh-nghiep/processed/articles.jsonl":"635 Điều · mới tuần 10","data/doanh-nghiep/registry/":"metadata văn bản","data/doanh-nghiep/chunk_documents.py":"cắt theo Khoản","data/doanh-nghiep-mo-rong/interim/":"1.000 file · ≈55 MB","data/doanh-nghiep-mo-rong/build_from_hf.py":"tạo từ Hugging Face"}
+  },
+  p2: {
+    hl: ["team1_data/retrieval/","team1_data/retrieval/bm25.py","team1_data/retrieval/tokenizer.py","team1_data/retrieval/embedding.py","team1_data/retrieval/dense.py","team1_data/retrieval/hybrid.py","team1_data/retrieval/retrieval_v2.json","evaluation/retrieval/","evaluation/retrieval/configs/","evaluation/retrieval/runs/","scripts/populate_qdrant.py","scripts/eval_retrieval.py"],
+    notes: {"team1_data/retrieval/bm25.py":"BM25 Lucene","team1_data/retrieval/tokenizer.py":"underthesea","team1_data/retrieval/dense.py":"AITeamVN embedding","team1_data/retrieval/hybrid.py":"RRF k=60","team1_data/retrieval/retrieval_v2.json":"cấu hình đã chốt","evaluation/retrieval/runs/":"vlra49 → vlra53","scripts/populate_qdrant.py":"nạp vector vào Qdrant"}
+  },
+  p3: {
+    hl: ["team1_data/golden/","team1_data/golden/golden_phase1.json","team1_data/golden/golden_phase1.manifest.json","team1_data/golden/out_of_scope_v1.json","team1_data/golden/edge_cases_v1.json","team1_data/evaluation/","tests/test_golden_phase1.py"],
+    warn: ["team2_rag/data/golden/"],
+    notes: {"team1_data/golden/golden_phase1.json":"110 câu Dev Set","team1_data/golden/golden_phase1.manifest.json":"hash sha256","team1_data/golden/out_of_scope_v1.json":"33 câu ngoài phạm vi","team1_data/evaluation/":"check · run","team2_rag/data/golden/":"bản sao riêng, dễ lệch"}
+  },
+  p4: {
+    hl: ["contracts/","contracts/v0.1/","contracts/v0.1/CONTRACT.md","contracts/v0.1/retrieval_output.schema.json","contracts/v0.1/query_request.schema.json","contracts/v0.1/rag_response.schema.json","contracts/v0.1/chat_stream.schema.json","contracts/v0.1/error_response.schema.json","contracts/v0.1/internal_article.schema.json","contracts/v0.1/public_examples.json","contracts/v0.1/validate_public_contract.py"],
+    warn: [".github/CODEOWNERS","docs/team2_rag/schemas/"],
+    notes: {"contracts/v0.1/retrieval_output.schema.json":"Team 1 → Team 2","contracts/v0.1/rag_response.schema.json":"Team 2 → Team 3","contracts/v0.1/chat_stream.schema.json":"SSE cho frontend","contracts/v0.1/internal_article.schema.json":"Điều cho Viewer","contracts/v0.1/validate_public_contract.py":"76/76 pass",".github/CODEOWNERS":"trỏ tới /src/ không tồn tại","docs/team2_rag/schemas/":"schema nháp cũ"}
+  },
+  p5: {
+    hl: ["team2_rag/","team2_rag/runtime.py","team2_rag/reranker.py","team2_rag/pipeline.py","team2_rag/answer.py","team2_rag/prompts/","team2_rag/prompts/context.py","team2_rag/prompts/templates.py","team2_rag/llm/","team2_rag/llm/factory.py","team2_rag/llm/gemini_client.py","team2_rag/llm/output_parser.py","team2_rag/api/","team2_rag/api/app.py","team2_rag/api/mock_app.py","team2_rag/config/"],
+    warn: ["team2_rag/clients/"],
+    notes: {"team2_rag/runtime.py":"đọc env, lắp pipeline","team2_rag/reranker.py":"BGE · tắt mặc định","team2_rag/prompts/templates.py":"prompt_v3","team2_rag/llm/factory.py":"chọn provider","team2_rag/llm/output_parser.py":"ép JSON","team2_rag/api/mock_app.py":"API giả cho Team 3","team2_rag/clients/":"chỉ có __init__.py"}
+  },
+  p6: {
+    hl: ["team2_rag/verification/","team2_rag/verification/verifier.py","team2_rag/verification/rubric.py","team2_rag/verification/metrics.py","scripts/benchmark_rag_v2.py","notebooks/","docs/team2_rag/runs/","docs/team2_rag/citation_rubric.md"],
+    warn: ["docs/team2_rag/rag_v2_benchmark_report.md"],
+    notes: {"team2_rag/verification/verifier.py":"verify_response 2 tầng","team2_rag/verification/metrics.py":"Correctness, Coverage, Hallucination","docs/team2_rag/runs/":"kết quả từng lượt","docs/team2_rag/rag_v2_benchmark_report.md":"ghi 3,85% “ĐẠT”, đã cũ"}
+  },
+  p7: {
+    hl: ["team3_fullstack/","team3_fullstack/backend/","team3_fullstack/backend/src/main/java/com/legalai/backend/","team3_fullstack/backend/src/main/java/com/legalai/backend/ai/","team3_fullstack/backend/src/main/java/com/legalai/backend/chat/","team3_fullstack/backend/src/main/java/com/legalai/backend/chat/stream/","team3_fullstack/backend/src/main/java/com/legalai/backend/conversation/","team3_fullstack/backend/src/main/java/com/legalai/backend/document/","team3_fullstack/backend/src/main/resources/","team3_fullstack/frontend/","team3_fullstack/frontend/src/","team3_fullstack/frontend/src/api/","team3_fullstack/frontend/src/components/citation/","team3_fullstack/frontend/src/components/document/","team3_fullstack/tools/"],
+    warn: ["team3_fullstack/frontend/vite.config.ts.timestamp-1793068941556-9a4a983948b938.mjs","docker-compose.yml"],
+    notes: {"team3_fullstack/backend/":"Spring Boot · Maven","team3_fullstack/backend/src/main/java/com/legalai/backend/ai/":"HttpAiClient","team3_fullstack/backend/src/main/java/com/legalai/backend/chat/stream/":"SSE","team3_fullstack/backend/src/main/java/com/legalai/backend/conversation/":"JPA","team3_fullstack/backend/src/main/resources/":"profile mock / rag","team3_fullstack/frontend/":"React 18 · Vite · TS","team3_fullstack/tools/":"đo latency","team3_fullstack/frontend/vite.config.ts.timestamp-1793068941556-9a4a983948b938.mjs":"file tạm bị commit","docker-compose.yml":"placeholder"}
+  },
+  p8: {
+    hl: ["docs/","docs/ARCHITECTURE.md","docs/CODING_CONVENTIONS.md","docs/team1_data/","docs/team2_rag/","docs/team3_fullstack/","team1_data/docs_1/","team2_rag/docs_2/","team3_fullstack/docs_3/","tests/","tests/retriever_contract.py","team2_rag/tests/","team3_fullstack/tests/",".github/",".github/pull_request_template.md"],
+    warn: ["README.md"],
+    notes: {"docs/":"đặc tả chung","team1_data/docs_1/":"kế hoạch tuần Team 1","team2_rag/docs_2/":"kế hoạch tuần Team 2","team3_fullstack/docs_3/":"kế hoạch tuần Team 3","tests/":"27 file test","team2_rag/tests/":"24 file test",".github/":"không có workflow CI","README.md":"nhắc specs/ không tồn tại"}
+  }
+};
+
+const OWN_COLOR = {t1:"var(--t1)",t2:"var(--t2)",t3:"var(--t3)",sh:"var(--sh)"};
+
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+function renderTree(el, view, expandAll){
+  const hl = new Set(view.hl||[]), warn = new Set(view.warn||[]);
+  const marked = [...hl, ...warn];
+  const notes = view.notes||{}, owner = view.owner||null;
+  const lines = [];
+  const isAncestor = p => marked.some(m => m !== p && m.startsWith(p));
+  const relevant = p => marked.some(m => m.startsWith(p) || p.startsWith(m));
+  function walk(node, base, prefix, depth){
+    const keys = Object.keys(node);
+    keys.forEach((k, i) => {
+      const last = i === keys.length - 1;
+      const full = base + k;
+      const isDir = k.endsWith("/");
+      const child = node[k];
+      const glyph = depth === 0 ? "" : (last ? "└─ " : "├─ ");
+      let cls = "row";
+      if (warn.has(full)) cls += " warn";
+      else if (hl.has(full)) cls += " hl";
+      else if (owner) cls += owner[full] ? " path" : " dim";
+      else if (isAncestor(full)) cls += " path";
+      else if (!expandAll && !relevant(full)) cls += " dim";
+      const url = REPO + (isDir ? "/tree/" : "/blob/") + BRANCH + "/" + (isDir ? full.slice(0,-1) : full);
+      const icon = isDir ? "▸" : "·";
+      const note = notes[full] ? `<span class="note">${esc(notes[full])}</span>` : "";
+      const dot = owner && owner[full] ? `<span class="own" style="background:${OWN_COLOR[owner[full]]}"></span>` : "";
+      lines.push(`<a class="${cls}" href="${url}" target="_blank" rel="noopener"><span class="g">${prefix}${glyph}</span><span class="ic">${icon}</span>${esc(k)}${dot}${note}</a>`);
+      if (isDir && child && Object.keys(child).length && !view.flat) {
+        const open = expandAll || hasMarkedChild(full);
+        if (open) walk(child, full, prefix + (depth === 0 ? "" : (last ? "   " : "│  ")), depth + 1);
+      }
+    });
+  }
+  function hasMarkedChild(p){ return marked.some(m => m !== p && m.startsWith(p)); }
+  walk(TREE, "", "", 0);
+  el.innerHTML = lines.join("");
+}
+
+document.querySelectorAll("[data-tree]").forEach(el => {
+  const view = VIEWS[el.dataset.tree];
+  renderTree(el, view, false);
+  const btn = el.closest(".tree-card").querySelector("[data-toggle]");
+  if (btn) {
+    let all = false;
+    btn.addEventListener("click", () => {
+      all = !all;
+      renderTree(el, view, all);
+      btn.textContent = all ? "Thu gọn cây" : "Mở toàn bộ cây";
+    });
+  }
+});
+
+/* ---------- pipeline ---------- */
+const FLOW = [
+  {t:"sh", tag:"Người dùng", name:"Câu hỏi", sec:"p7", d:"Người dùng gõ câu hỏi trên frontend React. Frontend gửi câu hỏi đến backend Spring Boot, backend gọi API nội bộ của Team 2 theo <code>query_request.schema.json</code>."},
+  {t:"t1", tag:"Team 1", name:"Hybrid Retrieval", sec:"p2", d:"Team 1 tìm chunk bằng BM25 và dense retrieval rồi gộp bằng RRF (k=60, trọng số 0,5:1). Bước này trả top-20 chunk theo đơn vị Khoản từ corpus 2.576 chunk."},
+  {t:"t2", tag:"Team 2 · tắt", name:"Reranker BGE", sec:"p5", off:true, d:"Team 2 có reranker BGE để chấm lại chunk, nhưng đã tắt mặc định (<code>RAG_RERANK=false</code>) vì Hybrid thắng hoặc hòa ở mọi chỉ số trên 110 câu. Khi bật, reranker có timeout 4 giây và tự lùi về thứ hạng Hybrid nếu quá hạn."},
+  {t:"t2", tag:"Team 2", name:"Context Builder", sec:"p5", d:"Context Builder gắn nhãn C1..Cn và metadata cho từng chunk, rồi cắt theo ngân sách token và số chunk tối đa (<code>LLM_MAX_CONTEXT_CHUNKS</code>)."},
+  {t:"t2", tag:"Team 2", name:"LLM (Gemini)", sec:"p5", d:"LLM <code>gemini-3.1-flash-lite</code> nhận System Prompt <code>prompt_v3</code> và context, rồi trả JSON gồm <code>status</code>, <code>answer</code>, <code>citations</code> và <code>claims</code>. Nếu thiếu căn cứ, LLM trả <code>insufficient_context</code>."},
+  {t:"t2", tag:"Team 2", name:"Verification", sec:"p6", d:"Module Verification kiểm citation có khớp chunk đã gửi, rồi so từng claim với nguồn theo rubric 4 cấp. Response gửi Team 3 bỏ <code>claims</code>, chỉ giữ ba field theo contract."},
+  {t:"t3", tag:"Team 3", name:"Backend Java", sec:"p7", d:"Backend nhận response, đổi snake_case sang camelCase, lưu hội thoại bằng JPA và phát câu trả lời qua SSE. Lỗi như <code>CITATION_INVALID</code> được đổi thành mã public <code>UPSTREAM_INVALID_RESPONSE</code>."},
+  {t:"t3", tag:"Team 3", name:"Frontend + Viewer", sec:"p7", d:"Frontend hiện câu trả lời đang stream, thẻ citation và nút mở nguyên văn Điều. Viewer đọc Điều từ Article Store (<code>articles.jsonl</code>) mà Team 1 xuất ở tuần 10."}
+];
+const flowEl = document.getElementById("flow"), det = document.getElementById("flowDetail");
+const TEAM_NAME = {t1:"Team 1",t2:"Team 2",t3:"Team 3",sh:"Dùng chung"};
+FLOW.forEach((n,i) => {
+  const b = document.createElement("button");
+  b.className = "node" + (n.off ? " off" : "");
+  b.style.setProperty("--tc", OWN_COLOR[n.t]);
+  b.innerHTML = `<small>${i+1} · ${n.tag}</small><strong>${n.name}</strong>`;
+  b.addEventListener("click", () => select(i));
+  flowEl.appendChild(b);
+  if (i < FLOW.length-1){ const a = document.createElement("span"); a.className="arrow"; a.textContent="→"; a.setAttribute("aria-hidden","true"); flowEl.appendChild(a); }
+});
+function select(i){
+  const n = FLOW[i];
+  flowEl.querySelectorAll(".node").forEach((b,j)=>b.classList.toggle("on", j===i));
+  det.style.setProperty("--tc", OWN_COLOR[n.t]);
+  const secNum = n.sec.slice(1);
+  det.innerHTML = `<h4>${i+1}. ${n.name}</h4><p>${n.d}</p><a class="go" href="#${n.sec}">Xem chi tiết ở phần ${secNum} →</a>`;
+}
+select(1);
+
+/* ---------- retrieval chart ---------- */
+const RET = {
+  configs:["dense_aiteamvn","hybrid w1:1","hybrid w0.5:1 ✓","hybrid w0.3:1"],
+  r5:{all:[.902,.908,.912,.903],rev:[.754,.773,.783,.758],draft:[.986,.986,.986,.986]},
+  r20:{all:[.964,.960,.966,.972],rev:[.925,.889,.905,.922],draft:[.986,1,1,1]}
+};
+let rg="all", rm="r5";
+const NOTE = {
+  all:"Cả 110 câu: các cấu hình chênh nhau dưới 0,01, nên cấu hình nào cũng trông tốt như nhau.",
+  rev:"40 câu Team 2 đã review: Recall@5 rơi xuống khoảng 0,75–0,78. Đây là nhóm gần với câu hỏi thật hơn.",
+  draft:"70 câu draft: gần như đạt tuyệt đối. Nhóm này có thể dễ hơn thực tế vì được soạn bám theo chunk."
+};
+function drawRet(){
+  const vals = RET[rm][rg];
+  document.getElementById("retBars").innerHTML = RET.configs.map((c,i)=>`
+    <div class="bar"><span class="lab">${c}</span><span class="track"><span class="fill" style="width:${vals[i]*100}%"></span></span><span class="val">${vals[i].toFixed(3)}</span></div>`).join("");
+  document.getElementById("retNote").textContent = NOTE[rg] + " Thang đo bắt đầu từ 0. Dấu ✓ là cấu hình đã chốt trong retrieval_v2.json.";
+}
+function seg(id, cb){
+  const g = document.getElementById(id);
+  g.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{
+    g.querySelectorAll("button").forEach(x=>x.classList.toggle("on", x===b)); cb(b.dataset.v); drawRet();
+  }));
+}
+seg("retGroup", v=>rg=v); seg("retMetric", v=>rm=v); drawRet();
+
+/* ---------- hallucination chart ---------- */
+const HAL = [
+  ["Báo cáo chính (ctx=5)",3.85],["top10-ctx10",7.14],["Colab run2",11.1],["Colab run3",6.9],["Colab run4",6.7]
+];
+const MAX = 12;
+document.getElementById("halBars").innerHTML = HAL.map(([l,v])=>`
+  <div class="bar"><span class="lab">${l}</span><span class="track"><span class="fill ${v>5?"bad":""}" style="width:${v/MAX*100}%"></span><span class="target" style="left:${5/MAX*100}%"></span></span><span class="val">${v.toFixed(2).replace(".",",")}%</span></div>`).join("");
+
+/* ---------- scrollspy ---------- */
+const links = [...document.querySelectorAll("#toc a")];
+const obs = new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ links.forEach(a=>a.classList.toggle("on", a.getAttribute("href")==="#"+e.target.id)); const on=links.find(a=>a.classList.contains("on")); if(on){ const w=on.parentElement; w.scrollLeft = on.offsetLeft - w.clientWidth/2 + on.offsetWidth/2; } } });
+},{rootMargin:"-45% 0px -50% 0px"});
+document.querySelectorAll("section.part").forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
