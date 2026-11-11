@@ -177,6 +177,23 @@ h2{font-size:clamp(22px,3vw,28px);margin:0;line-height:1.3;flex:1 1 220px;min-wi
 .summary-list li::before{content:counter(s);font:700 13px var(--mono);color:var(--on);background:var(--accent);box-shadow:var(--glow);border-radius:10px;height:26px;display:grid;place-items:center}
 .summary-list li p{margin:0}
 .summary-list li small{color:var(--muted);display:block;font-size:13px}
+/* easy */
+.easy{margin:24px 0 0;padding:16px 20px}
+.easy summary{display:flex;align-items:center;gap:12px;cursor:pointer;list-style:none;font-weight:700;color:var(--strong);font-size:15px}
+.easy summary::-webkit-details-marker{display:none}
+.easy summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:8px}
+.easy-ic{flex:none;width:26px;height:26px;border-radius:9px;background:var(--accent);box-shadow:var(--glow);position:relative}
+.easy-ic::before,.easy-ic::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;margin:-1px 0 0 -6px;background:var(--on);border-radius:2px;transition:transform .2s}
+.easy-ic::after{transform:rotate(90deg)}
+.easy[open] .easy-ic::after{transform:rotate(0deg)}
+.easy-hint{margin-left:auto;font-size:12px;font-weight:500;color:var(--muted)}
+.easy[open] .easy-hint{display:none}
+.lede2{margin:14px 0 14px;color:var(--text);font-size:15px;max-width:860px}
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:12px;padding-bottom:4px}
+.term{background:var(--alt);border:1px solid var(--alt-bd);border-radius:14px;padding:12px 14px}
+.term h4{margin:0 0 5px;font-size:14.5px;color:var(--strong)}
+.term p{margin:0;font-size:14px;line-height:1.62;color:var(--text)}
+.term em{color:var(--strong);font-style:italic}
 /* quiz */
 .quiz-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
 .quiz-score{display:flex;align-items:center;gap:12px;font-size:13.5px;color:var(--muted)}
@@ -297,6 +314,24 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <div class="tree" data-tree="p1"></div>
     </div>
   </div>
+  <!--easy:p1-->
+  <details class="card easy">
+    <summary><span class="easy-ic" aria-hidden="true"></span><span>Giải thích dễ hiểu: 10 khái niệm trong phần này</span><span class="easy-hint">bấm để mở</span></summary>
+    <p class="lede2">Phần này nói về việc chuẩn bị "sách" cho hệ thống đọc. Hệ thống không tự biết luật: nhóm phải đưa văn bản luật vào, làm sạch, rồi cắt thành từng mẩu nhỏ để máy tìm được đúng chỗ khi có người hỏi.</p>
+    <div class="terms">
+      <div class="term"><h4>Corpus</h4><p>Corpus là kho văn bản luật mà hệ thống được phép dùng để trả lời. Hệ thống chỉ "biết" những gì nằm trong corpus. Corpus chính của nhóm có 8 văn bản về doanh nghiệp, nên nếu người dùng hỏi về luật giao thông thì hệ thống phải từ chối.</p></div>
+      <div class="term"><h4>Chunk và chunking</h4><p>Một văn bản luật dài hàng chục trang, trong khi câu trả lời thường chỉ nằm ở vài dòng. Vì vậy nhóm cắt văn bản thành các mẩu nhỏ gọi là chunk, giống như cắt một cuốn sách thành các thẻ ghi chú. Việc cắt này gọi là chunking. Corpus chính cho ra 2.576 chunk.</p></div>
+      <div class="term"><h4>Vì sao nhóm cắt theo Khoản</h4><p>Luật Việt Nam chia theo Điều, mỗi Điều chia thành các Khoản, mỗi Khoản có thể chia thành các Điểm. Khoản thường là đơn vị nhỏ nhất mang trọn một ý pháp lý. Người làm luật cũng trích dẫn theo kiểu "Khoản 2 Điều 47", nên cắt theo Khoản giúp câu trả lời chỉ đúng vào chỗ cần.</p></div>
+      <div class="term"><h4>raw / interim / processed</h4><p>Ba folder này là ba chặng của dữ liệu, giống ba chặng nấu ăn. Folder <code>raw/</code> là nguyên liệu vừa mua về (file gốc tải xuống). Folder <code>interim/</code> là nguyên liệu đã sơ chế (text đã bỏ rác, sửa lỗi). Folder <code>processed/</code> là món đã nấu xong (chunk sẵn sàng để tìm kiếm). Nhóm giữ cả ba để khi phát hiện lỗi thì chỉ cần làm lại từ chặng bị sai.</p></div>
+      <div class="term"><h4>Metadata và registry</h4><p>Metadata là thông tin <em>về</em> văn bản chứ không phải nội dung văn bản, ví dụ số hiệu, ngày ban hành, còn hiệu lực hay không. Registry là cuốn sổ danh bạ ghi metadata của mọi văn bản trong corpus. Ở repo này, registry là file <code>registry/documents.json</code>.</p></div>
+      <div class="term"><h4>effective_date</h4><p>Đây là ngày văn bản bắt đầu có hiệu lực. Hệ thống cần ngày này để không trả lời bằng một quy định chưa áp dụng hoặc đã hết hạn. Hiện còn một văn bản của corpus mở rộng chưa có ngày này.</p></div>
+      <div class="term"><h4>File .jsonl</h4><p>JSON là cách ghi dữ liệu dạng "tên trường: giá trị" mà cả người và máy đều đọc được. File <code>.jsonl</code> là file mà mỗi dòng là một bản ghi JSON. File <code>chunks.jsonl</code> có 2.576 dòng, tức mỗi dòng là một chunk kèm địa chỉ của nó (văn bản nào, Điều nào, Khoản nào).</p></div>
+      <div class="term"><h4>Article Store</h4><p>Chunk phục vụ việc tìm kiếm, nhưng người dùng thì muốn đọc trọn cả Điều luật. Article Store là kho lưu nguyên văn từng Điều (635 Điều trong <code>articles.jsonl</code>). Khi người dùng bấm vào một trích dẫn, giao diện lấy Điều từ kho này để hiển thị.</p></div>
+      <div class="term"><h4>VBHN (văn bản hợp nhất)</h4><p>Một luật có thể bị sửa nhiều lần bởi các luật khác. Văn bản hợp nhất là bản gộp luật gốc với mọi lần sửa thành một bản đọc liền mạch. Corpus của nhóm có cả bản gốc lẫn bản hợp nhất, nên cùng một Điều có thể có hai phiên bản.</p></div>
+      <div class="term"><h4>Hugging Face và Git LFS</h4><p>Hugging Face là trang web nơi mọi người chia sẻ công khai dữ liệu và model AI. Nhóm lấy 1.000 văn bản mở rộng từ một bộ dữ liệu ở đó. Git LFS là cách để Git lưu file lớn ở một chỗ riêng, giúp repo nhẹ và tải về nhanh hơn.</p></div>
+    </div>
+  </details>
+  <!--/easy:p1-->
   <div class="advice">
     <h3>Góp ý cải thiện</h3>
     <ul>
@@ -341,6 +376,29 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <div class="tree" data-tree="p2"></div>
     </div>
   </div>
+  <!--easy:p2-->
+  <details class="card easy">
+    <summary><span class="easy-ic" aria-hidden="true"></span><span>Giải thích dễ hiểu: 15 khái niệm trong phần này</span><span class="easy-hint">bấm để mở</span></summary>
+    <p class="lede2">Phần này nói về "người thủ thư" của hệ thống. Khi có câu hỏi, thủ thư phải lục 2.576 mẩu luật và đưa ra vài mẩu liên quan nhất. Nếu thủ thư đưa nhầm, LLM phía sau không có cách nào trả lời đúng.</p>
+    <div class="terms">
+      <div class="term"><h4>Retrieval</h4><p>Retrieval nghĩa là truy xuất: tìm trong kho những đoạn luật liên quan nhất đến câu hỏi. Đây là chữ R trong RAG. Team 1 làm bước này, rồi giao kết quả cho Team 2.</p></div>
+      <div class="term"><h4>BM25 (tìm theo từ khóa)</h4><p>BM25 là công thức chấm điểm dựa trên chữ trùng nhau giữa câu hỏi và đoạn luật. Chữ càng hiếm thì khớp càng được nhiều điểm. BM25 rất nhanh và giỏi với số hiệu văn bản, số Điều, nhưng BM25 không hiểu nghĩa: câu hỏi "mở công ty" sẽ không khớp với chữ "thành lập doanh nghiệp".</p></div>
+      <div class="term"><h4>Embedding và dense retrieval (tìm theo nghĩa)</h4><p>Embedding là việc một model AI biến một câu thành một dãy số (gọi là vector), sao cho hai câu cùng nghĩa có hai dãy số gần nhau. Dense retrieval là cách tìm bằng việc so dãy số của câu hỏi với dãy số của từng chunk. Nhờ vậy, câu hỏi diễn đạt khác chữ luật vẫn tìm ra đúng đoạn.</p></div>
+      <div class="term"><h4>AITeamVN/Vietnamese_Embedding</h4><p>Đây là tên model embedding mà nhóm dùng, được huấn luyện cho tiếng Việt và tải từ Hugging Face. Nhóm đã so nó với hai model khác (e5-small, bge-m3) và nó xếp đoạn đúng lên đầu tốt nhất.</p></div>
+      <div class="term"><h4>Cosine</h4><p>Cosine là cách đo hai vector có "chỉ cùng một hướng" hay không. Điểm càng gần 1 thì hai câu càng giống nghĩa nhau.</p></div>
+      <div class="term"><h4>Hybrid và RRF</h4><p>Hybrid nghĩa là dùng cả hai cách tìm rồi gộp kết quả. RRF là cách gộp theo kiểu bỏ phiếu: mỗi cách tìm bầu cho các đoạn theo thứ hạng của mình, đoạn đứng càng cao thì nhận phiếu càng nặng. Đoạn nào được cả hai bên xếp cao sẽ thắng. Con số k = 60 quyết định hạng 1 hơn hạng 2 nhiều hay ít.</p></div>
+      <div class="term"><h4>Trọng số 0,5 : 1</h4><p>Con số này nghĩa là phiếu của BM25 chỉ nặng bằng một nửa phiếu của dense. Nhóm chọn mức này vì đã thử vài mức và mức này cho kết quả tốt nhất ở 5 đoạn đầu.</p></div>
+      <div class="term"><h4>"top_k = 20 từ tối đa 100 ứng viên"</h4><p>Mỗi cách tìm (BM25 và dense) nộp lên 100 đoạn tốt nhất của mình, gọi là ứng viên. RRF gộp hai danh sách đó lại và chỉ giữ 20 đoạn có điểm cao nhất để trả về. Chữ k trong top_k chính là số đoạn được giữ.</p></div>
+      <div class="term"><h4>"Cấu hình đã chốt" và file retrieval_v2.json</h4><p>Cấu hình là tập hợp các lựa chọn của hệ thống: dùng cách tìm nào, model nào, trọng số bao nhiêu, lấy bao nhiêu đoạn. "Đã chốt" nghĩa là nhóm đã thử nhiều phương án, đo từng phương án, rồi thống nhất dùng một phương án; không ai tự ý đổi nếu chưa đo lại. File <code>retrieval_v2.json</code> ghi phương án đó ra để code đọc. Vì Team 2 cũng đọc đúng file này, hai team luôn chạy cùng một cấu hình.</p></div>
+      <div class="term"><h4>VLRA-53</h4><p>Nhóm quản lý công việc trên Jira, một công cụ giao việc. Mỗi việc có một mã: VLRA là tên dự án, con số là số thứ tự của việc. VLRA-53 là việc "thử các phương án và chốt cấu hình retrieval".</p></div>
+      <div class="term"><h4>Runtime</h4><p>Runtime là phần code chạy liên tục khi hệ thống đang phục vụ người dùng, khác với script chỉ chạy một lần rồi thôi. "Dựng runtime" là lúc hệ thống khởi động và lắp các bộ phận lại với nhau: bộ tìm kiếm, bộ gọi LLM, bộ kiểm tra.</p></div>
+      <div class="term"><h4>Qdrant</h4><p>Qdrant là một vector database, tức cơ sở dữ liệu chuyên lưu các dãy số embedding và tìm rất nhanh dãy số nào gần với dãy số của câu hỏi nhất. Có thể hình dung Qdrant là một tủ hồ sơ xếp theo nghĩa: các đoạn nói về cùng chủ đề nằm cạnh nhau.</p></div>
+      <div class="term"><h4>Encode và script populate_qdrant.py</h4><p>Encode là việc cho model đọc một chunk và tính ra dãy số của chunk đó. Tính cho cả 2.576 chunk mất khoảng 17 phút trong lượt đánh giá của nhóm. Vì vậy nhóm tính một lần rồi lưu lại, và script <code>populate_qdrant.py</code> chỉ việc nạp các dãy số đã tính sẵn vào Qdrant.</p></div>
+      <div class="term"><h4>Recall@5 và MRR@20</h4><p>Recall@5 trả lời câu hỏi: trong 5 đoạn đầu tiên tìm được, có bao nhiêu phần đáp án đúng xuất hiện? Recall@5 = 0,912 nghĩa là trung bình tìm thấy khoảng 91% đáp án. MRR@20 trả lời câu hỏi: đoạn đúng đầu tiên đứng ở hạng mấy? Đoạn đúng đứng hạng 1 được 1 điểm, hạng 2 được 0,5 điểm, hạng 4 được 0,25 điểm; MRR là trung bình các điểm đó.</p></div>
+      <div class="term"><h4>p50 và p95</h4><p>Đây là cách nói về tốc độ. p50 là mức mà một nửa số lần chạy nhanh hơn. p95 là mức mà 95% số lần chạy nhanh hơn. Nhóm xem p95 vì nó cho thấy những lần chậm mà người dùng thật sự gặp phải, điều mà con số trung bình che mất.</p></div>
+    </div>
+  </details>
+  <!--/easy:p2-->
   <div class="advice">
     <h3>Góp ý cải thiện</h3>
     <ul>
@@ -374,6 +432,24 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <div class="tree" data-tree="p3"></div>
     </div>
   </div>
+  <!--easy:p3-->
+  <details class="card easy">
+    <summary><span class="easy-ic" aria-hidden="true"></span><span>Giải thích dễ hiểu: 10 khái niệm trong phần này</span><span class="easy-hint">bấm để mở</span></summary>
+    <p class="lede2">Phần này nói về "bộ đề thi có đáp án" của nhóm. Muốn biết hệ thống tốt hay dở thì phải cho nó làm bài rồi chấm. Bộ đề sai hoặc bị sửa lén thì mọi điểm số phía sau đều vô nghĩa.</p>
+    <div class="terms">
+      <div class="term"><h4>Golden set và Dev Set</h4><p>Golden set là bộ câu hỏi mà nhóm đã biết trước đáp án đúng, dùng để chấm điểm hệ thống. Dev Set là phần của bộ đó mà nhóm dùng trong lúc phát triển, để thử và chọn cấu hình. Hiện Dev Set của nhóm có 110 câu.</p></div>
+      <div class="term"><h4>gold_chunk_ids</h4><p>Với mỗi câu hỏi, trường này ghi mã của những chunk chứa đáp án đúng. Khi chấm retrieval, máy chỉ cần xem các chunk tìm được có trùng với các mã này không.</p></div>
+      <div class="term"><h4>expected_status</h4><p>Trường này ghi hệ thống <em>nên</em> làm gì với câu hỏi: <code>answered</code> (trả lời) hay <code>insufficient_context</code> (từ chối vì không đủ căn cứ). Hệ thống trả lời một câu lẽ ra phải từ chối thì cũng bị tính là sai.</p></div>
+      <div class="term"><h4>review_status: draft và team2_reviewed</h4><p>Trường này cho biết câu hỏi đã được kiểm đến đâu. <code>draft_needs_legal_review</code> nghĩa là câu mới soạn, chưa có người hiểu luật kiểm lại (70 câu). <code>team2_reviewed</code> nghĩa là Team 2 đã rà lại (40 câu). Điểm trên 40 câu này đáng tin hơn.</p></div>
+      <div class="term"><h4>Đóng băng Dev Set</h4><p>Đóng băng nghĩa là khóa bộ đề lại, không ai được tự sửa câu hỏi hay đáp án. Nhóm cần khóa vì nếu đề thay đổi giữa hai lần chấm thì không thể biết điểm tăng là do hệ thống tốt lên hay do đề dễ đi.</p></div>
+      <div class="term"><h4>Hash sha256 và manifest</h4><p>Hash là một "dấu vân tay" của file: một chuỗi ký tự tính ra từ nội dung. Chỉ cần sửa một chữ trong đề, dấu vân tay sẽ khác hẳn. Nhóm ghi dấu vân tay của Dev Set vào file manifest, và một test so lại mỗi lần chạy, nên mọi thay đổi lén đều bị phát hiện.</p></div>
+      <div class="term"><h4>relevant_unit_groups</h4><p>Đôi khi một Khoản dài bị cắt thành hai chunk. Tìm được chunk nào trong hai chunk đó cũng nên được tính là đúng. Trường này gom các chunk "tương đương" như vậy thành một nhóm để chấm cho công bằng.</p></div>
+      <div class="term"><h4>Câu ngoài phạm vi và cổng từ chối</h4><p>Câu ngoài phạm vi là câu mà corpus không có đáp án, ví dụ hỏi về tội trộm cắp. Nhóm soạn 33 câu như vậy để kiểm tra hệ thống có biết từ chối không. "Cổng từ chối" là bước quyết định dừng lại và nói "không đủ căn cứ" thay vì cố trả lời.</p></div>
+      <div class="term"><h4>Edge cases</h4><p>Edge cases là các câu bẫy cho tình huống khó: luật đã bị sửa đổi, hai phiên bản nói khác nhau, câu hỏi cần nhiều nguồn, câu hỏi thiếu dữ kiện. Nhóm có 25 câu như vậy.</p></div>
+      <div class="term"><h4>Nhãn exploratory</h4><p>Exploratory nghĩa là "thăm dò". Nhóm gắn nhãn này lên mọi kết quả đo khi bộ đề chưa được người hiểu luật duyệt hết. Nhãn này nhắc người đọc rằng con số chỉ để tham khảo, chưa phải kết quả chính thức.</p></div>
+    </div>
+  </details>
+  <!--/easy:p3-->
   <div class="advice">
     <h3>Góp ý cải thiện</h3>
     <ul>
@@ -401,6 +477,22 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <div class="legend"><span><i class="sw" style="background:var(--bad)"></i>file có vấn đề cần sửa</span></div>
     </div>
   </div>
+  <!--easy:p4-->
+  <details class="card easy">
+    <summary><span class="easy-ic" aria-hidden="true"></span><span>Giải thích dễ hiểu: 8 khái niệm trong phần này</span><span class="easy-hint">bấm để mở</span></summary>
+    <p class="lede2">Phần này nói về "hợp đồng" giữa ba team. Ba team viết code riêng, bằng ngôn ngữ khác nhau, nên phải thống nhất trước dữ liệu trao cho nhau trông như thế nào. Nhờ vậy ba team làm song song mà khi ghép lại vẫn khớp.</p>
+    <div class="terms">
+      <div class="term"><h4>Contract</h4><p>Contract là bản thỏa thuận về hình dạng dữ liệu trao đổi giữa các team: có những trường nào, mỗi trường kiểu gì, trường nào bắt buộc. Việc này giống hai xưởng thống nhất kích thước ốc vít trước khi sản xuất, để khi lắp ráp không bị lệch.</p></div>
+      <div class="term"><h4>JSON và JSON Schema</h4><p>JSON là cách ghi dữ liệu dạng <code>"tên trường": giá trị</code> mà mọi ngôn ngữ lập trình đều đọc được. JSON Schema là bản mô tả "một JSON đúng phải trông thế nào". Máy có thể dùng schema để tự kiểm tra một JSON có đúng mẫu không.</p></div>
+      <div class="term"><h4>Validator</h4><p>Validator là chương trình cầm schema đi kiểm từng dữ liệu mẫu. Con số 76/76 nghĩa là cả 76 ví dụ đều đúng mẫu. Kết quả này chỉ nói dữ liệu đúng <em>hình dạng</em>, không nói câu trả lời đúng <em>luật</em>.</p></div>
+      <div class="term"><h4>API, API nội bộ và API public</h4><p>API là cửa để một chương trình gọi một chương trình khác. API nội bộ là cửa giữa backend của Team 3 và dịch vụ AI của Team 2, người dùng không thấy. API public là cửa mà giao diện trên trình duyệt gọi vào backend.</p></div>
+      <div class="term"><h4>SSE (stream)</h4><p>SSE là cách server gửi câu trả lời về trình duyệt từng mẩu một, thay vì bắt người dùng chờ đến khi xong hết. Nhờ SSE, chữ hiện ra dần dần trên màn hình.</p></div>
+      <div class="term"><h4>Mã lỗi và mã HTTP (502, 503…)</h4><p>Khi có sự cố, server trả về một con số cho biết loại lỗi. Các mã 4xx nghĩa là bên gửi yêu cầu làm sai. Các mã 5xx nghĩa là bên server gặp sự cố. Mã 502 nghĩa là dịch vụ phía sau trả về thứ không dùng được; mã 503 nghĩa là dịch vụ tạm thời không sẵn sàng.</p></div>
+      <div class="term"><h4>CODEOWNERS</h4><p>Đây là file của GitHub ghi "folder nào do ai chịu trách nhiệm". Khi có người sửa một folder, GitHub tự mời đúng người đó vào xem. File của nhóm đang ghi sai đường dẫn nên việc tự mời này không chạy với Team 1 và Team 2.</p></div>
+      <div class="term"><h4>CI</h4><p>CI là việc để máy tự chạy toàn bộ bài kiểm tra mỗi khi có người gửi code lên. Nếu có bài kiểm tra hỏng, mọi người biết ngay trước khi code được nhập vào nhánh chung. Repo của nhóm chưa có CI.</p></div>
+    </div>
+  </details>
+  <!--/easy:p4-->
   <div class="advice">
     <h3>Góp ý cải thiện</h3>
     <ul>
@@ -435,6 +527,27 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <div class="tree" data-tree="p5"></div>
     </div>
   </div>
+  <!--easy:p5-->
+  <details class="card easy">
+    <summary><span class="easy-ic" aria-hidden="true"></span><span>Giải thích dễ hiểu: 13 khái niệm trong phần này</span><span class="easy-hint">bấm để mở</span></summary>
+    <p class="lede2">Phần này nói về "người viết câu trả lời". Team 2 nhận các đoạn luật mà Team 1 tìm được, đưa cho LLM kèm lời dặn rất chặt, rồi kiểm tra bản LLM viết ra trước khi gửi cho người dùng.</p>
+    <div class="terms">
+      <div class="term"><h4>RAG</h4><p>RAG là cách làm gồm hai bước: tìm tài liệu liên quan trước, rồi mới để AI viết câu trả lời dựa trên tài liệu đó. Cách này giống thi mở sách: AI không trả lời bằng trí nhớ mà phải dựa vào trang sách đặt trước mặt.</p></div>
+      <div class="term"><h4>LLM và Gemini</h4><p>LLM là loại AI đọc và viết được văn bản như người. Gemini là LLM của Google mà nhóm đang dùng (bản <code>gemini-3.1-flash-lite</code>). Nhóm gọi Gemini qua mạng, không chạy nó trên máy mình.</p></div>
+      <div class="term"><h4>Prompt và system prompt</h4><p>Prompt là toàn bộ những gì nhóm gửi cho LLM. System prompt là phần "nội quy" cố định, giống nhau ở mọi lượt hỏi: chỉ được dựa vào đoạn luật được cấp, không bịa, thiếu căn cứ thì từ chối. Bản nội quy hiện tại tên là <code>prompt_v3</code>.</p></div>
+      <div class="term"><h4>Context và Context Builder</h4><p>Context là các đoạn luật được gửi kèm câu hỏi để LLM đọc. Context Builder là phần code chọn đoạn nào được đưa vào, xếp theo thứ tự và ghi kèm địa chỉ của từng đoạn (văn bản nào, Điều nào, Khoản nào).</p></div>
+      <div class="term"><h4>Token và ngân sách token</h4><p>LLM không đếm chữ mà đếm token, tức các mẩu của từ. Mỗi lần gọi chỉ đọc được một số token nhất định và càng nhiều token thì càng tốn tiền, càng chậm. Ngân sách token là giới hạn nhóm đặt ra cho phần context: mặc định là 5 đoạn và khoảng 3.000 token.</p></div>
+      <div class="term"><h4>Nhãn C1, C2… và citation</h4><p>Trước khi gửi cho LLM, mỗi đoạn luật được đánh số C1, C2, C3… LLM viết xong một ý thì ghi nhãn của đoạn làm căn cứ, ví dụ <code>[C2]</code>. Citation (trích dẫn) là phần cho người dùng biết ý đó lấy từ Điều, Khoản nào. Nhãn ngắn nên LLM khó viết sai, và nhãn nào không có trong danh sách đã gửi thì bị bắt lỗi ngay.</p></div>
+      <div class="term"><h4>insufficient_context</h4><p>Đây là trạng thái "không đủ căn cứ để trả lời". Hệ thống trả trạng thái này khi các đoạn luật tìm được không chứa đáp án, thay vì để LLM đoán. Với một ứng dụng pháp luật, từ chối đúng lúc quan trọng không kém trả lời đúng.</p></div>
+      <div class="term"><h4>Reranker (BGE)</h4><p>Reranker là một model đọc kỹ từng cặp "câu hỏi + đoạn luật" rồi xếp lại thứ tự các đoạn. Về lý thuyết bước này giúp đoạn đúng lên đầu. Trên dữ liệu của nhóm, bước này lại làm kết quả kém đi và chậm hơn, nên Team 2 tắt nó.</p></div>
+      <div class="term"><h4>Biến môi trường (RAG_RERANK, RAG_TOP_K…)</h4><p>Biến môi trường là các công tắc đặt bên ngoài code. Muốn bật hay tắt một tính năng, người chạy chỉ cần đổi giá trị công tắc rồi khởi động lại, không cần sửa code. Ví dụ <code>RAG_RERANK=false</code> là tắt reranker.</p></div>
+      <div class="term"><h4>Provider (Gemini, Ollama, OpenAI, Qwen)</h4><p>Provider là nơi cung cấp LLM. Code của Team 2 được viết để đổi provider dễ dàng. Ollama là cách chạy LLM ngay trên máy mình, không cần mạng.</p></div>
+      <div class="term"><h4>Mock</h4><p>Mock là đồ giả dùng để tập. <code>mock_app.py</code> trả về câu trả lời dựng sẵn, không gọi LLM thật. Nhờ vậy Team 3 làm được giao diện mà không phải chờ Team 2 xong và không tốn tiền gọi LLM.</p></div>
+      <div class="term"><h4>Timeout</h4><p>Timeout là thời gian chờ tối đa. Nếu một bước chạy quá thời gian này, hệ thống ngừng chờ và xử lý theo cách dự phòng. Ví dụ reranker chạy quá 4 giây thì hệ thống dùng lại thứ hạng cũ.</p></div>
+      <div class="term"><h4>claims và retry</h4><p>Claims là danh sách từng ý pháp lý trong câu trả lời, mỗi ý ghi kèm nguồn, để bước kiểm tra phía sau soi từng ý. Retry là việc thử gọi lại khi lần gọi trước bị lỗi.</p></div>
+    </div>
+  </details>
+  <!--/easy:p5-->
   <div class="advice">
     <h3>Góp ý cải thiện</h3>
     <ul>
@@ -473,6 +586,25 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <div class="legend"><span><i class="sw" style="background:var(--bad)"></i>file có vấn đề cần sửa</span></div>
     </div>
   </div>
+  <!--easy:p6-->
+  <details class="card easy">
+    <summary><span class="easy-ic" aria-hidden="true"></span><span>Giải thích dễ hiểu: 11 khái niệm trong phần này</span><span class="easy-hint">bấm để mở</span></summary>
+    <p class="lede2">Phần này nói về "người soát bài". LLM viết rất trôi chảy kể cả khi sai, nên nhóm cần một bước kiểm tra từng ý trong câu trả lời có thật sự nằm trong đoạn luật được trích hay không, và đo xem hệ thống sai thường xuyên đến mức nào.</p>
+    <div class="terms">
+      <div class="term"><h4>Hallucination (ảo giác)</h4><p>Hallucination là khi LLM viết ra một điều nghe rất hợp lý nhưng không có trong nguồn, ví dụ tự nghĩ ra một thời hạn hay một mức phạt. Đây là lỗi nguy hiểm nhất với ứng dụng pháp luật, vì người đọc khó nhận ra.</p></div>
+      <div class="term"><h4>Claim</h4><p>Claim là một ý pháp lý đơn lẻ trong câu trả lời, ví dụ "thành viên phải góp đủ vốn trong 90 ngày". Một câu trả lời thường có vài claim. Nhóm kiểm tra từng claim một.</p></div>
+      <div class="term"><h4>Citation Correctness</h4><p>Chỉ số này hỏi: trích dẫn có chỉ đúng vào một đoạn luật đã thật sự gửi cho LLM không, và địa chỉ (Điều, Khoản) có ghi đúng không? Chỉ số này đạt 100% nghĩa là không có trích dẫn bịa. Nó chưa nói đoạn luật đó có chứng minh được ý đang viết hay không.</p></div>
+      <div class="term"><h4>Citation Coverage</h4><p>Chỉ số này hỏi: trong tất cả các claim, bao nhiêu phần trăm được nguồn của nó hỗ trợ? Coverage 98% nghĩa là cứ 100 ý thì khoảng 2 ý không tìm thấy căn cứ trong đoạn luật được trích.</p></div>
+      <div class="term"><h4>Hallucination mức câu và mức claim</h4><p>Mức câu đếm số <em>câu trả lời</em> có ít nhất một ý sai, chia cho số câu đã trả lời. Mức claim đếm số <em>ý</em> sai, chia cho tổng số ý. Một câu trả lời có 5 ý mà sai 1 ý thì tính là 1 câu sai ở mức câu, nhưng chỉ là 1/5 ở mức claim. Mục tiêu của nhóm là mức câu không quá 5%.</p></div>
+      <div class="term"><h4>Heuristic lexical</h4><p>Đây là cách kiểm tra bằng mẹo đếm chữ: nếu ý trong câu trả lời và đoạn luật có nhiều từ trùng nhau thì coi như ý đó có căn cứ. Cách này nhanh và không tốn tiền, nhưng không hiểu nghĩa, nên có lúc chấm sai.</p></div>
+      <div class="term"><h4>Rubric</h4><p>Rubric là bảng tiêu chí chấm điểm viết sẵn, để mọi lần chấm đều theo cùng một chuẩn. Rubric của nhóm chia mức độ "nguồn hỗ trợ ý" thành 4 cấp.</p></div>
+      <div class="term"><h4>Báo nhầm</h4><p>Báo nhầm là khi bộ kiểm tra kêu "sai" trong khi thực tế là đúng. Ví dụ ở câu gold_002, đoạn luật chỉ có ba chữ "1. Doanh nghiệp." nên ít từ trùng, và bộ kiểm chấm là không có căn cứ dù ý đó đúng. Báo nhầm làm tỉ lệ hallucination trông cao hơn thực tế.</p></div>
+      <div class="term"><h4>Benchmark, Colab và Kaggle</h4><p>Benchmark là một lượt cho hệ thống làm cả bộ đề rồi tính điểm. Colab và Kaggle là hai dịch vụ cho mượn máy tính có GPU qua mạng; nhóm chạy benchmark ở đó vì máy cá nhân không đủ mạnh.</p></div>
+      <div class="term"><h4>NLI và LLM-as-judge</h4><p>Đây là hai cách kiểm tra hiểu được nghĩa. NLI là model chuyên trả lời câu hỏi "đoạn A có suy ra được câu B không". LLM-as-judge là nhờ một LLM khác làm giám khảo. Hai cách này chính xác hơn đếm chữ nhưng tốn thời gian và tiền hơn.</p></div>
+      <div class="term"><h4>Context recall</h4><p>Chỉ số này hỏi: các đoạn luật đúng có thật sự nằm trong những gì đã gửi cho LLM không? Nếu đoạn đúng bị cắt mất trước khi tới LLM thì LLM sai là điều dễ hiểu, và lỗi nằm ở bước chọn đoạn chứ không phải ở LLM.</p></div>
+    </div>
+  </details>
+  <!--/easy:p6-->
   <div class="advice">
     <h3>Góp ý cải thiện</h3>
     <ul>
@@ -508,6 +640,25 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <div class="legend"><span><i class="sw" style="background:var(--bad)"></i>file có vấn đề cần sửa</span></div>
     </div>
   </div>
+  <!--easy:p7-->
+  <details class="card easy">
+    <summary><span class="easy-ic" aria-hidden="true"></span><span>Giải thích dễ hiểu: 11 khái niệm trong phần này</span><span class="easy-hint">bấm để mở</span></summary>
+    <p class="lede2">Phần này nói về những gì người dùng thật sự nhìn thấy và chạm vào. Team 3 làm trang web để hỏi đáp, và làm phần máy chủ đứng giữa trang web với dịch vụ AI: nhận câu hỏi, chuyển đi, lưu lại, rồi đưa câu trả lời lên màn hình.</p>
+    <div class="terms">
+      <div class="term"><h4>Frontend và backend</h4><p>Frontend là phần chạy trên trình duyệt của người dùng: ô nhập câu hỏi, khung chat, thẻ trích dẫn. Backend là phần chạy trên máy chủ mà người dùng không thấy: nhận yêu cầu, gọi dịch vụ AI, lưu dữ liệu.</p></div>
+      <div class="term"><h4>Spring Boot và Maven</h4><p>Spring Boot là bộ khung phổ biến để viết backend bằng ngôn ngữ Java. Maven là công cụ tải thư viện và đóng gói chương trình Java. File <code>pom.xml</code> là danh sách thư viện mà Maven cần tải.</p></div>
+      <div class="term"><h4>React, Vite, TypeScript, Tailwind</h4><p>Đây là bốn công cụ làm giao diện. React giúp dựng giao diện từ các mảnh ghép nhỏ. TypeScript là JavaScript có thêm kiểm tra kiểu dữ liệu để bắt lỗi sớm. Vite chạy và đóng gói trang web khi phát triển. Tailwind giúp viết kiểu dáng (màu, khoảng cách) nhanh hơn.</p></div>
+      <div class="term"><h4>Stream và delta</h4><p>Stream là việc gửi câu trả lời về từng mẩu thay vì gửi một lần. Mỗi mẩu gọi là một delta. Nhờ vậy người dùng thấy chữ hiện ra dần, không phải nhìn màn hình trống vài giây.</p></div>
+      <div class="term"><h4>DTO, snake_case và camelCase</h4><p>DTO là "hộp đựng" dữ liệu khi chuyển giữa hai chương trình. Python quen đặt tên kiểu <code>source_url</code> (snake_case), còn Java và JavaScript quen kiểu <code>sourceUrl</code> (camelCase). Backend phải đổi tên trường giữa hai kiểu này khi chuyển dữ liệu.</p></div>
+      <div class="term"><h4>JPA và PostgreSQL</h4><p>PostgreSQL là cơ sở dữ liệu, nơi lưu các cuộc hội thoại để người dùng mở lại được. JPA là cách để code Java đọc và ghi vào cơ sở dữ liệu mà không phải tự viết từng câu lệnh.</p></div>
+      <div class="term"><h4>Profile mock và profile rag</h4><p>Profile là một bộ cài đặt để chạy backend. Profile mock dùng AI giả và không cần cơ sở dữ liệu, tiện cho việc phát triển giao diện. Profile rag gọi dịch vụ AI thật của Team 2 và lưu vào PostgreSQL, dùng khi demo thật.</p></div>
+      <div class="term"><h4>client_request_id (chống gửi trùng)</h4><p>Mỗi lượt hỏi được gắn một mã riêng. Nếu mạng chập chờn và trình duyệt gửi lại, backend nhận ra mã cũ và trả lại kết quả đã có, thay vì gọi LLM lần nữa. Nhờ vậy một câu hỏi không bị xử lý và tính tiền hai lần.</p></div>
+      <div class="term"><h4>Viewer</h4><p>Viewer là khung hiển thị nguyên văn Điều luật. Khi người dùng bấm vào một trích dẫn như [C1], Viewer mở đúng Điều đó và tô sáng Khoản được trích, để người dùng tự đối chiếu.</p></div>
+      <div class="term"><h4>Latency, NFR-07 và NFR-09</h4><p>Latency là thời gian người dùng phải chờ. NFR là các yêu cầu về chất lượng mà nhóm tự đặt ra. NFR-07 yêu cầu 95% lượt hỏi xong trong 45 giây, tính trọn từ lúc bấm gửi. NFR-09 là yêu cầu về tốc độ mở một Điều luật trong Viewer. Nhóm chưa đo được cả hai trên hệ thống chạy thật.</p></div>
+      <div class="term"><h4>docker-compose</h4><p>Đây là công cụ bật cùng lúc nhiều dịch vụ (trang web, backend, dịch vụ AI, cơ sở dữ liệu) bằng một lệnh. File của nhóm hiện còn để trống, nên mỗi người phải tự bật từng dịch vụ bằng tay.</p></div>
+    </div>
+  </details>
+  <!--/easy:p7-->
   <div class="advice">
     <h3>Góp ý cải thiện</h3>
     <ul>
@@ -536,6 +687,21 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <div class="legend"><span><i class="sw" style="background:var(--bad)"></i>file có vấn đề cần sửa</span></div>
     </div>
   </div>
+  <!--easy:p8-->
+  <details class="card easy">
+    <summary><span class="easy-ic" aria-hidden="true"></span><span>Giải thích dễ hiểu: 7 khái niệm trong phần này</span><span class="easy-hint">bấm để mở</span></summary>
+    <p class="lede2">Phần này nói về cách chín người cùng viết chung một bộ code mà không giẫm chân nhau: mỗi người làm ở nhánh riêng, nhờ người khác xem lại, rồi mới nhập vào bản chung. Tài liệu và bài kiểm tra giúp người sau hiểu và không làm hỏng việc của người trước.</p>
+    <div class="terms">
+      <div class="term"><h4>Repo và commit</h4><p>Repo là kho chứa toàn bộ code và lịch sử thay đổi của dự án, đặt trên GitHub. Commit là một lần lưu thay đổi, kèm lời mô tả và tên người lưu. Mỗi commit có một mã riêng (ví dụ <code>bd49e3e</code>) để ai cũng tra lại được.</p></div>
+      <div class="term"><h4>Branch, develop và main</h4><p>Branch (nhánh) là một bản sao để làm việc riêng mà không ảnh hưởng người khác. Nhánh <code>develop</code> là bản chung đang phát triển, nơi mọi người nhập code vào. Nhánh <code>main</code> là bản ổn định để phát hành. Mỗi người làm việc trên một nhánh <code>feature/...</code> của riêng mình.</p></div>
+      <div class="term"><h4>Pull Request (PR), review và merge</h4><p>Pull Request là lời đề nghị "xin nhập code của tôi vào nhánh chung". Review là việc một người khác đọc và góp ý trước khi đồng ý. Merge là hành động nhập code vào. Các con số như PR #57 là số thứ tự của từng lời đề nghị.</p></div>
+      <div class="term"><h4>Test</h4><p>Test là đoạn code tự kiểm tra một đoạn code khác có chạy đúng không. Nhóm có ba bộ: <code>pytest</code> cho phần Python, <code>mvn test</code> cho phần Java và <code>npm test</code> cho giao diện. Khi ai đó sửa code làm hỏng tính năng cũ, test sẽ báo đỏ.</p></div>
+      <div class="term"><h4>CI và GitHub Actions</h4><p>CI là việc để máy tự chạy mọi test mỗi khi có Pull Request. GitHub Actions là dịch vụ của GitHub để làm việc đó. Repo hiện chưa có CI, nên test chỉ chạy khi có người nhớ chạy trên máy mình.</p></div>
+      <div class="term"><h4>Jira, ticket và Sprint</h4><p>Jira là công cụ quản lý công việc của nhóm. Mỗi việc là một ticket có mã, ví dụ VLRA-71. Sprint là một chặng làm việc ngắn (ở đây khoảng một tuần) với danh sách việc phải xong trong chặng đó.</p></div>
+      <div class="term"><h4>README và docs</h4><p>README là file giới thiệu mà người mới đọc đầu tiên khi mở một folder. Folder <code>docs/</code> chứa tài liệu thiết kế lâu dài. Các folder <code>docs_1</code>, <code>docs_2</code>, <code>docs_3</code> chứa kế hoạch và kết quả từng tuần của mỗi team.</p></div>
+    </div>
+  </details>
+  <!--/easy:p8-->
   <div class="advice">
     <h3>Góp ý cải thiện</h3>
     <ul>
@@ -775,15 +941,18 @@ const RET = {
 };
 let rg="all", rm="r5";
 const NOTE = {
-  all:"Cả 110 câu: các cấu hình chênh nhau dưới 0,01, nên cấu hình nào cũng trông tốt như nhau.",
-  rev:"40 câu Team 2 đã review: Recall@5 rơi xuống khoảng 0,75–0,78. Đây là nhóm gần với câu hỏi thật hơn.",
-  draft:"70 câu draft: gần như đạt tuyệt đối. Nhóm này có thể dễ hơn thực tế vì được soạn bám theo chunk."
+  all_r5:"Cả 110 câu: các cấu hình chênh nhau dưới 0,01 ở Recall@5, nên cấu hình nào cũng trông tốt như nhau.",
+  all_r20:"Cả 110 câu: Recall@20 nằm trong khoảng 0,960–0,972; BM25 càng nhẹ thì Recall@20 càng nhỉnh lên một chút.",
+  rev_r5:"40 câu Team 2 đã review: Recall@5 rơi xuống khoảng 0,75–0,78, và cấu hình 0,5:1 đứng cao nhất. Đây là nhóm gần với câu hỏi thật hơn.",
+  rev_r20:"40 câu Team 2 đã review: BM25 càng nhẹ thì Recall@20 càng cao (0,889 → 0,905 → 0,922 → dense 0,925). Ở độ sâu 20, BM25 đang đẩy một số chunk đúng của dense ra khỏi top-20.",
+  draft_r5:"70 câu draft: gần như đạt tuyệt đối. Nhóm này có thể dễ hơn thực tế vì được soạn bám theo chunk.",
+  draft_r20:"70 câu draft: Recall@20 đạt 0,986–1,000. Nhóm này có thể dễ hơn thực tế vì được soạn bám theo chunk."
 };
 function drawRet(){
   const vals = RET[rm][rg];
   document.getElementById("retBars").innerHTML = RET.configs.map((c,i)=>`
     <div class="bar"><span class="lab">${c}</span><span class="track"><span class="fill" style="width:${vals[i]*100}%"></span></span><span class="val">${vals[i].toFixed(3)}</span></div>`).join("");
-  document.getElementById("retNote").textContent = NOTE[rg] + " Thang đo bắt đầu từ 0. Dấu ✓ là cấu hình đã chốt trong retrieval_v2.json.";
+  document.getElementById("retNote").textContent = NOTE[rg + "_" + rm] + " Thang đo bắt đầu từ 0. Dấu ✓ là cấu hình đã chốt trong retrieval_v2.json.";
 }
 function seg(id, cb){
   const g = document.getElementById(id);
