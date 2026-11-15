@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="vi" data-palette="sky" data-theme="dark">
+<html lang="en" data-palette="sky" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Viz reliability visualization</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;0,600;1,400&family=Allison&family=Noto+Serif+Display:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;0,600;1,400&family=Noto+Serif+Display:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <style>
 /* Micro Cards design: 12 single-colour palettes, each light and dark.
  *
@@ -1318,7 +1318,6 @@ body.mc-page { margin: 0; padding: 0 16px 48px; box-sizing: border-box; font-siz
 .issue-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
 .issue-list .note--bad::before { content: '× '; font-weight: 800; }
 .mode-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
-.chips-line { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--mc-muted); margin-top: 2px; }
 .opt-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .opt-title { font-size: 15px; font-weight: 700; color: var(--mc-strong); }
 </style>
@@ -1331,30 +1330,29 @@ body.mc-page { margin: 0; padding: 0 16px 48px; box-sizing: border-box; font-siz
     <rect class="lt" x="26" y="14" width="10" height="9" rx="2"/>
     <path d="M21 18.5h5M16 23v6a3 3 0 0 0 3 3h9"/>
   </svg>
-  <h1 class="page-title"><span data-script="Giảm lỗi mô phỏng">Giảm lỗi mô phỏng</span></h1>
-  <p class="page-quote">Đừng cho người viết cảnh cơ hội đặt nhầm chỗ.<span class="by">docs/viz-reliability.md</span></p>
+  <h1 class="page-title"><span>Viz reliability</span></h1>
 </header>
 <main class="wrap">
 
   <!-- Card 1: hand coordinates vs relational flow layout -->
   <section class="mc-glass studio-card">
     <div class="studio-body">
-      <p class="eyebrow">Trước / sau</p>
-      <h2 class="viz-title">Toạ độ tay và layout quan hệ</h2>
-      <button class="viz-source" type="button">docs/viz-reliability.md · mục 2 và 5</button>
-      <p class="viz-why">Cùng một sơ đồ cache do model free sinh ra. Chọn chế độ rồi kéo bề rộng màn hình: bên toạ độ tay vỡ dần khi màn hình hẹp, bên flow tự đo chữ và xếp lại.</p>
+      <p class="eyebrow">Before / after</p>
+      <h2 class="viz-title">Hand coordinates vs relational layout</h2>
+      <button class="viz-source" type="button">docs/viz-reliability.md · sections 2 and 5</button>
+      <p class="viz-why">This is the same cache diagram a free model makes. Select a mode, then drag the screen width. The hand-coordinate version breaks on narrow screens. The flow version measures the text and makes the layout again.</p>
       <div class="viz-meta">
-        <span class="seal seal--calc">Đo chữ thật bằng canvas</span>
+        <span class="seal seal--calc">Text measured with canvas</span>
         <span class="seal" id="d-seal"></span>
       </div>
       <div class="stage">
-        <div class="mode-tabs" role="tablist" aria-label="Chế độ layout">
-          <button class="tab" id="tab-hand" role="tab" type="button" aria-selected="true">Toạ độ tay — hiện tại</button>
-          <button class="tab" id="tab-flow" role="tab" type="button" aria-selected="false">Flow row — đề xuất</button>
+        <div class="mode-tabs" role="tablist" aria-label="Layout mode">
+          <button class="tab" id="tab-hand" role="tab" type="button" aria-selected="true">Hand-placed — today</button>
+          <button class="tab" id="tab-flow" role="tab" type="button" aria-selected="false">Flow row — proposed</button>
         </div>
         <div id="d-stage"></div>
         <div class="ctl-row">
-          <label class="ctl">Bề rộng màn hình: <span class="num" id="d-w-out">360</span> px
+          <label class="ctl">Screen width: <span class="num" id="d-w-out">360</span> px
             <input type="range" id="d-w" min="250" max="620" value="360" step="2">
           </label>
         </div>
@@ -1363,10 +1361,10 @@ body.mc-page { margin: 0; padding: 0 16px 48px; box-sizing: border-box; font-siz
         <p class="spec-label" id="d-spec-label"></p>
         <pre class="spec-pre" id="d-spec"></pre>
       </div>
-      <div class="viz-takeaways"><h4>Điều cần rút ra</h4><ul>
-        <li>Toạ độ phần trăm giữ nguyên khi màn hình hẹp đi, nhưng chữ thì không co — nên ô vỡ đúng ở chỗ validator hiện tại không kiểm.</li>
-        <li>Spec flow không còn con số layout nào để model bịa sai: cỡ ô sinh ra từ cỡ chữ, không phải ngược lại.</li>
-        <li>Spec ngắn hơn cũng là spec mà model free dễ sinh đúng hơn.</li>
+      <div class="viz-takeaways"><h4>What this shows</h4><ul>
+        <li>Percent coordinates do not change when the screen becomes narrow, but text does not shrink. The boxes break exactly where the validator does not look.</li>
+        <li>The flow spec has no layout numbers, so the model cannot set them incorrectly. Box size comes from text size, not the opposite.</li>
+        <li>A shorter spec is also easier for a free model to generate correctly.</li>
       </ul></div>
     </div>
   </section>
@@ -1374,23 +1372,23 @@ body.mc-page { margin: 0; padding: 0 16px 48px; box-sizing: border-box; font-siz
   <!-- Card 2: the spec pipeline and the five error kinds -->
   <section class="mc-glass studio-card">
     <div class="studio-body">
-      <p class="eyebrow">Kiến trúc hiện tại</p>
-      <h2 class="viz-title">Đường đi của spec và chỗ lỗi lọt lưới</h2>
-      <button class="viz-source" type="button">docs/viz-reliability.md · mục 1 và 2</button>
-      <p class="viz-why">Bấm Tiếp để theo một spec từ lúc model sinh ra tới lúc hiện trước người đọc, và xem mỗi chặng bắt được gì, bỏ lọt gì.</p>
+      <p class="eyebrow">Current architecture</p>
+      <h2 class="viz-title">Where errors go through the pipeline</h2>
+      <button class="viz-source" type="button">docs/viz-reliability.md · sections 1 and 2</button>
+      <p class="viz-why">Push Next to follow one spec from the model to the reader. Each stage shows what it catches and what goes through.</p>
       <div class="stage">
         <div id="p-stage"></div>
         <div class="tr-values" id="p-chips"></div>
         <p class="stp-caption" id="p-caption"></p>
         <div class="stp-controls">
-          <button class="mc-btn" id="p-back" type="button">Trước</button>
-          <button class="mc-btn mc-btn--primary" id="p-next" type="button">Tiếp</button>
+          <button class="mc-btn" id="p-back" type="button">Back</button>
+          <button class="mc-btn mc-btn--primary" id="p-next" type="button">Next</button>
           <span class="stp-count" id="p-count"></span>
         </div>
       </div>
-      <div class="viz-takeaways"><h4>Điều cần rút ra</h4><ul>
-        <li>Validator hiện tại nhìn thấy cấu trúc và nhãn, nhưng không nhìn thấy hình học: ô đè ô và mũi tên xuyên ô không ai kiểm.</li>
-        <li>Mỗi vòng repair tốn khoảng 6 lượt quota free và thêm một cơ hội JSON hỏng — máy tự sửa được thì đừng hỏi model.</li>
+      <div class="viz-takeaways"><h4>What this shows</h4><ul>
+        <li>The validator sees structure and labels, not geometry. No check finds boxes that overlap or arrows that go through boxes.</li>
+        <li>Each repair round costs approximately 6 free-quota requests and adds one more risk of bad JSON. If a machine can repair the issue, do not ask the model.</li>
       </ul></div>
     </div>
   </section>
@@ -1398,19 +1396,19 @@ body.mc-page { margin: 0; padding: 0 16px 48px; box-sizing: border-box; font-siz
   <!-- Card 3: Manim and the three options -->
   <section class="mc-glass studio-card">
     <div class="studio-body">
-      <p class="eyebrow">Lựa chọn</p>
-      <h2 class="viz-title">Học gì từ Manim, đi hướng nào</h2>
-      <button class="viz-source" type="button">docs/viz-reliability.md · mục 3 và 4</button>
-      <p class="viz-why">Manim không bao giờ chồng chữ vì ngôn ngữ đầu vào của nó không cho đặt toạ độ tay. Ba hướng đem điều đó về web — bấm từng hướng để xem được mất.</p>
+      <p class="eyebrow">Decision</p>
+      <h2 class="viz-title">What to take from Manim</h2>
+      <button class="viz-source" type="button">docs/viz-reliability.md · sections 3 and 4</button>
+      <p class="viz-why">Manim does not overlap text, because its input language gives no way to put an object in a wrong position. There are three ways to get this on the web. Click each option to see the trade-offs.</p>
       <div class="stage">
-        <div class="mode-tabs" role="tablist" aria-label="Ba hướng" id="o-tabs"></div>
+        <div class="mode-tabs" role="tablist" aria-label="Three options" id="o-tabs"></div>
         <div class="opt-head"><span class="opt-title" id="o-title"></span><span class="seal" id="o-seal"></span></div>
         <ul class="lay-list" id="o-list"></ul>
       </div>
-      <div class="viz-takeaways"><h4>Kết luận</h4><ul>
-        <li>Chỉ một ý của Manim đáng mang về: layout bằng quan hệ, đối tượng biết kích thước thật của mình.</li>
-        <li>Phần còn lại — vị trí dẫn xuất từ công thức, animation là nội suy trạng thái, nhãn tự tìm chỗ, giả lập phone 280 px — engine scene đã có sẵn.</li>
-        <li>Hướng chọn: tự viết flow layout vào scene (hướng a) kèm ba check rẻ và auto-fix của hướng c. Không thêm dependency nào.</li>
+      <div class="viz-takeaways"><h4>Conclusion</h4><ul>
+        <li>Import one Manim idea only: relational layout, where each object knows its own real size.</li>
+        <li>The scene engine already has the rest: positions from formulas, animation as state interpolation, labels that find their own place, the 280 px phone check.</li>
+        <li>Selected path: build flow layout into the scene engine (option a), plus the checks and the auto-fix of option c. No new dependency.</li>
       </ul></div>
     </div>
   </section>
@@ -1437,27 +1435,27 @@ const arrowSvg = (x1, y1, x2, y2, cls) =>
 /* ---------- card 1: hand coordinates vs flow ---------- */
 const BOXES = [
   { id: 'cpu', label: 'CPU', x: 15, w: 18 },
-  { id: 'cache', label: 'Cache L1', x: 48, w: 20 },
-  { id: 'ram', label: 'Bộ nhớ chính', x: 82, w: 22 },
+  { id: 'cache', label: 'L1 cache', x: 48, w: 20 },
+  { id: 'ram', label: 'Main memory', x: 82, w: 22 },
 ];
 const ARROWS = [
   { from: 0, to: 1, label: 'miss' },
-  { from: 1, to: 2, label: 'nạp block' },
+  { from: 1, to: 2, label: 'load block' },
 ];
 let mode = 'hand';
 
 const SPEC_HAND = `{"objects":[
   {"kind":"box","id":"cpu","label":"CPU","x":<b class="bad-num">15</b>,"y":<b class="bad-num">30</b>,"w":<b class="bad-num">18</b>,"h":<b class="bad-num">14</b>},
-  {"kind":"box","id":"cache","label":"Cache L1","x":<b class="bad-num">48</b>,"y":<b class="bad-num">30</b>,"w":<b class="bad-num">20</b>,"h":<b class="bad-num">14</b>},
-  {"kind":"box","id":"ram","label":"Bộ nhớ chính","x":<b class="bad-num">82</b>,"y":<b class="bad-num">30</b>,"w":<b class="bad-num">22</b>,"h":<b class="bad-num">14</b>},
+  {"kind":"box","id":"cache","label":"L1 cache","x":<b class="bad-num">48</b>,"y":<b class="bad-num">30</b>,"w":<b class="bad-num">20</b>,"h":<b class="bad-num">14</b>},
+  {"kind":"box","id":"ram","label":"Main memory","x":<b class="bad-num">82</b>,"y":<b class="bad-num">30</b>,"w":<b class="bad-num">22</b>,"h":<b class="bad-num">14</b>},
   {"kind":"arrow","from":"cpu","to":"cache","label":"miss"},
-  {"kind":"arrow","from":"cache","to":"ram","label":"nạp block"}]}`;
+  {"kind":"arrow","from":"cache","to":"ram","label":"load block"}]}`;
 const SPEC_FLOW = `{"flow":"row","objects":[
   {"kind":"box","id":"cpu","label":"CPU"},
-  {"kind":"box","id":"cache","label":"Cache L1"},
-  {"kind":"box","id":"ram","label":"Bộ nhớ chính"},
+  {"kind":"box","id":"cache","label":"L1 cache"},
+  {"kind":"box","id":"ram","label":"Main memory"},
   {"kind":"arrow","from":"cpu","to":"cache","label":"miss"},
-  {"kind":"arrow","from":"cache","to":"ram","label":"nạp block"}]}`;
+  {"kind":"arrow","from":"cache","to":"ram","label":"load block"}]}`;
 
 function renderDemo() {
   const avail = $('d-stage').clientWidth || 360;
@@ -1472,7 +1470,7 @@ function renderDemo() {
     const cy = 78;
     for (const b of px) {
       const over = measure(b.label) > b.pw - 12;
-      if (over) issues.push(`Chữ tràn ô: “${b.label}” (chữ ${Math.round(measure(b.label))} px, ô ${Math.round(b.pw)} px)`);
+      if (over) issues.push(`The text “${b.label}” does not fit its box (text ${Math.round(measure(b.label))} px, box ${Math.round(b.pw)} px)`);
       parts.push(`<rect class="scene-box${over ? ' tone-bad' : ''}" x="${(b.cx - b.pw / 2).toFixed(1)}" y="${cy - 22}" width="${b.pw.toFixed(1)}" height="44" rx="9"/>`);
       parts.push(`<text class="scene-box-text${over ? ' tone-bad' : ''}" x="${b.cx.toFixed(1)}" y="${cy}" text-anchor="middle" dominant-baseline="central">${b.label}</text>`);
     }
@@ -1481,12 +1479,12 @@ function renderDemo() {
       const x1 = from.cx + from.pw / 2 + 2, x2 = to.cx - to.pw / 2 - 2;
       const gap = x2 - x1;
       const bad = labelW(a.label) > gap - 6;
-      if (bad) issues.push(`Nhãn “${a.label}” (${Math.round(labelW(a.label))} px) đè lên ô: khe chỉ còn ${Math.max(0, Math.round(gap))} px`);
+      if (bad) issues.push(`The label “${a.label}” (${Math.round(labelW(a.label))} px) overlaps a box. The gap is only ${Math.max(0, Math.round(gap))} px`);
       parts.push(arrowSvg(x1, cy, x2, cy, bad ? 'tone-bad' : ''));
       parts.push(`<text class="scene-label${bad ? ' tone-bad' : ''}" x="${((x1 + x2) / 2).toFixed(1)}" y="${cy - 16}" text-anchor="middle">${a.label}</text>`);
     }
-    $('d-stat').innerHTML = `<span class="num">12</span> con số layout do model bịa &nbsp;·&nbsp; <span class="num">${issues.length}</span> vấn đề ở bề rộng này`;
-    $('d-spec-label').textContent = 'Spec hiện tại — các con số đỏ là chỗ model đoán mò';
+    $('d-stat').innerHTML = `<span class="num">12</span> layout numbers from the model &nbsp;·&nbsp; <span class="num">${issues.length}</span> problems at this width`;
+    $('d-spec-label').textContent = 'Current spec — the red numbers are the model’s guesses';
     $('d-spec').innerHTML = SPEC_HAND;
   } else {
     const sized = BOXES.map((b) => ({ ...b, pw: Math.max(64, measure(b.label) + 26) }));
@@ -1525,23 +1523,23 @@ function renderDemo() {
         parts.push(`<text class="scene-label" x="${(fits ? cx + 12 : cx - 12).toFixed(1)}" y="${(y1 + y2) / 2}" text-anchor="${fits ? 'start' : 'end'}" dominant-baseline="central">${a.label}</text>`);
       });
     }
-    $('d-stat').innerHTML = `<span class="num">0</span> con số layout trong spec &nbsp;·&nbsp; <span class="num">0</span> vấn đề ở mọi bề rộng`;
-    $('d-spec-label').textContent = 'Spec đề xuất — engine đo chữ rồi tự xếp';
+    $('d-stat').innerHTML = `<span class="num">0</span> layout numbers in the spec &nbsp;·&nbsp; <span class="num">0</span> problems at any width`;
+    $('d-spec-label').textContent = 'Proposed spec — the engine measures the text and makes the layout';
     $('d-spec').innerHTML = SPEC_FLOW;
   }
 
   $('d-stage').innerHTML =
-    `<svg class="v-svg" viewBox="0 0 ${W} ${H}" style="max-width:${W}px" role="img" aria-label="Sơ đồ cache ở bề rộng ${W} px">` +
+    `<svg class="v-svg" viewBox="0 0 ${W} ${H}" style="max-width:${W}px" role="img" aria-label="Cache diagram at ${W} px wide">` +
     `<rect class="screen-frame" x=".5" y=".5" width="${W - 1}" height="${H - 1}" rx="12"/>` + parts.join('') + `</svg>`;
 
   const seal = $('d-seal');
   if (issues.length) {
     seal.className = 'seal seal--bad';
-    seal.textContent = `${issues.length} vấn đề validator hiện tại không kiểm`;
+    seal.textContent = `${issues.length} problems, and no check finds them`;
     $('d-issues').innerHTML = issues.map((t) => `<li class="note note--bad">${t}</li>`).join('');
   } else {
     seal.className = 'seal seal--ok';
-    seal.textContent = mode === 'hand' ? 'Tạm ổn ở bề rộng này — thử kéo hẹp lại' : 'Ô sinh từ cỡ chữ nên không thể vỡ';
+    seal.textContent = mode === 'hand' ? 'No problems at this width — make it narrower' : 'Box size comes from the text — it cannot break';
     $('d-issues').innerHTML = '';
   }
 }
@@ -1556,26 +1554,26 @@ $('tab-flow').onclick = () => setMode('flow');
 $('d-w').oninput = renderDemo;
 
 /* ---------- card 2: pipeline stepper ---------- */
-const NODES = ['Model free sinh spec', 'Validate cứng', 'Check phone 280 px', 'Vòng repair', 'SVG tới người đọc'];
+const NODES = ['Model writes spec', 'Hard validation', 'Phone check 280 px', 'Repair round', 'SVG reaches reader'];
 const STEPS = [
   { node: 0,
-    caption: 'Model free phải bịa toạ độ x, y, w, h cho sơ đồ khối và tự chọn min/max trục. Đây là nguồn của phần lớn lỗi layout.',
-    chips: [['bad', 'toạ độ tay', 'nguồn lỗi'], ['bad', 'min/max trục', 'nguồn lỗi']] },
+    caption: 'The free model must invent x, y, w, h for each diagram box. It must also select the axis range. Most layout errors start here.',
+    chips: [['bad', 'hand coordinates', 'error source'], ['bad', 'axis min/max', 'error source']] },
   { node: 1,
-    caption: 'validateViz bắt type lạ, cấu trúc sai, hình tĩnh không có gì tương tác. Nhưng nó không nhìn thấy hình học: ô đè ô vẫn đi qua.',
-    chips: [['good', 'cấu trúc sai', 'bắt được'], ['good', 'hình tĩnh', 'bắt được'], ['bad', 'ô đè ô', 'lọt lưới'], ['bad', 'mũi tên xuyên ô', 'lọt lưới']] },
+    caption: 'validateViz catches unknown types, bad structure and static scenes with nothing to interact with. It cannot see geometry. Boxes that overlap go straight through.',
+    chips: [['good', 'bad structure', 'caught'], ['good', 'static scene', 'caught'], ['bad', 'box over box', 'goes through'], ['bad', 'arrow through box', 'goes through']] },
   { node: 2,
-    caption: 'sceneIssues dựng thử cả hình ở 280 px: bắt nhãn đè nhau, chữ tràn ô, slider vô dụng, bước không đổi gì. Vẫn chưa kiểm ô đè ô, và trục chọn sai thì đường cong bị cắt lặng lẽ.',
-    chips: [['good', 'nhãn đè nhau', 'bắt được'], ['good', 'chữ tràn ô', 'bắt được'], ['good', 'slider vô dụng', 'bắt được'], ['bad', 'ô đè ô', 'lọt lưới'], ['bad', 'độ phủ trục', 'lọt lưới']] },
+    caption: 'sceneIssues makes a test render at 280 px. It catches label collisions, text that does not fit its box, and sliders that do nothing. It does not check box overlap, and a bad axis range clips the curve without a warning.',
+    chips: [['good', 'label collisions', 'caught'], ['good', 'text overflow', 'caught'], ['good', 'useless slider', 'caught'], ['bad', 'box over box', 'goes through'], ['bad', 'axis coverage', 'goes through']] },
   { node: 3,
-    caption: 'Mỗi lỗi mềm tốn một vòng hỏi lại model — khoảng 6 lượt quota free — và thêm một lần JSON có thể hỏng. Nhiều lỗi trong số đó máy tự sửa được mà không cần hỏi.',
-    chips: [['warn', '≈6 lượt quota', 'chi phí'], ['warn', 'JSON có thể hỏng', 'rủi ro'], ['warn', 'máy sửa được', 'bỏ phí']] },
+    caption: 'Each soft issue causes one more model call. That costs approximately 6 free-quota requests and adds one more risk of bad JSON. A machine can repair many of these issues without the model.',
+    chips: [['warn', '≈6 quota requests', 'cost'], ['warn', 'bad JSON risk', 'risk'], ['warn', 'machine-fixable', 'wasted']] },
   { node: 4,
-    caption: 'Những gì lọt lưới giờ hiện ra trước người đọc: ô đè ô, mũi tên xuyên qua ô, đường cong chiếm một góc nhỏ của khung.',
-    chips: [['bad', 'ô đè ô', 'tới người đọc'], ['bad', 'mũi tên xuyên ô', 'tới người đọc'], ['bad', 'trục rộng thừa', 'tới người đọc']] },
+    caption: 'The errors that went through are now in front of the reader: boxes on boxes, arrows through boxes, a curve in one small corner of the frame.',
+    chips: [['bad', 'box over box', 'reaches reader'], ['bad', 'arrow through box', 'reaches reader'], ['bad', 'wasted axis range', 'reaches reader']] },
   { node: -1,
-    caption: 'Đề xuất: flow layout chặn lỗi ngay trong ngôn ngữ spec — không còn toạ độ để sai; thêm ba check hình học rẻ; và auto-fix lỗi mềm bằng máy trước khi tốn một vòng hỏi model.',
-    chips: [['good', 'flow layout', 'chặn từ spec'], ['good', '3 check hình học', 'thêm mới'], ['good', 'auto-fix bằng máy', 'đỡ tốn quota']] },
+    caption: 'The proposal: flow layout removes the coordinates from the spec, so these errors cannot occur. Add three simple geometry checks. Let the machine repair soft issues before you ask the model.',
+    chips: [['good', 'flow layout', 'blocked in spec'], ['good', '3 geometry checks', 'new'], ['good', 'machine auto-fix', 'saves quota']] },
 ];
 let pStep = 0;
 function renderPipe() {
@@ -1594,7 +1592,7 @@ function renderPipe() {
     parts.push(`<rect class="scene-box${tone}" x="${(cx - bw / 2).toFixed(1)}" y="${y}" width="${bw}" height="${bh}" rx="9"/>`);
     parts.push(`<text class="scene-box-text${tone}" x="${cx}" y="${y + bh / 2}" text-anchor="middle" dominant-baseline="central">${label}</text>`);
   });
-  $('p-stage').innerHTML = `<svg class="v-svg" viewBox="0 0 ${W} ${H}" style="max-width:${W}px" role="img" aria-label="Đường đi của spec"> ${parts.join('')}</svg>`;
+  $('p-stage').innerHTML = `<svg class="v-svg" viewBox="0 0 ${W} ${H}" style="max-width:${W}px" role="img" aria-label="The path of one spec"> ${parts.join('')}</svg>`;
   $('p-chips').innerHTML = STEPS[pStep].chips.map(([tone, text, sub]) =>
     `<span class="tr-cell tone tone-${tone}" style="font-size:12px">${text}<small>${sub}</small></span>`).join('');
   $('p-caption').textContent = STEPS[pStep].caption;
@@ -1607,25 +1605,25 @@ $('p-next').onclick = () => { pStep = Math.min(STEPS.length - 1, pStep + 1); ren
 
 /* ---------- card 3: three options ---------- */
 const OPTIONS = [
-  { key: 'a', tab: 'a · Tự viết layout', title: 'Lớp layout quan hệ kiểu Manim trong engine scene', seal: ['ok', 'Đề xuất'],
+  { key: 'a', tab: 'a · Build the layout', title: 'A Manim-style relational layout inside the scene engine', seal: ['ok', 'Proposed'],
     items: [
-      ['good', 'AI chỉ khai báo quan hệ — flow: "row" | "column", after: "id" — không còn con số layout nào để sai.'],
-      ['good', 'Khoảng 200–400 dòng trong scene-layout.js, không thêm dependency, vẫn vanilla JS không build step.'],
-      ['good', 'Cỡ ô sinh từ cỡ chữ nên ràng buộc chữ ≥ 11 px trên điện thoại dễ giữ hơn, không khó đi.'],
-      ['info', 'Panel có axes và grid giữ nguyên: toạ độ dữ liệu trên trục là ngữ nghĩa, không phải layout.'],
+      ['good', 'The AI only declares relations: flow: "row" | "column", after: "id". There are no layout numbers to set incorrectly.'],
+      ['good', 'Approximately 200–400 lines in scene-layout.js. No new dependency. Vanilla JS, no build step.'],
+      ['good', 'Box size comes from text size. The 11 px minimum on phones becomes easier to keep.'],
+      ['info', 'Panels with axes or grid do not change. Data coordinates on an axis are meaning, not layout.'],
     ] },
-  { key: 'b', tab: 'b · Thư viện ngoài', title: 'motion-canvas, JSXGraph, p5, d3', seal: ['bad', 'Loại'],
+  { key: 'b', tab: 'b · Use a library', title: 'motion-canvas, JSXGraph, p5, d3', seal: ['bad', 'Rejected'],
     items: [
-      ['bad', 'motion-canvas: MIT nhưng cảnh viết bằng TSX và cần Vite build — trái ràng buộc không build step.'],
-      ['bad', 'JSXGraph (MIT/LGPL) và p5 (LGPL): API mệnh lệnh, AI phải sinh code JS thay vì JSON — mất tầng validate, thêm rủi ro injection.'],
-      ['bad', 'd3 (ISC): chạy được không cần build, nhưng là hộp đồ nghề vẽ, không giải bài layout quan hệ — thêm ~90 KB gzip vô ích.'],
-      ['info', 'Chung một mẫu số: chúng nhận lệnh vẽ, còn kiến trúc này sống nhờ model chỉ trả dữ liệu.'],
+      ['bad', 'motion-canvas: MIT license, but scenes are TSX and need a Vite build. This breaks the no-build-step rule.'],
+      ['bad', 'JSXGraph (MIT/LGPL) and p5 (LGPL) have imperative APIs. The AI must then generate JS code, not JSON. The validation layer is lost.'],
+      ['bad', 'd3 (ISC): runs without a build, but it is a drawing toolkit, not a layout engine. Approximately 90 KB gzip with no gain.'],
+      ['info', 'All of them take drawing commands. This architecture is safe because the model only returns data.'],
     ] },
-  { key: 'c', tab: 'c · Siết validate', title: 'Mở rộng check và constraint trên hướng hiện tại', seal: ['warn', 'Kèm theo a'],
+  { key: 'c', tab: 'c · Stricter checks', title: 'Extend checks and constraints on the current path', seal: ['warn', 'Alongside a'],
     items: [
-      ['good', 'Ba check rẻ: ô đè ô, mũi tên xuyên ô, độ phủ trục dưới ~40% thì báo thu hẹp min/max.'],
-      ['good', 'Auto-fix bằng máy: slider thừa tự bỏ, bước trùng tự gộp — chỉ lỗi máy chịu mới tốn vòng repair.'],
-      ['warn', 'Một mình nó chỉ phát hiện chồng chéo rồi lại nhờ đúng con model gây lỗi sửa — chữa triệu chứng.'],
+      ['good', 'Three simple checks: box over box, arrow through box, and a warning when the curve covers less than 40% of the axes.'],
+      ['good', 'Machine auto-fix: remove a useless slider, merge equal steps. Only issues the machine cannot repair cost a repair round.'],
+      ['warn', 'Alone, this only finds the overlap. Then it asks the same model that caused the error to repair it.'],
     ] },
 ];
 let opt = 0;
