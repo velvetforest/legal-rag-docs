@@ -249,6 +249,7 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
     <div class="meta">
       <span class="pill">develop @ <b>bd49e3e</b> · merge bởi datdooo (PR #60)</span>
       <span class="pill">cập nhật <b>10/11/2026</b></span>
+      <span class="pill">mục 8 cập nhật <b>15/11/2026</b> · develop @ <b>08fde83</b> (Banh-Van-Hiep)</span>
       <span class="pill"><b>1.554</b> file được track</span>
       <span class="pill">Sprint 7 · hạn <b>16/11/2026</b></span>
     </div>
@@ -265,7 +266,7 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
     <a href="#p5">5 · RAG &amp; LLM</a>
     <a href="#p6">6 · Verification</a>
     <a href="#p7">7 · Fullstack</a>
-    <a href="#p8">8 · Docs, tests, quy trình</a>
+    <a href="#p8">8 · Docs, tests, harness</a>
     <a href="#uu-tien">Ưu tiên</a>
     <a href="#quiz">Quiz</a>
   </div>
@@ -828,14 +829,16 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
 
 <!-- ================= 8. DOCS / TESTS ================= -->
 <section class="part" id="p8" style="--tc:var(--sh)">
-  <div class="part-head"><span class="num">8</span><h2>Docs, tests và quy trình làm việc</h2><span class="team-tag">Dùng chung</span></div>
-  <p class="sub">Phần này giữ cho ba team hiểu nhau: tài liệu thiết kế, kế hoạch từng tuần, test dùng chung và quy trình PR.</p>
+  <div class="part-head"><span class="num">8</span><h2>Docs, tests, harness và quy trình làm việc</h2><span class="team-tag">Dùng chung</span></div>
+  <p class="sub">Phần này giữ cho ba team hiểu nhau: tài liệu thiết kế, kế hoạch từng tuần, test dùng chung, quy trình PR và bộ harness mới cho agent. Mục này được cập nhật ngày 15/11/2026 theo develop @ <code>08fde83</code> (người commit: Banh-Van-Hiep), sau khi nhóm trưởng tái cấu trúc repo theo harness engineering.</p>
   <div class="grid">
     <div>
       <div class="card prose">
         <p>Folder <code>docs/</code> chứa đặc tả chung như <code>ARCHITECTURE.md</code> và <code>CODING_CONVENTIONS.md</code>, cùng tài liệu thiết kế của từng team trong <code>docs/team1_data/</code>, <code>docs/team2_rag/</code> và <code>docs/team3_fullstack/</code>. Mỗi team còn giữ kế hoạch theo tuần ngay trong package của mình: <code>team1_data/docs_1/</code>, <code>team2_rag/docs_2/</code> và <code>team3_fullstack/docs_3/</code> (từ week4 đến week10).</p>
         <p>Folder <code>tests/</code> ở gốc có 27 file test Python dùng chung, ví dụ test BM25, Hybrid, Article Store, Golden set và pipeline v2. File <code>tests/retriever_contract.py</code> định nghĩa contract mà mọi retriever phải thỏa. Ngoài ra, <code>team2_rag/tests/</code> có 24 file test nội bộ, còn Team 3 có test trong <code>team3_fullstack/tests/</code>, <code>frontend/tests/</code> và <code>backend/src/test/</code>.</p>
-        <p>Quy trình làm việc là <code>feature/*</code> → Pull Request → <code>develop</code> → <code>main</code>. Không ai được push thẳng vào <code>main</code> hay <code>develop</code>, và mỗi PR theo mẫu <code>.github/pull_request_template.md</code>.</p>
+        <p>Quy trình làm việc là <code>feature/*</code> → Pull Request → <code>develop</code> → <code>main</code>. Không ai được push thẳng vào <code>main</code> hay <code>develop</code>, và mỗi PR theo mẫu <code>.github/pull_request_template.md</code>. Riêng bộ harness được đưa vào develop bằng commit <code>969d3da</code> và merge <code>08fde83</code> (cả hai do Banh-Van-Hiep commit), không qua Pull Request.</p>
+        <p>Harness là mọi thứ quanh model giúp agent làm đúng việc: file chỉ dẫn, lệnh kiểm tra, môi trường và trạng thái công việc. File <code>AGENTS.md</code> ở gốc (53 dòng) là điểm vào: nó chỉ đường tới thư mục, tài liệu và task của từng team, nêu 5 bất biến hệ thống và lệnh kiểm chứng. Mỗi team có thêm một <code>AGENTS.md</code> riêng. Script <code>scripts/harness_verify.py</code> chạy 4 cổng kiểm tra: vệ sinh repo, schema contract, độ khớp báo cáo benchmark và unit test của Team 2.</p>
+        <p>Lần chạy thử ngày 15/11 cho kết quả sau: <code>team2_rag/tests</code> có 350 test pass; <code>tests/</code> có 233 pass và 1 fail vì văn bản <code>tt-31-2004-tt-btc-v1</code> thiếu <code>effective_date</code>; 12 test của <code>team3_fullstack/tests</code> fail vì máy thiếu thư viện gevent và locust, không phải lỗi code.</p>
       </div>
     </div>
     <div class="card tree-card" style="--tc:var(--sh)">
@@ -846,7 +849,7 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
   </div>
   <!--easy:p8-->
   <details class="card easy">
-    <summary><span class="easy-ic" aria-hidden="true"></span><span>Giải thích dễ hiểu: 7 khái niệm trong phần này</span><span class="easy-hint">bấm để mở</span></summary>
+    <summary><span class="easy-ic" aria-hidden="true"></span><span>Giải thích dễ hiểu: 10 khái niệm trong phần này</span><span class="easy-hint">bấm để mở</span></summary>
     <p class="lede2">Phần này nói về cách chín người cùng viết chung một bộ code mà không giẫm chân nhau: mỗi người làm ở nhánh riêng, nhờ người khác xem lại, rồi mới nhập vào bản chung. Tài liệu và bài kiểm tra giúp người sau hiểu và không làm hỏng việc của người trước.</p>
     <div class="terms">
       <div class="term"><h4>Repo và commit</h4><p>Repo là kho chứa toàn bộ code và lịch sử thay đổi của dự án, đặt trên GitHub. Commit là một lần lưu thay đổi, kèm lời mô tả và tên người lưu. Mỗi commit có một mã riêng (ví dụ <code>bd49e3e</code>) để ai cũng tra lại được.</p></div>
@@ -856,12 +859,15 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <div class="term"><h4>CI và GitHub Actions</h4><p>CI là việc để máy tự chạy mọi test mỗi khi có Pull Request. GitHub Actions là dịch vụ của GitHub để làm việc đó. Repo hiện chưa có CI, nên test chỉ chạy khi có người nhớ chạy trên máy mình.</p></div>
       <div class="term"><h4>Jira, ticket và Sprint</h4><p>Jira là công cụ quản lý công việc của nhóm. Mỗi việc là một ticket có mã, ví dụ VLRA-71. Sprint là một chặng làm việc ngắn (ở đây khoảng một tuần) với danh sách việc phải xong trong chặng đó.</p></div>
       <div class="term"><h4>README và docs</h4><p>README là file giới thiệu mà người mới đọc đầu tiên khi mở một folder. Folder <code>docs/</code> chứa tài liệu thiết kế lâu dài. Các folder <code>docs_1</code>, <code>docs_2</code>, <code>docs_3</code> chứa kế hoạch và kết quả từng tuần của mỗi team.</p></div>
+      <div class="term"><h4>Harness và AGENTS.md</h4><p>Harness là phần "dây cương" quanh AI agent: file chỉ dẫn, lệnh kiểm tra, môi trường và nơi ghi tiến độ. <code>AGENTS.md</code> là file chỉ dẫn mà agent đọc đầu tiên. File này nên ngắn, chỉ đường tới tài liệu chi tiết thay vì chép hết vào.</p></div>
+      <div class="term"><h4>Cổng kiểm chứng (verification gate)</h4><p>Cổng kiểm chứng là một bước kiểm tra tự động mà code phải qua trước khi được coi là xong. Một cổng tốt phải fail được khi có lỗi thật. Nếu cổng chỉ chạy trên máy cá nhân mà không có CI, người quên chạy vẫn merge được.</p></div>
+      <div class="term"><h4>ADR (bản ghi quyết định)</h4><p>ADR ghi lại một quyết định kỹ thuật: ngày, nội dung, lý do, các phương án đã loại. Nhờ ADR, người sau biết vì sao nhóm chọn Hybrid RRF hay vì sao chỉ cho một lượt gọi LLM cùng lúc, mà không phải đi hỏi lại.</p></div>
     </div>
   </details>
   <!--/easy:p8-->
   <!--why:p8-->
   <details class="card easy why">
-    <summary><span class="easy-ic" aria-hidden="true"></span><span>Hỏi – đáp: 8 câu hỏi thường gặp về phần này, kèm đáp án</span><span class="easy-hint">bấm để mở</span></summary>
+    <summary><span class="easy-ic" aria-hidden="true"></span><span>Hỏi – đáp: 11 câu hỏi thường gặp về phần này, kèm đáp án</span><span class="easy-hint">bấm để mở</span></summary>
     <p class="lede2">Mỗi mục dưới đây là một câu giảng viên có thể hỏi, kèm câu trả lời dựa trên số đo và tài liệu trong repo. Các câu đầu hỏi nhóm đã làm gì và làm như thế nào; các câu sau hỏi vì sao nhóm quyết định như vậy. Dòng "Nên nói thật" nêu giới hạn mà nhóm nên tự nhận khi bị hỏi sâu hơn.</p>
     <div class="qa-list">
       <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Một thay đổi đi vào nhánh develop như thế nào?</span></h4><div class="ans"><p>Có bốn bước. Một: thành viên tạo nhánh <code>feature/...</code> từ develop. Hai: thành viên commit thay đổi lên nhánh đó. Ba: thành viên mở Pull Request theo mẫu trong <code>.github/pull_request_template.md</code>. Bốn: ít nhất một thành viên khác xem lại, rồi PR mới được merge.</p></div></div>
@@ -871,16 +877,23 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Vì sao mỗi team có một folder riêng?</span></h4><div class="ans"><p>Mỗi team tự do tổ chức code bên trong folder của mình, và hai team ít khi sửa cùng một file nên ít xung đột khi merge. Phần giao nhau giữa các team được gom vào <code>contracts/</code>.</p></div></div>
       <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Vì sao có test dùng chung ở folder tests/ ngoài test riêng của từng team?</span></h4><div class="ans"><p>Test riêng kiểm bên trong một team. Test dùng chung kiểm chỗ các team gặp nhau: dữ liệu của Team 1 có đúng mẫu mà Team 2 cần không, mọi trích dẫn có mở được Điều không.</p><p class="honest"><b>Nên nói thật:</b> Repo chưa có CI, nên các test này chỉ chạy khi có người nhớ chạy trên máy mình.</p></div></div>
       <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Vì sao mỗi con số trong báo cáo đi kèm commit và người commit?</span></h4><div class="ans"><p>Người nghe có thể mở đúng commit để kiểm con số đó đến từ đâu và chạy lại được. Cách này cũng cho thấy rõ phần nào đã vào nhánh chung và phần nào chưa.</p></div></div>
-      <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Vì sao kế hoạch tuần nằm trong repo, không chỉ nằm trên Jira?</span></h4><div class="ans"><p>Kế hoạch trong repo đi cùng với code: nó được review qua Pull Request và ghi kèm bằng chứng như commit, lệnh chạy lại và số đo. Jira dùng để giao việc, còn file kế hoạch ghi lại việc đó đã được làm và kiểm thế nào.</p><p class="honest"><b>Nên nói thật:</b> Tài liệu của mỗi team hiện nằm ở hai nơi (<code>docs/</code> và <code>docs_X/</code>), nên người mới khó tìm.</p></div></div>
+      <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Vì sao kế hoạch tuần nằm trong repo, không chỉ nằm trên Jira?</span></h4><div class="ans"><p>Kế hoạch trong repo đi cùng với code: nó được review qua Pull Request và ghi kèm bằng chứng như commit, lệnh chạy lại và số đo. Jira dùng để giao việc, còn file kế hoạch ghi lại việc đó đã được làm và kiểm thế nào.</p><p class="honest"><b>Nên nói thật:</b> Tài liệu của mỗi team nằm ở hai nơi (<code>docs/</code> và <code>docs_X/</code>). Từ ngày 15/11, <code>AGENTS.md</code> đã quy ước rõ: thiết kế nằm ở <code>docs/teamX_*/</code>, task tuần nằm ở <code>teamX_*/docs_X/</code>.</p></div></div>
+      <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Repo áp dụng harness engineering như thế nào?</span></h4><div class="ans"><p>Nhóm đã thêm <code>AGENTS.md</code> ở gốc và ở từng team, gom schema vào <code>contracts/v0.1/</code> làm nguồn chuẩn, và thêm <code>scripts/harness_verify.py</code> với 4 cổng kiểm tra. File chỉ dẫn ngắn (53 dòng) và chỉ đường tới tài liệu chi tiết, đúng hướng mà các lecture harness khuyên.</p><p class="honest"><b>Nên nói thật:</b> Repo chưa có lệnh cài môi trường, chưa có CI, chưa có file tiến độ (<code>PROGRESS.md</code> hay feature list) và chưa có ADR. Vì vậy harness mới đạt một phần.</p></div></div>
+      <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Trước khi mở PR, thành viên phải chạy lệnh gì?</span></h4><div class="ans"><p>Theo <code>AGENTS.md</code>, thành viên chạy <code>python scripts/harness_verify.py</code>, rồi <code>pytest team2_rag/tests</code> và <code>pytest tests</code>. Mỗi team còn có lệnh kiểm tra riêng trong <code>AGENTS.md</code> của team đó.</p><p class="honest"><b>Nên nói thật:</b> Trên Windows, script crash khi output được chuyển sang file. Cổng 1 fail nếu trong <code>docs/</code> có file chưa track. Cổng 4 chỉ chạy test của Team 2.</p></div></div>
+      <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Vì sao nhóm cần ADR khi đã có ARCHITECTURE.md?</span></h4><div class="ans"><p><code>ARCHITECTURE.md</code> mô tả hệ thống trông như thế nào. ADR ghi vì sao nhóm chọn như vậy và đã loại những gì. Hiện danh sách quyết định DEC-01..08 chỉ có trong Google Doc. Các quyết định sau đó nằm rải rác trong commit message, báo cáo và <code>AGENTS.md</code>.</p><p class="honest"><b>Nên nói thật:</b> Google Doc "Legal RAG" có phần hiện trạng dừng ở ngày 12/10/2026. Nguồn chuẩn trong repo là <code>docs/ARCHITECTURE.md</code>.</p></div></div>
     </div>
   </details>
   <!--/why:p8-->
   <div class="advice">
     <h3>Góp ý cải thiện</h3>
     <ul>
-      <li><span class="lvl p0">Nên làm sớm</span><div><p>Folder <code>.github/</code> không có workflow CI nào. Các con số như "94 test pass" hay "validator 76/76" hiện chỉ được chạy trên máy cá nhân, nên một PR có thể làm vỡ test mà không ai phát hiện trước khi merge.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên thêm GitHub Actions chạy <code>pytest tests team2_rag/tests</code>, <code>mvn test</code> và <code>npm test</code> cho mỗi PR vào <code>develop</code>.</p></div></li>
-      <li><span class="lvl p1">Nên làm</span><div><p>Tài liệu của một team đang nằm ở hai nơi, ví dụ <code>docs/team2_rag/</code> và <code>team2_rag/docs_2/</code>. Người mới khó biết đâu là bản thiết kế, đâu là nhật ký tuần.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên quy ước thiết kế ổn định nằm ở <code>docs/</code>, kế hoạch tuần nằm ở <code>docs_X/</code>, và README mỗi bên dẫn link sang bên kia.</p></div></li>
-      <li><span class="lvl p2">Gợi ý</span><div><p>README gốc nhắc đến folder <code>specs/</code> nhưng repo không có folder này. Cây thư mục trong README cũng thiếu <code>team1_data/</code>, <code>evaluation/retrieval/</code> và <code>notebooks/</code>.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên sinh lại cây thư mục trong README từ <code>git ls-files</code> mỗi khi cấu trúc thay đổi.</p></div></li>
+      <li><span class="lvl p0">Nên làm sớm</span><div><p>Commit <code>969d3da</code> (Banh-Van-Hiep) chép nguyên 7 schema nháp cũ từ <code>docs/team2_rag/schemas/</code> và <code>docs/team1_data/schemas/</code> vào <code>contracts/v0.1/</code>, nơi được gọi là nguồn chuẩn duy nhất. Commit này cũng xóa câu cảnh báo "bộ nháp không thay bộ này". Giờ nguồn chuẩn có hai định nghĩa citation mâu thuẫn: <code>citation.schema.json</code> có 6 trường, còn <code>rag_response.schema.json</code> có 9 trường. File <code>request.schema.json</code> còn mô tả route <code>/api/v1/query</code> đã bỏ.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên gỡ 7 file này khỏi <code>contracts/v0.1/</code>, hoặc ghi rõ trong <code>CONTRACT.md</code> rằng chúng chỉ dùng nội bộ Team 2.</p></div></li>
+      <li><span class="lvl p0">Nên làm sớm</span><div><p>Folder <code>.github/</code> vẫn không có workflow CI nào. Script <code>harness_verify.py</code> chỉ chạy khi có người nhớ chạy, nên một PR vẫn có thể làm vỡ test mà không ai phát hiện trước khi merge.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên thêm GitHub Actions chạy <code>harness_verify.py</code>, <code>pytest tests team2_rag/tests team3_fullstack/tests</code>, <code>mvn test</code> và <code>npm test</code> cho mỗi PR vào <code>develop</code>.</p></div></li>
+      <li><span class="lvl p1">Nên làm</span><div><p>Các cổng trong <code>harness_verify.py</code> còn dễ dãi. Script crash vì lỗi mã hóa cp1252 khi output được chuyển sang file trên Windows. Cổng 1 đọc thư mục trên máy thay vì file Git, nên fail vì file cá nhân chưa track, nhưng lại không bắt file tạm <code>vite.config.ts.timestamp-*.mjs</code> đã commit. Cổng 2 chỉ kiểm schema có khóa <code>type</code>. Cổng 4 chỉ chạy test của Team 2.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên đặt stdout UTF-8, kiểm theo <code>git ls-files</code>, gọi <code>validate_public_contract.py</code> trong cổng 2 và chạy cả <code>tests/</code> trong cổng 4.</p></div></li>
+      <li><span class="lvl p1">Nên làm</span><div><p>Repo chưa có lệnh cài môi trường. Nhóm phụ thuộc <code>test</code> trong <code>pyproject.toml</code> không có pytest, và cũng thiếu numpy mà script harness cần. Một máy mới chạy <code>harness_verify.py</code> sẽ fail ngay ở cổng 4.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên thêm pytest và numpy vào nhóm <code>test</code>, rồi ghi một lệnh setup như <code>pip install -e ".[test,api,retrieval]"</code> ở đầu <code>AGENTS.md</code>.</p></div></li>
+      <li><span class="lvl p1">Nên làm</span><div><p>Repo chưa có ADR, <code>PROGRESS.md</code> hay feature list. Quyết định kỹ thuật nằm rải rác, còn trạng thái task chỉ có trong các file <code>tasks.md</code> viết tay ở ba nơi.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên tạo <code>docs/decisions/</code>, chép DEC-01..08 từ Google Doc sang và thêm các quyết định mới. Nhóm cũng cần thêm <code>decisions</code> vào danh sách cho phép của cổng 1.</p></div></li>
+      <li><span class="lvl p1">Nên làm</span><div><p><code>team1_data/AGENTS.md</code> ghi chunk phải có "đầy đủ 12 trường" theo <code>chunk_metadata.schema.json</code>. Thực tế schema đó có 31 trường bắt buộc; 12 trường là của <code>retrieval_output.schema.json</code>.</p><p class="fix"><b>Đề xuất:</b> Team 1 nên sửa câu này để agent không áp nhầm schema.</p></div></li>
+      <li><span class="lvl p2">Gợi ý</span><div><p>README gốc vẫn nhắc folder <code>specs/</code> không tồn tại, vẫn ghi "evaluation chưa có code", và cây thư mục vẫn thiếu <code>team1_data/</code>, <code>evaluation/retrieval/</code> và <code>notebooks/</code>. <code>.github/CODEOWNERS</code> vẫn trỏ tới <code>/src/</code>. Google Doc "Legal RAG" cũng có phần hiện trạng dừng ở ngày 12/10/2026.</p><p class="fix"><b>Đề xuất:</b> Nhóm nên sinh lại cây thư mục trong README từ <code>git ls-files</code>, sửa CODEOWNERS, và ghi ở đầu Google Doc rằng nguồn chuẩn là <code>docs/ARCHITECTURE.md</code>.</p></div></li>
     </ul>
   </div>
 </section>
@@ -891,7 +904,7 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
   <p class="sub">Danh sách dưới đây xếp các góp ý "Nên làm sớm" theo mức ảnh hưởng đến độ tin cậy của kết quả.</p>
   <div class="card">
     <ol class="summary-list">
-      <li><div><p>Nhóm nên thêm CI chạy pytest, <code>mvn test</code>, <code>npm test</code> và validator contract cho mỗi PR.</p><small>Phần 8 và phần 4 · việc nhỏ, bảo vệ mọi phần còn lại.</small></div></li>
+      <li><div><p>Nhóm nên thêm CI chạy <code>harness_verify.py</code>, pytest, <code>mvn test</code>, <code>npm test</code> và validator contract cho mỗi PR, và gỡ 7 schema nháp vừa bị chép vào <code>contracts/v0.1/</code>.</p><small>Phần 8 và phần 4 · việc nhỏ, bảo vệ mọi phần còn lại.</small></div></li>
       <li><div><p>Nhóm nên sửa đường dẫn trong <code>.github/CODEOWNERS</code> để Team 1 và Team 2 được tự động request review.</p><small>Phần 4 · sửa khoảng 5 dòng.</small></div></li>
       <li><div><p>Team 2 nên cập nhật <code>rag_v2_benchmark_report.md</code> theo các lượt chạy mới nhất, vì Hallucination mức câu chưa đạt mốc 5%.</p><small>Phần 6 · tránh báo cáo sai trạng thái.</small></div></li>
       <li><div><p>Nhóm nên soát pháp lý 70 câu draft và 33 câu ngoài phạm vi để benchmark bỏ được nhãn exploratory.</p><small>Phần 3 · việc lớn nhất, nên chia đều cho các thành viên.</small></div></li>
@@ -921,7 +934,7 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
 
 <footer>
   <div class="wrap">
-    Trang được dựng từ nhánh <code>develop</code> của <a href="https://github.com/Banh-Van-Hiep/vietnamese-legal-rag/tree/develop">Banh-Van-Hiep/vietnamese-legal-rag</a> tại commit <code>bd49e3e</code> (người commit: datdooo), ngày 10/11/2026. Số commit theo người được đếm bằng <code>git shortlog -sn --no-merges</code> trên từng folder. Số liệu retrieval lấy từ <code>evaluation/retrieval/runs/vlra53-aiteamvn-weights/summary.md</code>; số liệu RAG lấy từ <code>team2_rag/docs_2/week9/tasks.md</code> mục 8.
+    Trang được dựng từ nhánh <code>develop</code> của <a href="https://github.com/Banh-Van-Hiep/vietnamese-legal-rag/tree/develop">Banh-Van-Hiep/vietnamese-legal-rag</a> tại commit <code>bd49e3e</code> (người commit: datdooo), ngày 10/11/2026. Số commit theo người được đếm bằng <code>git shortlog -sn --no-merges</code> trên từng folder. Số liệu retrieval lấy từ <code>evaluation/retrieval/runs/vlra53-aiteamvn-weights/summary.md</code>; số liệu RAG lấy từ <code>team2_rag/docs_2/week9/tasks.md</code> mục 8. Mục 8 được cập nhật ngày 15/11/2026 theo develop @ <code>08fde83</code> (người commit: Banh-Van-Hiep); số test là kết quả chạy lại trên máy cá nhân ngày 15/11.
   </div>
 </footer>
 
@@ -933,7 +946,7 @@ const BRANCH = "develop";
 const TREE = {
   ".github/": {"CODEOWNERS":null,"pull_request_template.md":null},
   "configs/": {"README.md":null,"team2-api.env.example":null},
-  "contracts/": {"README.md":null,"v0.1/":{"CONTRACT.md":null,"query_request.schema.json":null,"rag_response.schema.json":null,"retrieval_output.schema.json":null,"internal_article.schema.json":null,"chat_stream.schema.json":null,"error_response.schema.json":null,"public_examples.json":null,"validate_public_contract.py":null}},
+  "contracts/": {"README.md":null,"v0.1/":{"CONTRACT.md":null,"query_request.schema.json":null,"rag_response.schema.json":null,"retrieval_output.schema.json":null,"internal_article.schema.json":null,"chat_stream.schema.json":null,"error_response.schema.json":null,"public_examples.json":null,"validate_public_contract.py":null,"request.schema.json":null,"citation.schema.json":null,"context.schema.json":null,"llm_input.schema.json":null,"llm_output.schema.json":null,"rerank_output.schema.json":null,"chunk_metadata.schema.json":null}},
   "data/": {
     "doanh-nghiep/": {"raw/":{},"interim/":{},"processed/":{"chunks.jsonl":null,"articles.jsonl":null},"registry/":{"documents.json":null},"chunk_documents.py":null,"CATALOG.txt":null},
     "doanh-nghiep-mo-rong/": {"interim/":{},"processed/":{"chunks.jsonl.gz":null,"processing_report.json":null},"registry/":{},"build_from_hf.py":null,"CATALOG.txt":null}
@@ -941,14 +954,16 @@ const TREE = {
   "docs/": {"ARCHITECTURE.md":null,"CODING_CONVENTIONS.md":null,"README.md":null,"team1_data/":{"retrieval-design.md":null,"chunk-format-spec.md":null,"metadata-specification.md":null},"team2_rag/":{"runs/":{"colab-4runs/":{},"top10-ctx10/":{}},"schemas/":{},"rag_v2_benchmark_report.md":null,"citation_rubric.md":null,"citation-specification.md":null,"optimal_rag_configuration.md":null,"prompt-design.md":null},"team3_fullstack/":{"fullstack-architecture.md":null,"public-api-specification.md":null,"performance-measurement.md":null}},
   "evaluation/": {"README.md":null,"retrieval/":{"configs/":{},"runs/":{"vlra49/":{},"vlra52-aiteamvn/":{},"vlra53-aiteamvn-weights/":{}},"README.md":null}},
   "notebooks/": {"reranker_evaluation_colab.ipynb":null},
-  "scripts/": {"preprocess_legal_data.py":null,"validate_chunks.py":null,"populate_qdrant.py":null,"eval_retrieval.py":null,"eval_reranker.py":null,"benchmark_rag_v2.py":null,"run_retrieval_tests.py":null},
+  "scripts/": {"preprocess_legal_data.py":null,"validate_chunks.py":null,"populate_qdrant.py":null,"eval_retrieval.py":null,"eval_reranker.py":null,"benchmark_rag_v2.py":null,"run_retrieval_tests.py":null,"harness_verify.py":null},
   "team1_data/": {
+    "AGENTS.md":null,
     "retrieval/": {"bm25.py":null,"tokenizer.py":null,"embedding.py":null,"dense.py":null,"hybrid.py":null,"retrieval_v2.json":null},
     "golden/": {"golden_phase1.json":null,"golden_phase1.manifest.json":null,"out_of_scope_v1.json":null,"edge_cases_v1.json":null},
     "evaluation/": {"core.py":null,"__main__.py":null},
     "docs_1/": {"week4/":{},"week9/":{},"week10/":{}}
   },
   "team2_rag/": {
+    "AGENTS.md":null,
     "api/": {"app.py":null,"handlers.py":null,"mock_app.py":null},
     "llm/": {"factory.py":null,"gemini_client.py":null,"ollama_client.py":null,"openai_client.py":null,"qwen_client.py":null,"output_parser.py":null,"tokens.py":null},
     "prompts/": {"context.py":null,"templates.py":null,"builder.py":null,"render.py":null},
@@ -962,6 +977,7 @@ const TREE = {
     "smoke_gemini.py":null,"smoke_ollama.py":null,"manual_prompt_check.py":null,"run_query.py":null,"validate_golden.py":null
   },
   "team3_fullstack/": {
+    "AGENTS.md":null,
     "backend/": {"src/main/java/com/legalai/backend/":{"ai/":{},"chat/":{"stream/":{}},"conversation/":{},"document/":{},"common/":{}},"src/main/resources/":{"application.properties":null,"application-mock.properties":null,"application-rag.properties":null,"db/":{"chat-schema.sql":null}},"src/test/":{},"pom.xml":null},
     "frontend/": {"src/":{"api/":{"chatStream.ts":null,"sse.ts":null,"retryPolicy.ts":null,"errorText.ts":null,"publicContract.ts":null},"components/":{"chat/":{},"citation/":{"CitationCard.tsx":null},"document/":{"DocumentViewer.tsx":null}},"pages/":{},"hooks/":{}},"tests/":{},"package.json":null,"vite.config.ts":null,"vite.config.ts.timestamp-1793068941556-9a4a983948b938.mjs":null},
     "tools/": {"measure_latency.py":null,"latency_report.py":null,"evaluate_retrieval_api.py":null},
@@ -969,7 +985,7 @@ const TREE = {
     "docs_3/": {"week4/":{},"week9/":{}}
   },
   "tests/": {"retriever_contract.py":null,"test_bm25_retrieval.py":null,"test_hybrid_retrieval.py":null,"test_article_store.py":null,"test_golden_phase1.py":null,"test_team2_pipeline_v2.py":null,"test_citation_verification.py":null},
-  ".env.example":null, "README.md":null, "docker-compose.yml":null, "pyproject.toml":null
+  ".env.example":null, "AGENTS.md":null, "README.md":null, "docker-compose.yml":null, "pyproject.toml":null
 };
 
 /* Cấu hình cho từng cây: hl = tô sáng, warn = có vấn đề, notes = ghi chú ngắn */
@@ -1014,9 +1030,9 @@ const VIEWS = {
     notes: {"team3_fullstack/backend/":"Spring Boot · Maven","team3_fullstack/backend/src/main/java/com/legalai/backend/ai/":"HttpAiClient","team3_fullstack/backend/src/main/java/com/legalai/backend/chat/stream/":"SSE","team3_fullstack/backend/src/main/java/com/legalai/backend/conversation/":"JPA","team3_fullstack/backend/src/main/resources/":"profile mock / rag","team3_fullstack/frontend/":"React 18 · Vite · TS","team3_fullstack/tools/":"đo latency","team3_fullstack/frontend/vite.config.ts.timestamp-1793068941556-9a4a983948b938.mjs":"file tạm bị commit","docker-compose.yml":"placeholder"}
   },
   p8: {
-    hl: ["docs/","docs/ARCHITECTURE.md","docs/CODING_CONVENTIONS.md","docs/team1_data/","docs/team2_rag/","docs/team3_fullstack/","team1_data/docs_1/","team2_rag/docs_2/","team3_fullstack/docs_3/","tests/","tests/retriever_contract.py","team2_rag/tests/","team3_fullstack/tests/",".github/",".github/pull_request_template.md"],
-    warn: ["README.md"],
-    notes: {"docs/":"đặc tả chung","team1_data/docs_1/":"kế hoạch tuần Team 1","team2_rag/docs_2/":"kế hoạch tuần Team 2","team3_fullstack/docs_3/":"kế hoạch tuần Team 3","tests/":"27 file test","team2_rag/tests/":"24 file test",".github/":"không có workflow CI","README.md":"nhắc specs/ không tồn tại"}
+    hl: ["AGENTS.md","team2_rag/AGENTS.md","team3_fullstack/AGENTS.md","scripts/harness_verify.py","docs/","docs/ARCHITECTURE.md","docs/CODING_CONVENTIONS.md","docs/team1_data/","docs/team2_rag/","docs/team3_fullstack/","team1_data/docs_1/","team2_rag/docs_2/","team3_fullstack/docs_3/","tests/","tests/retriever_contract.py","team2_rag/tests/","team3_fullstack/tests/",".github/",".github/pull_request_template.md"],
+    warn: ["README.md",".github/CODEOWNERS","team1_data/AGENTS.md","contracts/v0.1/request.schema.json","contracts/v0.1/citation.schema.json","contracts/v0.1/context.schema.json","contracts/v0.1/llm_input.schema.json","contracts/v0.1/llm_output.schema.json","contracts/v0.1/rerank_output.schema.json","contracts/v0.1/chunk_metadata.schema.json"],
+    notes: {"AGENTS.md":"điểm vào cho agent · 53 dòng","team2_rag/AGENTS.md":"chỉ dẫn Team 2","team3_fullstack/AGENTS.md":"chỉ dẫn Team 3","team1_data/AGENTS.md":"ghi sai “12 trường”","scripts/harness_verify.py":"4 cổng kiểm tra","contracts/v0.1/request.schema.json":"nháp cũ · /api/v1/query","contracts/v0.1/citation.schema.json":"nháp cũ · 6 trường","contracts/v0.1/chunk_metadata.schema.json":"chép từ docs/team1_data","docs/":"đặc tả chung","team1_data/docs_1/":"kế hoạch tuần Team 1","team2_rag/docs_2/":"kế hoạch tuần Team 2","team3_fullstack/docs_3/":"kế hoạch tuần Team 3","tests/":"233 pass · 1 fail","team2_rag/tests/":"350 test pass",".github/":"không có workflow CI",".github/CODEOWNERS":"trỏ tới /src/","README.md":"nhắc specs/ không tồn tại"}
   }
 };
 
