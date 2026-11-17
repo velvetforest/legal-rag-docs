@@ -656,6 +656,8 @@ mark.wrong { background: color-mix(in srgb, var(--bad) 22%, transparent); color:
   .cmp-row > span:first-child { grid-column: 1 / -1; }
   .cmp-head > span:first-child { display: none; }
 }
+.scope { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 8px 24px; padding: 12px 16px; border-radius: 14px; background: var(--mc-surface); border: 1px solid var(--mc-border); }
+.scope ul { margin: 4px 0 6px; padding-left: 18px; display: grid; gap: 3px; line-height: 1.5; }
 
 </style>
 </head>
@@ -676,8 +678,22 @@ mark.wrong { background: color-mix(in srgb, var(--bad) 22%, transparent); color:
 <section class="mc-glass studio-card" id="s1">
   <div class="studio-body">
     <p class="eyebrow">1 · Dự án làm gì</p>
-    <h2 class="viz-title">Một trợ lý hỏi đáp Luật Doanh nghiệp, câu trả lời nào cũng phải dẫn Điều, Khoản</h2>
-    <p class="viz-why">Người dùng gõ câu hỏi, hệ thống trả lời và gắn nhãn như <code>[C1]</code> vào từng ý. Bấm nhãn đó để đọc nguyên văn Khoản làm căn cứ. Hãy bấm ba tình huống dưới đây để xem hệ thống nên phản ứng thế nào.</p>
+    <h2 class="viz-title">Một trợ lý hỏi đáp pháp luật về doanh nghiệp, câu trả lời nào cũng phải dẫn Điều, Khoản</h2>
+    <p class="viz-why">Người dùng gõ câu hỏi về doanh nghiệp, hệ thống trả lời và gắn nhãn như <code>[C1]</code> vào từng ý. Bấm nhãn đó để đọc nguyên văn Khoản làm căn cứ.</p>
+    <div class="scope">
+      <div><p class="case-k">Phạm vi đang làm (P0)</p><ul>
+        <li>Thành lập và đăng ký doanh nghiệp.</li>
+        <li>Vốn, thành viên góp vốn, quyền và nghĩa vụ của cổ đông.</li>
+        <li>Quản trị nội bộ, cơ cấu quản lý, người đại diện theo pháp luật.</li>
+        <li>Tổ chức lại (chia, tách, hợp nhất, sáp nhập) và giải thể.</li>
+      </ul><p class="note">Nguồn không chỉ có Luật Doanh nghiệp 2020, mà còn có luật sửa đổi, văn bản hợp nhất, nghị định và thông tư hướng dẫn.</p></div>
+      <div><p class="case-k">Để sau (P1)</p><ul>
+        <li>Hợp đồng dân sự, thương mại.</li>
+        <li>Điều kiện đầu tư kinh doanh.</li>
+        <li>Thuế, kế toán; lao động, bảo hiểm xã hội; phá sản.</li>
+      </ul><p class="note">Nhóm chỉ thêm các lĩnh vực này khi đã có văn bản, bộ đề và người kiểm hiệu lực. Câu hỏi thuộc P1 hiện phải bị từ chối.</p></div>
+    </div>
+    <p>Hãy bấm ba tình huống dưới đây để xem hệ thống nên phản ứng thế nào.</p>
     <div class="tabs" role="tablist" id="sc-tabs"></div>
     <div class="stage">
       <div class="chat" id="sc-chat" aria-live="polite"></div>
@@ -719,7 +735,7 @@ mark.wrong { background: color-mix(in srgb, var(--bad) 22%, transparent); color:
 <section class="mc-glass studio-card" id="s3">
   <div class="studio-body">
     <p class="eyebrow">3 · Kho luật của nhóm</p>
-    <h2 class="viz-title">8 văn bản được cắt thành 2.576 đoạn, mỗi đoạn là một Khoản</h2>
+    <h2 class="viz-title">8 văn bản về doanh nghiệp được cắt thành 2.576 đoạn, mỗi đoạn là một Khoản</h2>
     <p class="viz-why">Nhóm gọi kho văn bản là <b>corpus</b>, và gọi mỗi đoạn là một <b>chunk</b>. Mỗi chunk có một mã đọc được bằng mắt. Bạn sẽ gặp mã này trong mọi bảng soát, nên hãy bấm từng phần của mã để xem nó nghĩa là gì.</p>
     <div class="stage">
       <div class="idparts" id="id-parts" role="group" aria-label="Các phần của mã chunk"></div>
@@ -1121,7 +1137,7 @@ const TASKS = [
     how: "Chỉ ra Điều, Khoản nào đã bị sửa đổi, bãi bỏ hoặc thay thế, và bởi văn bản nào.",
     give: "Bảng: văn bản, Điều, Khoản, tình trạng, văn bản sửa đổi, ngày áp dụng." },
   { n: "Góp ý kho văn bản và lời hiển thị", size: "Nhỏ · khi có thời gian",
-    why: "Kho chính mới có khoảng một nửa nhóm văn bản liên quan, và chưa có phụ lục, biểu mẫu. Lời từ chối và lưu ý pháp lý trên trang web cũng cần đúng giọng pháp lý.",
+    why: "Kho chính mới có khoảng một nửa nhóm văn bản liên quan, và chưa có phụ lục, biểu mẫu. Tài liệu kiến trúc của nhóm còn kể Luật 03/2022/QH15, Nghị định 296/2026/NĐ-CP và Thông tư 121/2026/TT-BTC làm nguồn, nhưng ba văn bản này chưa có trong kho. Lời từ chối và lưu ý pháp lý trên trang web cũng cần đúng giọng pháp lý.",
     get: "Danh sách 8 văn bản hiện có và các câu hệ thống hiển thị cho người dùng.",
     how: "Đề xuất văn bản nên thêm trước cho các chủ đề: thành lập, vốn và cổ đông, quản trị, tổ chức lại và giải thể. Sửa lời hiển thị nếu dễ gây hiểu nhầm.",
     give: "Danh sách đề xuất kèm lý do ngắn." }
