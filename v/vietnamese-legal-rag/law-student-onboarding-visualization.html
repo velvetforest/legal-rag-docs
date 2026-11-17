@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="vi" data-palette="rosegold" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Law Student Onboarding Visualization</title>
+<meta name="description" content="Giải thích dự án Vietnamese Legal RAG cho một bạn học luật không có nền tảng IT, và các việc thuần luật bạn ấy sẽ làm.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Rose Gold (swatch #DDB3A4) */
+[data-palette="rosegold"], [data-palette="rosegold"][data-theme="light"] {
+  --mc-bg: #F9F4F1;
+  --mc-panel: #FDFAF8;
+  --mc-surface: #F3EAE5;
+  --mc-white: #FFFFFF;
+  --mc-border: #E8DAD3;
+  --mc-text: #3C322E;
+  --mc-strong: #2C2320;
+  --mc-muted: #806E66;
+  --mc-accent: #DDB3A4;
+  --mc-accent-hover: #D0A192;
+  --mc-deep: #855646;
+  --mc-on: #2C2320;
+  --mc-c: #DDB3A4;
+  --mc-g: #DDB3A4;
+  --mc-grad: linear-gradient(#DDB3A4,#DDB3A4);
+  --mc-soft: #F3E2DB;
+  --mc-grad-soft: linear-gradient(#F3E2DB,#F3E2DB);
+  --mc-mesh: radial-gradient(40vmax 30vmax at 10% 0%,rgba(221,179,164,0.08),transparent 70%),radial-gradient(36vmax 28vmax at 94% 12%,rgba(221,179,164,0.06),transparent 70%);
+  --mc-glass: #FDFAF8;
+  --mc-rim-lo: transparent;
+  --mc-rim-mid: transparent;
+  --mc-rim-hi: transparent;
+  --mc-rim: transparent;
+  --mc-alt: #F3E2DB;
+  --mc-alt-hover: #E8DAD3;
+  --mc-alt-bd: #E8DAD3;
+  --mc-alt-fg: #855646;
+  --mc-shadow: 0 12px 30px -8px rgba(133,86,70,0.18);
+  --mc-shadow-hover: 0 12px 30px -8px rgba(133,86,70,0.32);
+}
+[data-palette="rosegold"][data-theme="dark"] { color-scheme: dark; }
+[data-palette="rosegold"][data-theme="dark"] {
+  --mc-bg: #262120;
+  --mc-panel: #302A29;
+  --mc-surface: #393231;
+  --mc-white: #413938;
+  --mc-border: #544846;
+  --mc-text: #F2E4DF;
+  --mc-strong: #EFC9BC;
+  --mc-muted: #AA9792;
+  --mc-accent: #E6BFB1;
+  --mc-accent-hover: #EED0C5;
+  --mc-deep: #EAC7BA;
+  --mc-on: #262120;
+  --mc-c: #6e5c55;
+  --mc-g: #E6BFB1;
+  --mc-grad: linear-gradient(#E6BFB1,#E6BFB1);
+  --mc-grad-soft: linear-gradient(rgba(230,191,177,0.2),rgba(230,191,177,0.2));
+  --mc-mesh: radial-gradient(44vmax 34vmax at 12% 16%,rgba(110,92,85,0.6),transparent 70%),radial-gradient(38vmax 30vmax at 90% 26%,rgba(110,92,85,0.34),transparent 70%),radial-gradient(48vmax 36vmax at 62% 104%,rgba(110,92,85,0.42),transparent 72%);
+  --mc-glass: linear-gradient(135deg,rgba(110,92,85,0.3),rgba(255,255,255,.045) 48%,rgba(110,92,85,0.16));
+  --mc-rim: #f6e7e1;
+  --mc-rim-hi: rgba(246,231,225,0.6);
+  --mc-rim-mid: rgba(246,231,225,0.3);
+  --mc-rim-lo: rgba(246,231,225,0.13);
+  --mc-alt: rgba(255,255,255,.08);
+  --mc-alt-hover: rgba(255,255,255,.14);
+  --mc-alt-bd: rgba(255,255,255,.16);
+  --mc-alt-fg: #F2E4DF;
+  --mc-soft: rgba(230,191,177,0.16);
+  --mc-shadow: 0 0 0 1px rgba(230,191,177,0.14),0 16px 44px -10px rgba(230,191,177,0.28);
+  --mc-shadow-hover: 0 0 0 1px rgba(230,191,177,0.3),0 16px 44px -10px rgba(230,191,177,0.45);
+  --mc-glow: 0 0 6px rgba(230,191,177,0.24),0 0 14px rgba(230,191,177,0.08);
+  --mc-glow-text: 0 0 5px rgba(230,191,177,0.22);
+}
+
+/* ---------- page ---------- */
+.mc-page {
+  margin: 0; min-height: 100vh;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  background: var(--mc-bg); color: var(--mc-text);
+}
+.mc-page::before { content: ''; position: fixed; inset: 0; z-index: -1; background: var(--mc-mesh); pointer-events: none; }
+.mc-logo { margin: 0; font-family: 'Bodoni Moda', Georgia, serif; font-size: 27px; font-weight: 500; letter-spacing: .5px; color: var(--mc-deep); text-shadow: var(--mc-glow-text); }
+
+/* ---------- panel: solid in light mode, frosted glass with a lit edge in dark ---------- */
+.mc-glass {
+  position: relative; overflow: hidden; padding: 20px; border-radius: 20px;
+  background: var(--mc-panel); border: 1px solid var(--mc-border); box-shadow: var(--mc-shadow);
+}
+.mc-glass::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--mc-grad); pointer-events: none; }
+[data-theme="dark"] .mc-glass {
+  background: var(--mc-glass); border-color: transparent;
+  -webkit-backdrop-filter: blur(20px) saturate(150%); backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: 0 0 14px var(--mc-rim-mid), 0 0 46px var(--mc-rim-lo), 0 12px 36px rgba(0,0,0,.42), inset 0 0 12px var(--mc-rim-mid), inset 0 0 44px var(--mc-rim-lo);
+}
+/* the sharp line along the edge; the box-shadow above is the light around it */
+[data-theme="dark"] .mc-glass::before {
+  inset: 0; height: auto; border-radius: inherit; padding: 1.5px;
+  background: linear-gradient(150deg, var(--mc-rim), var(--mc-rim-hi) 34%, var(--mc-rim-mid) 62%, var(--mc-rim));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+[data-theme="dark"] .mc-glass :is(input:not([type=checkbox]), textarea, select, .mc-field, .mc-btn:not(.mc-btn--primary)) { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.13); }
+
+/* ---------- folder tile ---------- */
+.mc-folder {
+  position: relative; overflow: hidden; aspect-ratio: 1/1; border-radius: 16px; padding: 16px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center;
+  background: var(--mc-soft); border: 1px solid var(--mc-border); transition: transform .15s, box-shadow .15s;
+}
+.mc-folder:hover { transform: translateY(-2px); box-shadow: var(--mc-shadow-hover); }
+.mc-folder__name { font-size: 14px; font-weight: 700; color: var(--mc-strong); }
+.mc-folder__count { font-size: 11px; color: var(--mc-deep); }
+.mc-folder svg { width: 92px; height: 92px; overflow: visible; }
+.mc-folder__fill { fill: var(--mc-c); }
+.mc-folder__sheen { display: none; }
+[data-theme="dark"] .mc-folder {
+  background: var(--mc-glass); border-color: transparent;
+  -webkit-backdrop-filter: blur(20px) saturate(150%); backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: 0 0 10px var(--mc-rim-mid), 0 0 30px var(--mc-rim-lo), 0 10px 28px rgba(0,0,0,.4), inset 0 0 9px var(--mc-rim-mid), inset 0 0 30px var(--mc-rim-lo);
+}
+[data-theme="dark"] .mc-folder:hover { box-shadow: 0 0 16px var(--mc-rim-hi), 0 0 44px var(--mc-rim-mid), 0 12px 32px rgba(0,0,0,.42), inset 0 0 12px var(--mc-rim-hi), inset 0 0 36px var(--mc-rim-lo); }
+[data-theme="dark"] .mc-folder::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  background: linear-gradient(150deg, var(--mc-rim), var(--mc-rim-hi) 34%, var(--mc-rim-mid) 62%, var(--mc-rim));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+[data-theme="dark"] .mc-folder svg { filter: drop-shadow(0 0 10px var(--mc-rim-lo)); }
+[data-theme="dark"] .mc-folder__fill { opacity: .5; }
+[data-theme="dark"] .mc-folder__sheen { display: block; stroke: var(--mc-rim-hi); stroke-width: .9; }
+
+/* ---------- controls ---------- */
+.mc-btn { font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; padding: 9px 16px; border-radius: 12px; border: 1px solid var(--mc-border); background: var(--mc-white); color: var(--mc-deep); }
+.mc-btn:hover { border-color: var(--mc-accent); }
+.mc-btn:disabled { opacity: .5; cursor: not-allowed; }
+.mc-btn--primary { background: var(--mc-grad); border-color: transparent; color: var(--mc-on); box-shadow: var(--mc-glow); }
+.mc-btn--primary:hover { filter: brightness(1.07); }
+.mc-btn--alt { background: var(--mc-alt); border-color: var(--mc-alt-bd); color: var(--mc-alt-fg); }
+.mc-btn--alt:hover { background: var(--mc-alt-hover); }
+.mc-field { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--mc-border); background: var(--mc-white); color: var(--mc-text); }
+.mc-field:focus { outline: 2px solid var(--mc-accent); outline-offset: 0; }
+.mc-swatch { width: 26px; height: 26px; padding: 0; border-radius: 8px; border: 2px solid var(--mc-border); cursor: pointer; transition: transform .12s; }
+.mc-swatch:hover { transform: scale(1.12); }
+.mc-swatch[aria-pressed="true"] { outline: 2px solid var(--mc-deep); outline-offset: 2px; }
+
+/* ---------- study card: solid in both modes, never glass ---------- */
+.mc-card {
+  position: relative; overflow: hidden; display: flex; flex-direction: column; box-sizing: border-box; padding: 20px; border-radius: 16px;
+  background: var(--mc-panel); border: 1px solid var(--mc-border); box-shadow: var(--mc-shadow);
+}
+.mc-card::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--mc-grad); pointer-events: none; }
+.mc-card__head { padding-bottom: 10px; border-bottom: 1px solid var(--mc-border); }
+.mc-card__title { margin: 8px 0 0; font-size: 18px; font-weight: 700; color: var(--mc-strong); }
+.mc-card__body { padding: 10px 0; font-size: 13px; line-height: 1.45; }
+.mc-card__foot { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--mc-border); font-size: 11px; color: var(--mc-muted); }
+.mc-badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; background: var(--mc-grad-soft); color: var(--mc-deep); }
+.mc-mark { padding: 0 3px; border-radius: 3px; font-weight: 700; background: var(--mc-grad-soft); color: var(--mc-deep); }
+
+:root{--mc-light:#F2E2B0;--mc-light-rgb:242,226,176;--mc-sheen:var(--mc-light)}
+html[data-theme="light"]{--mc-sheen:#FFF2D2}
+[data-palette="rosegold"]{--mc-light:#B5874F;--mc-light-rgb:181,135,79}
+[data-palette="rosegold"][data-theme="dark"]{--mc-light:#F2DBAE;--mc-light-rgb:242,219,174}
+/* Visualization style from VisualieLearn. Load micro-cards-design.css first: every
+   colour here comes from its --mc- tokens, so all 12 palettes and both themes work. */
+:root {
+  --ok: #2f7a55; --warn: #6d4c8a; --bad: #b23a48; --info: #3d6f96;
+  --series-2: #3d7f88; --series-3: #8d6bab;
+  --mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  --display: 'Astralaga', 'Noto Serif Display', Georgia, serif;
+  --brand: 'Bodoni Moda', 'Noto Serif Display', Georgia, serif;
+  --ui: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+  --script: 'Allison', cursive;
+}
+/* Bodoni Moda has no Vietnamese glyphs (accents break apart): Vietnamese pages use Noto Serif Display. */
+:lang(vi) { --brand: 'Noto Serif Display', Georgia, serif; }
+[data-theme="dark"] {
+  --ok: #8fd6ae; --warn: #c9b3dc; --bad: #f09aa4; --info: #9cc6e6;
+  --series-2: #8fd0d6; --series-3: #c9b3dc;
+}
+h2, h3, h4, p { margin: 0; }
+[hidden] { display: none !important; }
+
+/* ---------- studio ---------- */
+.studio-card { overflow: visible; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.studio-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.studio-head > div { min-width: 0; display: grid; gap: 8px; }
+.eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--mc-muted); }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tab-wrap { display: inline-flex; align-items: center; min-width: 0; }
+.tab-wrap .tab { border-radius: 999px 0 0 999px; border-right: 0; }
+.tab-x { align-self: stretch; padding: 0 9px 0 6px; border: 1px solid var(--mc-border); border-left: 0; border-radius: 0 999px 999px 0; background: transparent; color: var(--mc-muted); font: inherit; font-size: 15px; line-height: 1; cursor: pointer; }
+.tab-x:hover { color: var(--bad); }
+.tabs:empty { display: none; }
+.tab { font: inherit; font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 999px; cursor: pointer; border: 1px solid var(--mc-border); background: transparent; color: var(--mc-text); }
+.tab[aria-selected="true"] { background: var(--mc-grad-soft); color: var(--mc-deep); border-color: var(--mc-accent); }
+.studio-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; min-width: 0; }
+.viz-title { font-family: var(--display); font-size: 27px; font-weight: 500; line-height: 1.25; color: var(--mc-strong); text-wrap: balance; }
+.viz-why { line-height: 1.55; }
+.viz-source { justify-self: start; padding: 0; border: 0; background: none; font: inherit; font-size: 12px; font-weight: 700; line-height: 1.4; text-align: left; color: var(--mc-deep); cursor: pointer; overflow-wrap: anywhere; }
+.viz-how { line-height: 1.5; padding: 9px 12px; border-radius: 10px; background: var(--mc-surface); }
+.viz-how b { color: var(--mc-strong); }
+.viz-takeaways { display: grid; gap: 6px; line-height: 1.5; overflow-wrap: anywhere; }
+.viz-takeaways h4 { font-size: 13px; font-weight: 700; color: var(--mc-strong); }
+.viz-takeaways ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.viz-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.seal { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 6px; border: 1px solid currentColor; }
+.seal::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.seal--ok { color: var(--ok); } .seal--warn { color: var(--warn); } .seal--bad { color: var(--bad); } .seal--info { color: var(--info); }
+.seal--calc { color: var(--mc-deep); border-style: dashed; }
+.stage { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; min-width: 0; overflow-wrap: anywhere; }
+.empty { display: grid; gap: 10px; justify-items: start; padding: 8px 0; line-height: 1.55; }
+.empty h3 { font-family: var(--display); font-size: 23px; font-weight: 500; line-height: 1.25; color: var(--mc-strong); }
+.picker { display: grid; gap: 6px; width: 100%; max-width: 320px; font-size: 12px; }
+.picker summary { cursor: pointer; font-weight: 600; color: var(--mc-muted); }
+.picker .mc-field { padding: 7px 10px; font-size: 12px; }
+.note { font-size: 12px; line-height: 1.5; color: var(--mc-muted); }
+.note--bad { color: var(--bad); }
+.stat-line { font-weight: 700; color: var(--mc-strong); font-variant-numeric: tabular-nums; line-height: 1.5; }
+.num { font-weight: 700; color: var(--mc-deep); font-variant-numeric: tabular-nums; }
+.proof { font-size: 12px; }
+.proof summary { cursor: pointer; font-weight: 600; color: var(--mc-muted); }
+.quote { margin: 8px 0 0; padding: 6px 10px; border-radius: 8px; background: var(--mc-surface); line-height: 1.5; overflow-wrap: anywhere; }
+.quote small { display: block; margin-top: 2px; font-weight: 700; }
+.quote--exact small { color: var(--ok); } .quote--close small { color: var(--warn); } .quote--missing small { color: var(--bad); }
+
+/* ---------- stepper and controls ---------- */
+.stp-caption { min-height: 3em; padding: 9px 12px; border-radius: 10px; background: var(--mc-surface); line-height: 1.5; font-variant-numeric: tabular-nums; }
+.stp-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.stp-controls .mc-btn { padding: 6px 12px; }
+.stp-pace { width: auto !important; padding: 6px 8px !important; font-size: 12px; }
+.stp-count { margin-left: auto; font-size: 12px; color: var(--mc-muted); font-variant-numeric: tabular-nums; }
+input[type=range] { width: 100%; margin: 0; accent-color: var(--mc-accent); }
+.ctl-row { display: flex; flex-wrap: wrap; gap: 10px 16px; }
+.ctl { flex: 1 1 170px; min-width: 0; display: grid; gap: 4px; font-size: 12px; font-weight: 600; color: var(--mc-muted); }
+.ctl--inline { display: flex; align-items: center; gap: 8px; flex: 0 1 auto; }
+.ctl a { color: var(--mc-deep); margin-left: 6px; }
+.field-row { display: flex; gap: 6px; }
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--mc-muted); }
+.key { width: 14px; height: 10px; border-radius: 3px; display: inline-block; margin-left: 6px; }
+.key:first-child { margin-left: 0; }
+
+/* ---------- colour by meaning: models pick a tone, each palette supplies the colour ---------- */
+.tone-good { --tone: var(--ok); } .tone-bad { --tone: var(--bad); } .tone-warn { --tone: var(--warn); }
+.tone-info { --tone: var(--info); } .tone-accent { --tone: var(--mc-accent); } .tone-alt { --tone: var(--series-2); }
+.v-flow-node.tone .v-node { fill: color-mix(in srgb, var(--tone) 20%, var(--mc-surface)); stroke: var(--tone); }
+.v-flow-node.tone .v-text { fill: var(--tone); }
+.v-flow-node.tone.is-active .v-node { fill: var(--tone); stroke: var(--tone); }
+.v-flow-node.tone.is-active .v-text { fill: var(--mc-on); }
+.v-html.tone { color: var(--tone); }
+.v-html--node.tone.is-active { color: var(--mc-on); }
+g.tone > .v-edge { stroke: var(--tone); opacity: 1; }
+g.tone .v-edge-label { fill: var(--tone); }
+.v-row.tone .v-msg, .v-row.tone.is-active .v-msg { stroke: var(--tone); }
+.v-row.tone .v-arrow, .v-row.tone.is-active .v-arrow { fill: var(--tone); }
+.v-row.tone .v-msg-label, .v-row.tone.is-active .v-msg-label { fill: var(--tone); }
+.tr-cell.tone, .tr-pair.tone, .lay-item.tone { background: color-mix(in srgb, var(--tone) 18%, var(--mc-surface)); border-color: var(--tone); color: var(--tone); }
+.tr-pair.tone { border: 1px solid var(--tone); }
+.tr-pair.tone b { color: var(--tone); }
+.tr-cell.tone.is-active, .lay-item.tone.is-active { background: var(--tone); color: var(--mc-on); }
+.chart-line.tone { stroke: var(--tone); }
+.chart-key--tone { background: var(--tone); }
+
+/* ---------- shared SVG marks ---------- */
+.v-scroll { overflow-x: auto; max-width: 100%; }
+.v-svg { display: block; width: 100%; height: auto; }
+.v-text { font-size: 12px; fill: var(--mc-text); }
+.v-text--strong { font-weight: 700; fill: var(--mc-strong); }
+.v-label { font-size: 12px; font-weight: 700; fill: var(--mc-muted); }
+.v-node { fill: var(--mc-surface); stroke: var(--mc-border); stroke-width: 1.5; }
+.v-life { stroke: var(--mc-border); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.v-state { font-size: 11px; font-weight: 700; letter-spacing: .03em; fill: var(--mc-deep); }
+.v-stack { position: relative; container-type: inline-size; }
+.v-labels { position: absolute; inset: 0; pointer-events: none; }
+.v-html { position: absolute; transform: translate(-50%, -50%); max-width: 21%; text-align: center; line-height: 1.25; font-size: clamp(13px, 2.5cqw, 15px); color: var(--mc-strong); }
+.v-html--node { font-weight: 600; }
+.v-html--node.is-active { color: var(--mc-on); }
+.v-html--edge { max-width: none; white-space: nowrap; font-size: clamp(11px, 1.9cqw, 12px); color: var(--mc-muted); }
+.v-html--axis { max-width: none; white-space: nowrap; font-size: 12px; color: var(--mc-muted); }
+.v-html--upright { transform: translate(-50%, -50%) rotate(-90deg); }
+.v-html--scene { max-width: none; white-space: nowrap; font-size: 13px; font-weight: 600; }
+.v-html--title { max-width: none; white-space: nowrap; transform: translate(0, -50%); font-size: 13px; font-weight: 700; }
+.v-html--msg { max-width: 64%; white-space: nowrap; color: var(--mc-text); }
+.v-math { white-space: nowrap; }
+.v-math .katex { font-size: 1.12em; }
+.viz-title .katex { font-size: .95em; }
+.v-msg { stroke: var(--mc-muted); stroke-width: 1.5; }
+.v-arrow { fill: var(--mc-muted); }
+.v-msg-label { font-size: 11.5px; fill: var(--mc-text); font-family: var(--mono); paint-order: stroke; stroke: var(--mc-panel); stroke-width: 4px; }
+.v-row.is-active .v-msg { stroke: var(--mc-deep); stroke-width: 2.5; }
+.v-row.is-active .v-arrow { fill: var(--mc-deep); }
+.v-row.is-active .v-msg-label { fill: var(--mc-strong); font-weight: 700; }
+.v-packet { fill: var(--mc-deep); stroke: var(--mc-panel); stroke-width: 2; }
+.v-lost { stroke: var(--bad); stroke-width: 2.5; fill: none; }
+.v-edge { stroke: var(--mc-muted); stroke-width: 1.5; opacity: .75; }
+.v-edge-label { font-size: 11px; fill: var(--mc-muted); paint-order: stroke; stroke: var(--mc-panel); stroke-width: 3px; }
+.is-active > .v-edge { stroke: var(--mc-deep); stroke-width: 2.5; opacity: 1; }
+.v-flow-node.is-done .v-node { stroke: var(--mc-accent); }
+.v-flow-node.is-active .v-node { fill: var(--mc-accent); stroke: var(--mc-deep); stroke-width: 2.5; }
+.v-flow-node.is-active .v-text { fill: var(--mc-on); }
+
+/* ---------- charts ---------- */
+.chart-grid { stroke: var(--mc-border); stroke-width: 1; }
+.chart-axis { stroke: var(--mc-muted); stroke-width: 1.2; }
+.chart-tick { font-size: 11px; fill: var(--mc-muted); font-variant-numeric: tabular-nums; }
+.chart-line { stroke: var(--mc-deep); stroke-width: 2.5; stroke-linejoin: round; }
+.chart-line--alt { stroke: var(--mc-muted); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.chart-line--1 { stroke: var(--series-2); } .chart-line--2 { stroke: var(--series-3); }
+.chart-line--ghost { opacity: .22; stroke-width: 1.5; }
+.chart-area { fill: var(--mc-soft); opacity: .6; }
+.chart-mark { fill: var(--mc-accent); stroke: var(--mc-panel); stroke-width: 2; }
+.chart-key { background: var(--mc-deep); } .chart-key--alt { background: var(--mc-muted); }
+.chart-key--1 { background: var(--series-2); } .chart-key--2 { background: var(--series-3); }
+.bar--nominal { fill: var(--mc-muted); opacity: .45; }
+.bar--pv { fill: var(--mc-deep); opacity: .85; }
+.bar--pv.is-now { fill: var(--mc-accent); opacity: 1; }
+
+/* ---------- scene ---------- */
+.scene-axis { fill: none; stroke: var(--mc-muted); stroke-width: 1.3; }
+.scene-guide { fill: none; stroke: var(--mc-muted); stroke-width: 1; stroke-dasharray: 3 4; }
+.scene-curve { fill: none; stroke: var(--tone, var(--mc-deep)); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.scene-curve.is-focus { stroke-width: 3.5; }
+.scene-series-1 { --tone: var(--series-2); } .scene-series-2 { --tone: var(--series-3); }
+.scene-ghost { opacity: .32; stroke-width: 1.5; stroke-dasharray: 5 5; }
+.scene-area { fill: color-mix(in srgb, var(--tone, var(--mc-accent)) 24%, transparent); stroke: none; }
+.scene-dot { fill: var(--tone, var(--mc-strong)); stroke: var(--mc-panel); stroke-width: 2; }
+.scene-box { fill: color-mix(in srgb, var(--tone, var(--mc-border)) 16%, var(--mc-surface)); stroke: var(--tone, var(--mc-border)); stroke-width: 1.5; }
+.scene-box.is-focus { stroke-width: 2.5; }
+.scene-box-text { font-size: 12px; font-weight: 600; fill: var(--tone, var(--mc-strong)); }
+.scene-arrow { color: var(--tone, var(--mc-muted)); stroke: currentColor; stroke-width: 1.8; }
+.scene-arrow.is-focus { stroke-width: 2.6; color: var(--tone, var(--mc-deep)); }
+.scene-head { fill: currentColor; stroke: none; }
+.scene-label { font-size: 12px; font-weight: 700; fill: var(--tone, var(--mc-text)); paint-order: stroke; stroke: var(--mc-panel); stroke-width: 3px; }
+.scene-tag { font-size: 12px; font-weight: 700; fill: var(--mc-strong); paint-order: stroke; stroke: var(--mc-panel); stroke-width: 3px; }
+.scene-title { font-size: 13px; font-weight: 700; fill: var(--mc-strong); }
+
+/* ---------- original figures ---------- */
+.fig-frame { position: relative; overflow: hidden; min-height: 120px; border-radius: 10px; background: #fff; }
+.fig-canvas { position: relative; transform-origin: 0 0; transition: transform .5s ease; }
+.fig-image { display: block; width: 100%; height: auto; }
+.fig-mark { position: absolute; box-sizing: border-box; border: calc(2px / var(--zoom, 1)) solid var(--tone, var(--mc-accent)); border-radius: calc(5px / var(--zoom, 1)); background: color-mix(in srgb, var(--tone, var(--mc-accent)) 12%, transparent); transition: border-color .3s; }
+.fig-mark[hidden] { display: none; }
+.fig-mark.is-active { border-color: var(--tone, var(--mc-deep)); background: transparent; }
+.fig-pin { display: inline-grid; place-items: center; flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--tone, var(--mc-accent)); color: var(--mc-on); font-size: 12px; font-weight: 700; line-height: 1; }
+.fig-mark .fig-pin { position: absolute; top: 0; left: 0; transform-origin: 0 0; transform: translate(-40%, -40%) scale(calc(1 / var(--zoom, 1))); }
+.fig-legend { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; line-height: 1.4; overflow-wrap: anywhere; }
+.fig-row { display: flex; align-items: flex-start; gap: 8px; padding: 4px 6px; border-radius: 8px; }
+.fig-row[hidden] { display: none; }
+.fig-row.is-active { background: var(--mc-surface); font-weight: 600; color: var(--mc-strong); }
+
+/* ---------- tables ---------- */
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+.data-table th { text-align: left; color: var(--mc-muted); font-weight: 600; padding: 5px 8px; border-bottom: 1px solid var(--mc-border); white-space: nowrap; }
+.data-table td { padding: 5px 8px; border-bottom: 1px solid var(--mc-border); font-family: var(--mono); white-space: nowrap; height: 18px; }
+.data-table td.is-hit, .is-hit { color: var(--ok); font-weight: 700; }
+.data-table td.is-miss, .is-miss { color: var(--bad); font-weight: 700; }
+
+/* ---------- subnet ---------- */
+.net-out { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; min-width: 0; }
+.bit-table { display: grid; gap: 4px; overflow-x: auto; }
+.bit-row { display: grid; grid-template-columns: 66px auto minmax(110px, 1fr); align-items: center; gap: 8px; font-size: 12px; min-width: 580px; }
+.bit-name { color: var(--mc-muted); font-weight: 600; }
+.bit-dotted { font-family: var(--mono); color: var(--mc-strong); }
+.bits { display: flex; }
+.bit { width: 12px; height: 18px; line-height: 18px; text-align: center; font: 11px/18px var(--mono); }
+.key.bit { height: 10px; width: 14px; }
+.bit--gap { margin-right: 5px; }
+.bit--net { background: var(--mc-accent); color: var(--mc-on); }
+.bit--sub { background: var(--series-2); color: var(--mc-on); }
+.bit--host { background: var(--mc-surface); color: var(--mc-text); }
+
+/* ---------- ARQ ---------- */
+.arq-cell { fill: var(--mc-surface); stroke: var(--mc-border); }
+.arq-cell.is-sent, .arq-key--sent { fill: var(--mc-soft); background: var(--mc-soft); stroke: var(--mc-accent); }
+.arq-cell.is-acked, .arq-key--acked { fill: var(--mc-accent); background: var(--mc-accent); }
+.arq-window { fill: none; stroke: var(--mc-deep); stroke-width: 2; }
+.arq-key--window { background: none; border: 2px solid var(--mc-deep); box-sizing: border-box; }
+.arq-packet circle { fill: var(--mc-deep); }
+.arq-packet--ack circle { fill: var(--series-2); }
+.arq-packet.is-lost circle { fill: var(--bad); }
+.arq-packet-text { font-size: 11px; font-weight: 700; fill: var(--mc-on); }
+
+/* ---------- layers ---------- */
+.lay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.lay-title { font-size: 12px; font-weight: 700; color: var(--mc-muted); margin-bottom: 6px; }
+.lay-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.lay-item { padding: 7px 10px; border-radius: 8px; background: var(--mc-surface); border: 1px solid var(--mc-border); }
+.lay-item.is-active { background: var(--mc-accent); color: var(--mc-on); border-color: var(--mc-deep); font-weight: 700; }
+.lay-pdu-wrap { display: grid; gap: 6px; }
+.lay-wire { font-size: 12px; color: var(--mc-muted); min-height: 1.4em; }
+.lay-pdu { display: flex; flex-wrap: wrap; gap: 2px; min-height: 36px; }
+.lay-cell { padding: 8px 12px; background: var(--mc-surface); border: 1px solid var(--mc-border); font: 12px var(--mono); }
+.lay-cell--data { flex: 1; text-align: center; background: var(--mc-soft); color: var(--mc-deep); font-weight: 700; }
+.lay-cell.is-new { background: var(--mc-accent); color: var(--mc-on); font-weight: 700; }
+
+/* ---------- pipeline ---------- */
+.pipe { border-collapse: separate; border-spacing: 2px; font-size: 11px; font-variant-numeric: tabular-nums; }
+.pipe th { color: var(--mc-muted); font-weight: 600; padding: 2px; min-width: 32px; }
+.pipe-ins { text-align: left; white-space: nowrap; padding-right: 10px !important; }
+.pipe-ins code { font-family: var(--mono); color: var(--mc-text); }
+.pipe-cell { height: 26px; text-align: center; border-radius: 4px; background: var(--mc-surface); font-weight: 700; opacity: .45; }
+.pipe-if, .pipe-id, .pipe-ex, .pipe-mem, .pipe-wb, .pipe-stall, .pipe-stall-if { opacity: 1; }
+.pipe-if { background: var(--mc-soft); color: var(--mc-deep); }
+.pipe-id { background: var(--mc-soft); color: var(--mc-deep); }
+.pipe-ex { background: var(--mc-accent); color: var(--mc-on); }
+.pipe-mem { background: var(--series-2); color: var(--mc-on); }
+.pipe-wb { background: var(--series-3); color: var(--mc-on); }
+.pipe-stall, .pipe-stall-if { background: transparent; color: var(--bad); outline: 1px dashed var(--bad); outline-offset: -1px; }
+.pipe-cell.is-now { box-shadow: 0 0 0 2px var(--mc-deep); }
+
+/* ---------- cache ---------- */
+.cache-strip { display: flex; flex-wrap: wrap; gap: 4px; }
+.cache-tick { padding: 2px 6px; border-radius: 5px; background: var(--mc-surface); font: 11px var(--mono); color: var(--mc-muted); }
+.cache-tick.is-hit, .cache-tick.is-miss { background: var(--mc-soft); }
+.cache-tick.is-now { outline: 2px solid var(--mc-deep); }
+.addr { display: flex; flex-wrap: wrap; gap: 6px; align-items: stretch; min-height: 48px; }
+.addr-part { display: grid; gap: 2px; padding: 5px 12px; border-radius: 8px; background: var(--mc-surface); font: 700 13px var(--mono); color: var(--mc-strong); }
+.addr-part small { font: 600 11px 'Plus Jakarta Sans', system-ui, sans-serif; color: var(--mc-muted); }
+.addr-result { align-self: center; margin-left: auto; font-size: 15px; }
+
+/* ---------- state trace ---------- */
+.tr-panels { display: grid; gap: 12px; }
+.tr-array { display: flex; flex-wrap: wrap; gap: 4px; min-height: 52px; }
+.tr-cell { display: grid; justify-items: center; min-width: 40px; padding: 4px 8px; border-radius: 8px; background: var(--mc-surface); border: 1px solid var(--mc-border); font: 700 14px var(--mono); }
+.tr-cell small { font: 11px var(--mono); color: var(--mc-muted); }
+.tr-cell.is-active { background: var(--mc-accent); color: var(--mc-on); border-color: var(--mc-deep); }
+.tr-cell.is-active small { color: var(--mc-on); }
+.tr-values { display: flex; flex-wrap: wrap; gap: 6px; }
+.tr-pair { display: flex; gap: 8px; padding: 5px 10px; border-radius: 8px; background: var(--mc-surface); font-size: 12px; }
+.tr-pair b { font-family: var(--mono); color: var(--mc-strong); }
+.tr-pair.is-active { outline: 2px solid var(--mc-deep); }
+
+
+/* ---------- waiting for a model ---------- */
+.shimmer { color: transparent; background: linear-gradient(100deg, var(--mc-muted) 25%, var(--mc-muted) 38%, var(--mc-accent) 48%, var(--mc-strong) 52%, var(--mc-muted) 62%, var(--mc-muted) 75%); background-size: 240% 100%; -webkit-background-clip: text; background-clip: text; animation: current 1.7s linear infinite; }
+@keyframes current { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+
+/* ---------- phone: text never shrinks, nothing overflows ---------- */
+@media (max-width: 860px) {
+  .studio-card { padding: 16px; }
+  .lay-grid { grid-template-columns: minmax(0, 1fr); }
+  .bit-table { overflow-x: visible; }
+  .bit-row { grid-template-columns: minmax(0, 1fr) auto; min-width: 0; row-gap: 2px; }
+  .bits { grid-column: 1 / -1; grid-row: 2; flex-wrap: wrap; max-width: 212px; row-gap: 2px; }
+  .v-html--msg { max-width: 92%; white-space: normal; }
+  .stp-pace { font-size: 16px; }
+  .mc-field, select.mc-field { font-size: 16px; }
+}
+@media (pointer: coarse) {
+  .mc-btn, .tab { min-height: 44px; }
+  input[type=range] { height: 32px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shimmer { animation: none; color: var(--mc-text); background: none; }
+  .fig-canvas { transition: none; }
+}
+
+/* ---------- Block Plan look: the page header (same as the app's "Block-based Planner" bar) ----------
+   One header per page, above the cards:
+   <header class="page-head">
+     <svg class="page-ico">...</svg>            (optional small line icon, currentColor)
+     <h1 class="page-title"><span data-script="Same words">Page name</span></h1>
+     <p class="page-quote">One line.<span class="by">Source</span></p>
+   </header>
+   Title in Bodoni Moda 500, the palette's deep accent with a faint warm glow; behind it the
+   same words in Allison script, 2.35em, 17% opacity, tinted toward the warm light. */
+.page-head {
+  position: sticky; top: 0; z-index: 20;
+  display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 10px;
+  margin: 0 -16px 22px; padding: 16px 16px 14px;
+  background: color-mix(in srgb, var(--mc-bg) 38%, transparent);
+  -webkit-backdrop-filter: blur(22px) saturate(150%); backdrop-filter: blur(22px) saturate(150%);
+  border-bottom: 1px solid color-mix(in srgb, var(--mc-border) 60%, transparent);
+}
+.page-ico { width: 46px; height: 46px; grid-row: 1 / span 2; color: var(--mc-deep); overflow: visible; }
+.page-ico .lt { fill: var(--mc-light); stroke: var(--mc-light); }
+.page-title {
+  grid-column: 2; margin: 0; justify-self: start;
+  font-family: var(--brand); font-style: normal; font-weight: 500; font-size: 27px; line-height: 1.25; letter-spacing: .2px;
+  color: var(--mc-deep); text-shadow: var(--mc-glow-text, none), 0 0 18px rgba(var(--mc-light-rgb), .16);
+}
+.page-head:not(:has(.page-ico)) .page-title, .page-head:not(:has(.page-ico)) .page-quote { grid-column: 1 / -1; }
+.page-title > span { position: relative; z-index: 1; display: inline-block; margin-left: .9em; }
+.page-head:not(:has(.page-ico)) .page-title > span { margin-left: 0; }
+.page-title > span[data-script]::before {
+  content: attr(data-script); position: absolute; left: 50%; top: 50%; z-index: -1;
+  transform: translate(calc(-50% - .066em), calc(-50% - .1em));
+  font-family: var(--script); font-style: normal; font-weight: 400; font-size: 2.35em; letter-spacing: 0;
+  line-height: 1; white-space: nowrap; text-shadow: none; pointer-events: none;
+  color: color-mix(in srgb, var(--mc-deep) 62%, var(--mc-light)); opacity: .17;
+}
+.page-quote {
+  grid-column: 2; margin: 1px 0 0 calc(.9em * 27 / 13 + 30px); max-width: 34em;
+  font-family: var(--brand); font-style: italic; font-weight: 400; font-size: 13px; line-height: 1.5; letter-spacing: .15px;
+  color: color-mix(in srgb, var(--mc-deep) 82%, var(--mc-light)); text-wrap: pretty;
+}
+.page-head:not(:has(.page-ico)) .page-quote { margin-left: 30px; }
+.page-quote .by { display: inline-block; margin-left: 8px; vertical-align: 1px; white-space: nowrap; font-family: var(--ui); font-style: normal; font-size: 10px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--mc-muted); }
+.page-quote .by::before { content: "— "; }
+@media (max-width: 520px) {
+  .page-title { font-size: 21px; }
+  .page-ico { width: 38px; height: 38px; }
+  .page-quote { margin-left: 0; }
+}
+
+/* Main button: one solid accent colour, never a gradient. */
+.mc-btn--primary { background: var(--mc-accent); }
+.mc-btn--primary:hover { filter: brightness(1.07); }
+input[type=range] { accent-color: var(--mc-deep); }
+
+/* Warm light touching the glass: rim warm at the top-left (dark), top band fades to gold (light). */
+[data-theme="dark"] .mc-glass::before { background: linear-gradient(150deg, rgba(var(--mc-light-rgb), .85), var(--mc-rim-hi) 30%, var(--mc-rim-mid) 62%, var(--mc-rim)); }
+[data-theme="light"] .mc-glass::before { background: linear-gradient(90deg, var(--mc-accent) 40%, color-mix(in srgb, var(--mc-accent) 50%, var(--mc-sheen))); }
+/* Dark page: one faint warm glow in the top-left corner, where the lamp is. */
+html[data-theme="dark"] body.mc-page { background: radial-gradient(70vmax 42vmax at -6% -12%, rgba(var(--mc-light-rgb), .075), transparent 68%) no-repeat, var(--mc-bg); }
+
+/* tone-light: the warm light as a mark (the spotlight on the current value, a "now" line).
+   Small accents only, never a large fill. */
+.tone-light { --tone: var(--mc-light); }
+.is-lit { filter: drop-shadow(0 0 6px rgba(var(--mc-light-rgb), .55)); }
+
+/* ---------- trang ---------- */
+body.mc-page { margin: 0; padding: 0 16px 40px; font-size: 15px; line-height: 1.6; font-family: var(--ui); }
+.page { display: grid; gap: 22px; max-width: 820px; margin-inline: auto; }
+.intro { color: var(--mc-muted); font-size: 16px; line-height: 1.65; max-width: 44em; }
+.foot { font-size: 12px; color: var(--mc-muted); line-height: 1.6; }
+code { font-family: var(--mono); font-size: .86em; padding: 1px 5px; border-radius: 6px; background: var(--mc-alt); border: 1px solid var(--mc-alt-bd); color: var(--mc-strong); overflow-wrap: anywhere; }
+.studio-card { padding: 24px; }
+.viz-title { font-size: 25px; }
+.viz-why b, .viz-takeaways b { color: var(--mc-strong); }
+.tab { min-height: 36px; }
+.case-k { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--mc-muted); margin-top: 6px; }
+.note { font-size: 13px; }
+
+/* 1. hội thoại */
+.chat { display: grid; gap: 10px; }
+.bubble { padding: 12px 14px; border-radius: 16px; line-height: 1.55; max-width: 92%; }
+.bubble small { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--mc-muted); margin-bottom: 4px; }
+.bubble .seal { text-transform: none; letter-spacing: 0; }
+.bubble.q { justify-self: end; background: var(--mc-alt); border: 1px solid var(--mc-alt-bd); }
+.bubble.a { justify-self: start; background: var(--mc-soft); border: 1px solid var(--mc-alt-bd); }
+.cite { font: 700 12.5px var(--mono); color: var(--mc-on); background: var(--mc-accent); border: 0; border-radius: 6px; padding: 1px 6px; cursor: pointer; }
+span.cite { cursor: default; }
+.cite:focus-visible, .step:focus-visible, .task:focus-visible, .part:focus-visible { outline: 2px solid var(--mc-deep); outline-offset: 2px; }
+.src { margin: 0; }
+mark.wrong { background: color-mix(in srgb, var(--bad) 22%, transparent); color: var(--bad); border-radius: 4px; padding: 0 3px; }
+
+/* 2, 7. bước */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 6px; }
+.step { width: 100%; min-height: 64px; display: grid; justify-items: start; gap: 1px; padding: 8px 10px; border-radius: 14px; cursor: pointer; text-align: left; font: inherit; color: var(--mc-text); background: var(--mc-alt); border: 1px solid var(--mc-alt-bd); }
+.step b { font-size: 14px; color: var(--mc-strong); }
+.step small { font-size: 11.5px; color: var(--mc-muted); }
+.step-n { font: 700 11px var(--mono); color: var(--mc-muted); }
+.step.is-done { border-color: color-mix(in srgb, var(--mc-accent) 45%, transparent); }
+.step.is-active { background: var(--mc-accent); border-color: var(--mc-accent); box-shadow: var(--mc-glow); }
+.step.is-active b, .step.is-active small, .step.is-active .step-n { color: var(--mc-on); }
+.artifact { padding: 12px 14px; border-radius: 14px; background: var(--mc-surface); border: 1px solid var(--mc-border); line-height: 1.55; display: grid; gap: 4px; min-height: 120px; align-content: start; }
+.mono-list { margin: 0; padding-left: 22px; font: 12.5px/1.7 var(--mono); overflow-wrap: anywhere; }
+.mono-list .is-hit { font-weight: 700; }
+
+/* 3. mã chunk */
+.idparts { display: flex; flex-wrap: wrap; gap: 3px; }
+.part { font: 600 14px var(--mono); padding: 8px 9px; min-height: 44px; border-radius: 8px; cursor: pointer; color: var(--mc-text); background: var(--mc-alt); border: 1px solid var(--mc-alt-bd); }
+.part.is-active { background: var(--mc-accent); border-color: var(--mc-accent); color: var(--mc-on); box-shadow: var(--mc-glow); }
+.docs { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 4px 18px; font-size: 14px; }
+.docs li { padding: 6px 0; border-bottom: 1px solid var(--mc-border); line-height: 1.45; }
+.docs code { font-size: 11.5px; }
+
+/* 4. thanh điểm */
+.bars { display: grid; gap: 6px; }
+.bar-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+.bar-k { font-size: 12px; font-weight: 700; color: var(--mc-muted); }
+.track { position: relative; height: 16px; border-radius: 999px; background: var(--mc-alt); border: 1px solid var(--mc-alt-bd); overflow: hidden; }
+.fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; background: var(--mc-accent); box-shadow: var(--mc-glow); transition: width .35s ease; }
+.fill.ghost { background: var(--mc-muted); opacity: .3; box-shadow: none; }
+.goal { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--mc-text); opacity: .7; }
+.ghost-key { background: var(--mc-muted); opacity: .4; }
+.goal-key { width: 3px; background: var(--mc-text); }
+.bar-row .num { font-size: 18px; min-width: 3.2em; text-align: right; }
+.counts { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 14px; color: var(--mc-muted); }
+.counts .num { font-size: 17px; margin-right: 3px; }
+
+/* 5. soát thử */
+.case { display: grid; gap: 4px; padding: 14px 16px; border-radius: 14px; background: var(--mc-surface); border: 1px solid var(--mc-border); line-height: 1.55; }
+.case-q { font-weight: 600; color: var(--mc-strong); }
+.checks { display: grid; gap: 6px; }
+.ck-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--mc-border); font-size: 14px; }
+.ck-btn { min-width: 108px; min-height: 40px; padding: 6px 10px; border-radius: 10px; font: 600 13px var(--ui); cursor: pointer; color: var(--mc-text); background: var(--mc-alt); border: 1px dashed var(--mc-muted); }
+.ck-btn.tone { color: var(--tone); border: 1px solid var(--tone); background: color-mix(in srgb, var(--tone) 14%, transparent); }
+.verdict { display: flex; flex-wrap: wrap; gap: 6px; }
+.ctl input.mc-field { font-weight: 400; color: var(--mc-text); }
+.outrow { padding: 12px 14px; border-radius: 14px; background: var(--mc-soft); border: 1px solid var(--mc-alt-bd); display: grid; gap: 4px; }
+.outrow code { background: none; border: 0; padding: 0; font-size: 13px; line-height: 1.6; color: var(--mc-strong); }
+
+/* 6. việc */
+.tasks { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.task { width: 100%; display: grid; grid-template-columns: 26px minmax(0, 1fr); align-items: start; gap: 8px; padding: 10px 12px; border-radius: 14px; cursor: pointer; text-align: left; font: inherit; color: var(--mc-text); background: var(--mc-alt); border: 1px solid var(--mc-alt-bd); }
+.task b { display: block; font-size: 14.5px; color: var(--mc-strong); line-height: 1.35; }
+.task small { font-size: 12px; color: var(--mc-muted); }
+.task .step-n { padding-top: 2px; }
+.task.is-active { background: var(--mc-soft); border-color: var(--mc-accent); box-shadow: var(--mc-glow); }
+.task.is-active .step-n { color: var(--mc-deep); }
+.task-detail { padding: 14px 16px; border-radius: 14px; background: var(--mc-surface); border: 1px solid var(--mc-border); }
+.task-detail h3 { font-family: var(--display); font-weight: 500; font-size: 19px; color: var(--mc-strong); margin-bottom: 8px; line-height: 1.3; }
+.task-detail dl { margin: 0; display: grid; gap: 2px; line-height: 1.55; }
+.task-detail dt { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--mc-muted); margin-top: 8px; }
+.task-detail dd { margin: 0; }
+@media (min-width: 760px) { #s6 .stage { grid-template-columns: minmax(0, .95fr) minmax(0, 1.25fr); align-items: start; } }
+
+/* 7. ranh giới */
+.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px 24px; }
+.split ul { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 4px; line-height: 1.5; }
+
+/* 8. thuật ngữ */
+.gloss { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0 22px; }
+.gloss div { padding: 8px 0; border-bottom: 1px solid var(--mc-border); }
+.gloss dt { font-weight: 700; color: var(--mc-strong); }
+.gloss dd { margin: 2px 0 0; color: var(--mc-text); font-size: 14px; line-height: 1.5; }
+
+@media (max-width: 560px) {
+  .studio-card { padding: 16px; }
+  .viz-title { font-size: 21px; }
+  .bubble { max-width: 100%; }
+  .ck-btn { min-width: 92px; }
+}
+@media (prefers-reduced-motion: reduce) { .fill { transition: none; } }
+
+</style>
+</head>
+<body class="mc-page">
+<header class="page-head">
+  <svg class="page-ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M24 7v33M14 40h20M10 13h28"/><path d="M10 13l-6 13h12zM38 13l-6 13h12z"/><path d="M4 26a6 4 0 0 0 12 0M32 26a6 4 0 0 0 12 0"/>
+    <circle class="lt" cx="24" cy="9" r="2.2"/>
+  </svg>
+  <h1 class="page-title"><span>Dự án Legal RAG</span></h1>
+</header>
+
+<main class="page">
+
+<p class="intro">Trang này dành cho một bạn học luật sắp tham gia nhóm. Bạn không cần biết lập trình. Trang giải thích dự án làm gì, vì sao nhóm cần người hiểu luật, và từng việc bạn sẽ làm. Các thuật ngữ tiếng Anh được giữ nguyên vì nhóm dùng đúng các từ đó hằng ngày.</p>
+
+<!-- 1. Dự án làm gì -->
+<section class="mc-glass studio-card" id="s1">
+  <div class="studio-body">
+    <p class="eyebrow">1 · Dự án làm gì</p>
+    <h2 class="viz-title">Một trợ lý hỏi đáp Luật Doanh nghiệp, câu trả lời nào cũng phải dẫn Điều, Khoản</h2>
+    <p class="viz-why">Người dùng gõ câu hỏi, hệ thống trả lời và gắn nhãn như <code>[C1]</code> vào từng ý. Bấm nhãn đó để đọc nguyên văn Khoản làm căn cứ. Hãy bấm ba tình huống dưới đây để xem hệ thống nên phản ứng thế nào.</p>
+    <div class="tabs" role="tablist" id="sc-tabs"></div>
+    <div class="stage">
+      <div class="chat" id="sc-chat" aria-live="polite"></div>
+      <p class="note" id="sc-note"></p>
+    </div>
+    <div class="viz-takeaways"><h4>Điều cần nhớ</h4><ul>
+      <li>Hệ thống chỉ được trả lời bằng nội dung có trong kho văn bản của nhóm.</li>
+      <li>Mỗi ý trong câu trả lời phải chỉ được tới một Khoản cụ thể. Người dùng tự đối chiếu được.</li>
+      <li>Khi kho không có căn cứ, hệ thống phải từ chối. Một câu trả lời trôi chảy nhưng sai nguy hiểm hơn một lời từ chối.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 2. RAG -->
+<section class="mc-glass studio-card" id="s2">
+  <div class="studio-body">
+    <p class="eyebrow">2 · Cách hệ thống làm việc</p>
+    <h2 class="viz-title">RAG giống một kỳ thi mở sách</h2>
+    <p class="viz-why"><b>RAG</b> (Retrieval-Augmented Generation) nghĩa là: tìm tài liệu trước, rồi mới cho AI viết câu trả lời dựa trên tài liệu đó. AI không trả lời bằng trí nhớ. Bấm Tiếp để theo câu hỏi "Cổ đông là ai?" đi qua sáu bước.</p>
+    <div class="stage">
+      <ol class="steps" id="rag-steps"></ol>
+      <div class="artifact" id="rag-art"></div>
+      <p class="stp-caption" id="rag-cap"></p>
+      <div class="stp-controls">
+        <button class="mc-btn" id="rag-back" type="button">Trước</button>
+        <button class="mc-btn mc-btn--primary" id="rag-next" type="button">Tiếp</button>
+        <span class="stp-count" id="rag-count"></span>
+      </div>
+    </div>
+    <div class="viz-takeaways"><h4>Ba nhóm phụ trách ba khúc</h4><ul>
+      <li><b>Team 1</b> chuẩn bị kho luật và phần tìm kiếm (bước 2). Phần việc của bạn gắn với Team 1.</li>
+      <li><b>Team 2</b> viết lời dặn cho AI, gọi AI và kiểm trích dẫn (bước 3 đến 5).</li>
+      <li><b>Team 3</b> làm trang web người dùng nhìn thấy (bước 1 và 6).</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 3. Kho luật -->
+<section class="mc-glass studio-card" id="s3">
+  <div class="studio-body">
+    <p class="eyebrow">3 · Kho luật của nhóm</p>
+    <h2 class="viz-title">8 văn bản được cắt thành 2.576 đoạn, mỗi đoạn là một Khoản</h2>
+    <p class="viz-why">Nhóm gọi kho văn bản là <b>corpus</b>, và gọi mỗi đoạn là một <b>chunk</b>. Mỗi chunk có một mã đọc được bằng mắt. Bạn sẽ gặp mã này trong mọi bảng soát, nên hãy bấm từng phần của mã để xem nó nghĩa là gì.</p>
+    <div class="stage">
+      <div class="idparts" id="id-parts" role="group" aria-label="Các phần của mã chunk"></div>
+      <p class="stp-caption" id="id-cap"></p>
+      <ul class="docs" id="docs"></ul>
+    </div>
+    <div class="viz-takeaways"><h4>Điều cần nhớ</h4><ul>
+      <li>Nhóm cắt theo Khoản vì Khoản thường mang trọn một ý pháp lý, và người làm luật cũng trích dẫn theo Khoản.</li>
+      <li>Ngoài chunk, nhóm còn giữ nguyên văn 635 Điều trong <b>Article Store</b> để người dùng đọc trọn một Điều.</li>
+      <li>Kho có cả Luật 59/2020 lẫn Văn bản hợp nhất 67/VBHN-VPQH, nên cùng một Điều có thể có hai phiên bản.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 4. Bộ đề -->
+<section class="mc-glass studio-card" id="s4">
+  <div class="studio-body">
+    <p class="eyebrow">4 · Vì sao nhóm cần bạn</p>
+    <h2 class="viz-title">Bộ đề chấm điểm còn 103 câu chưa có người hiểu luật kiểm</h2>
+    <p class="viz-why">Nhóm chấm hệ thống bằng một bộ đề có sẵn đáp án, gọi là <b>Golden set</b>. Phần dùng hằng ngày gọi là <b>Dev Set</b>, gồm 110 câu. Bấm từng nhóm câu để so điểm tìm kiếm của hệ thống trên mỗi nhóm.</p>
+    <div class="viz-meta"><span class="seal seal--calc">Số đo lượt vlra53</span><span class="seal seal--warn">Nhãn exploratory</span></div>
+    <div class="stage">
+      <div class="tabs" role="tablist" id="rc-tabs"></div>
+      <div class="bars" id="rc-bars"></div>
+      <p class="stp-caption" id="rc-cap"></p>
+      <div class="counts">
+        <div><span class="num">40</span> câu Team 2 đã rà</div>
+        <div><span class="num">70</span> câu nháp, chờ soát pháp lý</div>
+        <div><span class="num">33</span> câu ngoài phạm vi, chờ soát</div>
+        <div><span class="num">25</span> câu bẫy (edge case), chưa chạy</div>
+      </div>
+    </div>
+    <div class="viz-takeaways"><h4>Điều cần nhớ</h4><ul>
+      <li><b>Recall@5</b> cho biết: trong 5 đoạn đầu tiên hệ thống tìm được, có bao nhiêu phần đáp án đúng.</li>
+      <li>70 câu nháp cho điểm 0,986, cao hơn hẳn 0,783 của 40 câu đã rà. Câu nháp có thể quá dễ, vì đáp án thường chép nguyên văn Khoản.</li>
+      <li>Chừng nào chưa có người hiểu luật soát, mọi điểm số vẫn phải mang nhãn <b>exploratory</b> (chỉ để tham khảo).</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 5. Thử soát một câu -->
+<section class="mc-glass studio-card" id="s5">
+  <div class="studio-body">
+    <p class="eyebrow">5 · Thử làm</p>
+    <h2 class="viz-title">Soát thử một câu nháp có thật trong bộ đề</h2>
+    <p class="viz-why">Đây là câu <code>gold_042</code>, đang ở trạng thái chờ soát. Đọc câu hỏi, đáp án và Khoản căn cứ. Bấm vào từng tiêu chí để đổi đánh giá, rồi chọn kết luận. Dòng cuối cùng là đúng dòng bạn sẽ trả lại cho nhóm.</p>
+    <div class="stage">
+      <div class="case">
+        <p class="case-k">Câu hỏi</p>
+        <p class="case-q">Trước hạn thanh toán đủ cổ phần đã đăng ký mua, số phiếu biểu quyết của cổ đông được tính như thế nào?</p>
+        <p class="case-k">Đáp án trong bộ đề</p>
+        <p>2. Trong thời hạn từ ngày công ty được cấp Giấy chứng nhận đăng ký doanh nghiệp đến ngày cuối cùng phải thanh toán đủ số cổ phần đã đăng ký mua quy định tại khoản 1 Điều này, số phiếu biểu quyết của các cổ đông được tính theo số cổ phần phổ thông đã được đăng ký mua, trừ trường hợp Điều lệ công ty có quy định khác.</p>
+        <p class="case-k">Căn cứ được ghi</p>
+        <p>Khoản 2 Điều 113, Văn bản hợp nhất Luật Doanh nghiệp 67/VBHN-VPQH · chunk <code>vbhn-67-vbhn-vpqh-v1__dieu-113__k2__0</code></p>
+      </div>
+      <div class="checks" id="ck"></div>
+      <div class="verdict" role="group" aria-label="Kết luận" id="vd"></div>
+      <label class="ctl">Ghi chú của bạn<input class="mc-field" id="ck-note" type="text" maxlength="140" placeholder="Ví dụ: nên viết lại đáp án bằng lời gọn"></label>
+      <div class="outrow" aria-live="polite"><p class="case-k">Dòng trả lại cho nhóm</p><code id="ck-out"></code></div>
+    </div>
+    <div class="viz-takeaways"><h4>Điều cần nhớ</h4><ul>
+      <li>Đáp án của câu này đang chép nguyên văn Khoản, kể cả số "2." ở đầu. Đây là dấu hiệu chung của 70 câu nháp.</li>
+      <li>Bạn chỉ cần kết luận về nội dung pháp lý. Việc đổi mã chunk hay sửa file là việc của nhóm.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 6. Việc của bạn -->
+<section class="mc-glass studio-card" id="s6">
+  <div class="studio-body">
+    <p class="eyebrow">6 · Việc của bạn</p>
+    <h2 class="viz-title">Bảy việc thuần luật, xếp theo thứ tự nên làm</h2>
+    <p class="viz-why">Bấm từng việc để xem lý do, những gì nhóm gửi cho bạn, cách làm và kết quả cần trả lại. Việc 1 nhỏ và gỡ được lỗi ngay. Việc 2 quan trọng nhất.</p>
+    <div class="stage">
+      <ol class="tasks" id="tk"></ol>
+      <div class="task-detail" id="tk-d" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Phối hợp -->
+<section class="mc-glass studio-card" id="s7">
+  <div class="studio-body">
+    <p class="eyebrow">7 · Bạn và nhóm phối hợp thế nào</p>
+    <h2 class="viz-title">Bạn làm trên Google Sheet, nhóm lo phần kỹ thuật</h2>
+    <p class="viz-why">Mỗi đợt soát đi qua năm bước. Bấm Tiếp để xem ai làm bước nào. Bạn chỉ làm bước 2.</p>
+    <div class="stage">
+      <ol class="steps" id="wk-steps"></ol>
+      <p class="stp-caption" id="wk-cap"></p>
+      <div class="stp-controls">
+        <button class="mc-btn" id="wk-back" type="button">Trước</button>
+        <button class="mc-btn mc-btn--primary" id="wk-next" type="button">Tiếp</button>
+        <span class="stp-count" id="wk-count"></span>
+      </div>
+      <div class="split">
+        <div><p class="case-k">Bạn quyết định</p><ul>
+          <li>Câu hỏi, đáp án và căn cứ có đúng luật không.</li>
+          <li>Văn bản, Điều, Khoản nào còn hay hết hiệu lực.</li>
+          <li>Câu trả lời của AI có được nguồn chứng minh không.</li>
+        </ul></div>
+        <div><p class="case-k">Nhóm quyết định</p><ul>
+          <li>Đổi Khoản bạn chỉ ra thành mã chunk tương ứng.</li>
+          <li>Sửa file trong repo, chạy test, mở PR.</li>
+          <li>Báo các team khác khi bộ đề thay đổi.</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Thuật ngữ -->
+<section class="mc-glass studio-card" id="s8">
+  <div class="studio-body">
+    <p class="eyebrow">8 · Tra nhanh</p>
+    <h2 class="viz-title">Các thuật ngữ bạn sẽ nghe trong nhóm</h2>
+    <p class="viz-why">Gõ một từ để lọc danh sách.</p>
+    <div class="stage">
+      <input class="mc-field" id="gl-q" type="search" placeholder="Ví dụ: chunk, hash, PR" aria-label="Lọc thuật ngữ">
+      <dl class="gloss" id="gl"></dl>
+      <p class="note" id="gl-empty" hidden>Không có thuật ngữ nào khớp.</p>
+    </div>
+  </div>
+</section>
+
+<p class="foot">Số liệu lấy từ nhánh <code>develop</code> của repo dự án ngày 17/11/2026: bộ đề <code>team1_data/golden/</code>, kho <code>data/doanh-nghiep/</code>, lượt đo <code>evaluation/retrieval/runs/vlra53-aiteamvn-weights</code> và rubric <code>docs/team2_rag/citation_rubric.md</code>. Các câu trả lời trong mục 1 và 2 là ví dụ minh họa, không phải kết quả chạy thật.</p>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const K3 = "3. Cổ đông là cá nhân, tổ chức sở hữu ít nhất một cổ phần của công ty cổ phần.";
+
+/* ---------- 1. ba tình huống ---------- */
+const SC = [
+  { tab: "Câu có trong luật", tone: "tone-good", seal: "Đúng cách",
+    q: "Theo Luật Doanh nghiệp, cổ đông là ai?",
+    a: `Cổ đông là cá nhân, tổ chức sở hữu ít nhất một cổ phần của công ty cổ phần <button class="cite" type="button" data-src="ok">[C1]</button>.`,
+    src: { ok: `<b>[C1] Khoản 3 Điều 4, Luật Doanh nghiệp 59/2020/QH14</b><br>${K3}` },
+    note: "Ý trong câu trả lời khớp đúng Khoản được trích. Bấm [C1] để xem nguyên văn. Đây là câu gold_003, đã được Team 2 rà." },
+  { tab: "Câu ngoài phạm vi", tone: "tone-info", seal: "Từ chối đúng",
+    q: "Tội trộm cắp tài sản có giá trị 3 triệu đồng thì bị phạt tù bao nhiêu năm?",
+    a: "Tài liệu được truy xuất chưa đủ căn cứ để trả lời.",
+    src: {},
+    note: "Kho của nhóm chỉ có văn bản về doanh nghiệp, nên hệ thống phải từ chối. Trạng thái này có tên insufficient_context. Câu này là oos_001 trong 33 câu ngoài phạm vi." },
+  { tab: "Câu trả lời sai", tone: "tone-bad", seal: "Hallucination",
+    q: "Theo Luật Doanh nghiệp, cổ đông là ai?",
+    a: `Cổ đông là cá nhân, tổ chức sở hữu <mark class="wrong">ít nhất 10% cổ phần</mark> của công ty cổ phần <button class="cite" type="button" data-src="bad">[C1]</button>.`,
+    src: { bad: `<b>[C1] Khoản 3 Điều 4, Luật Doanh nghiệp 59/2020/QH14</b><br>${K3}<br><span class="is-miss">Khoản này nói "ít nhất một cổ phần", không nói 10%.</span>` },
+    note: "Ví dụ do trang dựng để minh họa. Câu trả lời trôi chảy và có trích dẫn, nhưng ý chính không có trong Khoản được trích. Lỗi này gọi là hallucination (AI bịa nội dung)." }
+];
+let sc = 0;
+SC.forEach((s, i) => {
+  const b = document.createElement("button");
+  b.className = "tab"; b.type = "button"; b.role = "tab"; b.textContent = s.tab;
+  b.onclick = () => { sc = i; drawSc(); };
+  $("sc-tabs").appendChild(b);
+});
+function drawSc() {
+  const s = SC[sc];
+  [...$("sc-tabs").children].forEach((b, i) => b.setAttribute("aria-selected", i === sc));
+  $("sc-chat").innerHTML = `<div class="bubble q"><small>Người dùng</small>${s.q}</div>`
+    + `<div class="bubble a"><small>Hệ thống <span class="seal ${s.tone.replace("tone-", "seal--").replace("seal--good", "seal--ok")}">${s.seal}</span></small>${s.a}</div>`
+    + `<div class="quote src" id="sc-src" hidden></div>`;
+  $("sc-note").textContent = s.note;
+  $("sc-chat").querySelectorAll(".cite").forEach((c) => c.onclick = () => {
+    const box = $("sc-src"); box.innerHTML = s.src[c.dataset.src]; box.hidden = !box.hidden;
+  });
+}
+drawSc();
+
+/* ---------- 2. RAG sáu bước ---------- */
+const RAG = [
+  { n: "Hỏi", team: "Team 3", cap: "Người dùng gõ câu hỏi trên trang web. Trang web gửi câu hỏi tới máy chủ của nhóm.",
+    art: `<p class="case-k">Câu hỏi</p><p>Theo Luật Doanh nghiệp, cổ đông là ai?</p>` },
+  { n: "Tìm", team: "Team 1", cap: "Bước retrieval (tìm kiếm) lục 2.576 chunk và giữ 10 đoạn gần với câu hỏi nhất. Hệ thống tìm theo hai cách cùng lúc: theo từ khóa và theo nghĩa của câu.",
+    art: `<p class="case-k">Kết quả tìm kiếm (minh họa 3 đoạn đầu)</p><ol class="mono-list"><li class="is-hit">luat-59-2020-qh14-v1__dieu-4__k3__0</li><li>luat-59-2020-qh14-v1__dieu-115__k1__0</li><li>vbhn-67-vbhn-vpqh-v1__dieu-4__k3__0</li></ol>` },
+  { n: "Dặn AI", team: "Team 2", cap: "Hệ thống đưa cho AI câu hỏi, tối đa 5 đoạn luật có nhãn C1 đến C5, và một lời dặn cố định. Lời dặn này gọi là prompt.",
+    art: `<p class="case-k">Prompt (rút gọn)</p><p>Chỉ trả lời bằng các đoạn được cấp dưới đây. Ghi nhãn của đoạn làm căn cứ sau mỗi ý. Nếu các đoạn không đủ căn cứ, hãy trả lời là chưa đủ căn cứ.</p><p><b>[C1]</b> Khoản 3 Điều 4 Luật 59/2020 · <b>[C2]</b> … · <b>[C3]</b> …</p>` },
+  { n: "AI viết", team: "Team 2", cap: "LLM (mô hình ngôn ngữ lớn, ở đây là Gemini của Google) viết câu trả lời và ghi [C1] sau ý lấy từ đoạn C1.",
+    art: `<p class="case-k">Câu trả lời của LLM</p><p>Cổ đông là cá nhân, tổ chức sở hữu ít nhất một cổ phần của công ty cổ phần <span class="cite">[C1]</span>.</p>` },
+  { n: "Kiểm", team: "Team 2", cap: "Code kiểm mỗi nhãn [C1], [C2] có trỏ đúng một đoạn đã gửi cho AI không. Nhãn sai thì câu trả lời bị chặn và người dùng nhận thông báo lỗi.",
+    art: `<p class="case-k">Kết quả kiểm trích dẫn</p><p><span class="is-hit">[C1] trỏ đúng đoạn luat-59-2020-qh14-v1__dieu-4__k3__0 đã gửi.</span></p><p class="note">Bước này chỉ kiểm nhãn có trỏ đúng đoạn không. Bước này chưa chắc biết ý có thật sự nằm trong đoạn đó không. Đó là chỗ người hiểu luật giúp được nhiều nhất.</p>` },
+  { n: "Hiện", team: "Team 3", cap: "Trang web hiện câu trả lời và thẻ [C1]. Người dùng bấm thẻ để mở nguyên văn Điều 4 và thấy Khoản 3 được tô sáng.",
+    art: `<p class="case-k">Người dùng nhìn thấy</p><p>Cổ đông là cá nhân, tổ chức sở hữu ít nhất một cổ phần của công ty cổ phần <span class="cite">[C1]</span>.</p><p class="note">Bấm [C1] → Điều 4. Giải thích từ ngữ · Khoản 3 được tô sáng.</p>` }
+];
+function stepper(list, ids, onShow) {
+  let i = 0;
+  list.forEach((s, k) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<button class="step" type="button"><span class="step-n">${k + 1}</span><b>${s.n}</b><small>${s.team}</small></button>`;
+    li.firstChild.onclick = () => { i = k; show(); };
+    $(ids.list).appendChild(li);
+  });
+  function show() {
+    [...$(ids.list).children].forEach((li, k) => { li.firstChild.classList.toggle("is-active", k === i); li.firstChild.classList.toggle("is-done", k < i); });
+    $(ids.cap).textContent = list[i].cap;
+    $(ids.count).textContent = `${i + 1}/${list.length}`;
+    $(ids.back).disabled = i === 0; $(ids.next).disabled = i === list.length - 1;
+    onShow && onShow(list[i]);
+  }
+  $(ids.back).onclick = () => { i--; show(); };
+  $(ids.next).onclick = () => { i++; show(); };
+  show();
+}
+stepper(RAG, { list: "rag-steps", cap: "rag-cap", count: "rag-count", back: "rag-back", next: "rag-next" }, (s) => { $("rag-art").innerHTML = s.art; });
+
+/* ---------- 3. mã chunk ---------- */
+const PARTS = [
+  { t: "luat-59-2020-qh14", d: "Văn bản: Luật số 59/2020/QH14, tức Luật Doanh nghiệp 2020. Mã văn bản viết thường, dấu gạch ngang thay cho dấu gạch chéo." },
+  { t: "-v1", d: "Hậu tố phiên bản của văn bản trong kho. Hiện mọi văn bản đều là v1." },
+  { t: "__dieu-4", d: "Điều 4. Hai dấu gạch dưới ngăn cách các cấp." },
+  { t: "__k3", d: "Khoản 3. Khi một đoạn không thuộc Khoản nào, ví dụ Điều chỉ có một đoạn, mã ghi k0." },
+  { t: "__0", d: "Số thứ tự mảnh trong Khoản. Quy tắc cắt cho phép tách một Khoản quá dài thành nhiều mảnh 0, 1, 2…, nhưng hiện mọi chunk trong kho đều là mảnh 0." }
+];
+let part = 0;
+PARTS.forEach((p, i) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "part"; b.textContent = p.t;
+  b.onclick = () => { part = i; drawId(); };
+  $("id-parts").appendChild(b);
+});
+function drawId() {
+  [...$("id-parts").children].forEach((b, i) => b.classList.toggle("is-active", i === part));
+  $("id-cap").textContent = PARTS[part].d;
+}
+drawId();
+const DOCS = [
+  ["luat-59-2020-qh14", "Luật Doanh nghiệp 59/2020/QH14", "luật gốc"],
+  ["luat-76-2025-qh15", "Luật 76/2025/QH15 sửa đổi Luật Doanh nghiệp", "luật sửa đổi"],
+  ["vbhn-67-vbhn-vpqh", "Văn bản hợp nhất 67/VBHN-VPQH", "gộp Luật 59/2020 với các lần sửa"],
+  ["vbhn-7566-vbhn-bkhdt", "Văn bản hợp nhất 7566", "hợp nhất Nghị định 47/2021"],
+  ["nd-168-2025-nd-cp", "Nghị định 168/2025", "đăng ký doanh nghiệp"],
+  ["nd-122-2021-nd-cp", "Nghị định 122/2021", ""],
+  ["nd-288-2026-nd-cp", "Nghị định 288/2026", ""],
+  ["tt-68-2025-tt-btc", "Thông tư 68/2025/TT-BTC", ""]
+];
+$("docs").innerHTML = DOCS.map(([id, name, note]) => `<li><b>${name}</b>${note ? ` <span class="note">· ${note}</span>` : ""}<br><code>${id}-v1</code></li>`).join("");
+
+/* ---------- 4. Recall theo nhóm câu ---------- */
+const RC = [
+  { tab: "Cả 110 câu", v: 0.912, cap: "Trên cả Dev Set, cấu hình đang dùng đạt Recall@5 0,912. Đây là con số nhóm hay báo cáo." },
+  { tab: "40 câu đã rà", v: 0.783, cap: "Trên 40 câu Team 2 đã rà, điểm chỉ còn 0,783, thấp hơn mốc 0,85 mà nhóm đặt ra (NFR-01)." },
+  { tab: "70 câu nháp", v: 0.986, cap: "Trên 70 câu nháp, điểm gần tuyệt đối. Câu nháp được soạn bám sát câu chữ của Khoản, nên hệ thống tìm rất dễ." }
+];
+let rc = 0, rcPrev = null;
+RC.forEach((r, i) => {
+  const b = document.createElement("button");
+  b.className = "tab"; b.type = "button"; b.role = "tab"; b.textContent = r.tab;
+  b.onclick = () => { rcPrev = rc; rc = i; drawRc(); };
+  $("rc-tabs").appendChild(b);
+});
+function drawRc() {
+  [...$("rc-tabs").children].forEach((b, i) => b.setAttribute("aria-selected", i === rc));
+  const cur = RC[rc], prev = rcPrev === null ? null : RC[rcPrev];
+  const pct = (v) => (v * 100).toFixed(1) + "%";
+  $("rc-bars").innerHTML =
+    `<div class="bar-row"><span class="bar-k">Recall@5</span><div class="track">`
+    + (prev ? `<i class="fill ghost" style="width:${pct(prev.v)}"></i>` : "")
+    + `<i class="fill" style="width:${pct(cur.v)}"></i><i class="goal" style="left:85%"></i></div>`
+    + `<span class="num">${cur.v.toFixed(3).replace(".", ",")}</span></div>`
+    + `<p class="legend"><span class="key chart-key"></span>nhóm đang chọn ${prev ? `<span class="key ghost-key"></span>nhóm vừa xem` : ""}<span class="key goal-key"></span>mốc 0,85</p>`;
+  $("rc-cap").textContent = cur.cap;
+}
+drawRc();
+
+/* ---------- 5. soát thử ---------- */
+const CHECKS = [
+  "Câu hỏi tự nhiên, giống câu người dùng thật sẽ hỏi",
+  "Đáp án đúng luật và đủ ý, kể cả ngoại lệ",
+  "Khoản căn cứ thật sự chứa đáp án",
+  "Căn cứ còn hiệu lực, đã tính tới Luật 76/2025",
+  "Đáp án viết gọn bằng lời, không chép nguyên văn"
+];
+const STATE = [["?", "Chưa xét", ""], ["Đạt", "Đạt", "tone-good"], ["Chưa đạt", "Chưa đạt", "tone-bad"], ["Không chắc", "Không chắc", "tone-warn"]];
+const ck = CHECKS.map(() => 0);
+CHECKS.forEach((c, i) => {
+  const row = document.createElement("div");
+  row.className = "ck-row";
+  row.innerHTML = `<span>${c}</span><button type="button" class="ck-btn"></button>`;
+  row.querySelector("button").onclick = () => { ck[i] = (ck[i] + 1) % STATE.length; drawCk(); };
+  $("ck").appendChild(row);
+});
+const VERDICTS = ["Giữ nguyên", "Sửa", "Bỏ câu"];
+let vd = -1;
+VERDICTS.forEach((v, i) => {
+  const b = document.createElement("button");
+  b.className = "tab"; b.type = "button"; b.textContent = v;
+  b.onclick = () => { vd = i; drawCk(); };
+  $("vd").appendChild(b);
+});
+$("ck-note").oninput = drawCk;
+function drawCk() {
+  [...$("ck").children].forEach((row, i) => {
+    const b = row.querySelector("button"), s = STATE[ck[i]];
+    b.textContent = s[1]; b.className = "ck-btn tone " + s[2];
+  });
+  [...$("vd").children].forEach((b, i) => b.setAttribute("aria-selected", i === vd));
+  const fails = ck.map((s, i) => s === 2 ? i + 1 : null).filter(Boolean);
+  const unsure = ck.map((s, i) => s === 3 ? i + 1 : null).filter(Boolean);
+  const note = $("ck-note").value.trim();
+  $("ck-out").textContent = [
+    "gold_042",
+    vd < 0 ? "chưa kết luận" : VERDICTS[vd],
+    fails.length ? "chưa đạt tiêu chí " + fails.join(", ") : "không có tiêu chí chưa đạt",
+    unsure.length ? "không chắc tiêu chí " + unsure.join(", ") : "",
+    note ? "ghi chú: " + note : "",
+    "người soát: tên bạn"
+  ].filter(Boolean).join(" | ");
+}
+drawCk();
+
+/* ---------- 6. bảy việc ---------- */
+const TASKS = [
+  { n: "Tra ngày hiệu lực của Thông tư 31/2004/TT-BTC", size: "Nhỏ · làm ngay",
+    why: "Văn bản <code>tt-31-2004-tt-btc-v1</code> trong kho mở rộng chưa có ngày hiệu lực. Thông tư ghi hiệu lực sau 15 ngày kể từ ngày đăng Công báo, và máy không tra tự động được. Một test của nhóm vì vậy đang báo lỗi trên mọi thay đổi.",
+    get: "Số hiệu và tên văn bản: hướng dẫn Nghị định 118/2003/NĐ-CP về xử phạt vi phạm hành chính trong lĩnh vực kinh doanh bảo hiểm, ban hành ngày 12/04/2004.",
+    how: "Tra ngày đăng Công báo, tính ngày có hiệu lực, rồi kiểm văn bản này hiện còn hiệu lực không. Trong kho, văn bản đang được ghi là còn hiệu lực.",
+    give: "Ngày đăng Công báo, ngày có hiệu lực, tình trạng hiệu lực hiện nay, và đường dẫn nguồn bạn đã tra." },
+  { n: "Soát 70 câu nháp trong Dev Set", size: "Lớn nhất · khoảng 15 câu mỗi đợt",
+    why: "70/110 câu do Team 1 soạn với sự hỗ trợ của AI và chưa có người hiểu luật kiểm. Mọi điểm số của nhóm đang dựa trên các câu này.",
+    get: "Một Google Sheet, mỗi dòng một câu: câu hỏi, đáp án, căn cứ được ghi và nguyên văn Khoản đó.",
+    how: "Xét năm tiêu chí như ở mục 5, rồi kết luận Giữ nguyên, Sửa hoặc Bỏ câu. Nếu căn cứ sai, ghi căn cứ đúng (Khoản, Điều, văn bản). Nếu thiếu căn cứ, ghi thêm.",
+    give: "Kết luận, căn cứ đúng nếu có, ghi chú và tên bạn trên từng dòng." },
+  { n: "Soát 33 câu ngoài phạm vi", size: "Vừa",
+    why: "Nhóm dùng 33 câu này để kiểm hệ thống có biết từ chối không. Nếu kho thật ra có câu trả lời, câu đó không còn là câu ngoài phạm vi.",
+    get: "Câu hỏi, loại câu (ngoài lĩnh vực, thiếu dữ kiện, câu bẫy) và lý do Team 1 ghi.",
+    how: "Xét từng câu: kho 8 văn bản về doanh nghiệp có trả lời được không, dù chỉ một phần. Ví dụ: oos_023 hỏi \"Hợp đồng tôi vừa ký có hợp lệ không?\" và thiếu dữ kiện.",
+    give: "Đồng ý hay không đồng ý là ngoài phạm vi, kèm Khoản trả lời được nếu có." },
+  { n: "Soát 25 câu bẫy (edge case)", size: "Vừa · cần hiểu luật sâu nhất",
+    why: "Các câu bẫy kiểm tình huống khó: luật đã sửa đổi (4), hết hiệu lực một phần (4), cần nhiều nguồn (4), trích dẫn lệch (5), thiếu căn cứ (4), ngoài kho (2), xung đột giữa luật gốc và văn bản hợp nhất (2).",
+    get: "Câu hỏi, loại bẫy, đáp án mong đợi và các căn cứ.",
+    how: "Kiểm câu có thật sự khó theo đúng loại đã ghi không, và đáp án mong đợi có đúng luật hiện hành không.",
+    give: "Kết luận cho từng câu và đáp án đúng nếu cần sửa." },
+  { n: "Chấm tay câu trả lời của AI", size: "Vừa · làm sau khi bộ đề ổn",
+    why: "Máy đang chấm bằng cách đếm chữ trùng nhau giữa câu trả lời và Khoản. Cách này có lúc chấm nhầm câu đúng thành sai, và bỏ sót câu sai về nghĩa.",
+    get: "Từng ý (claim) trong câu trả lời của AI, kèm Khoản được trích.",
+    how: "Xếp mỗi ý vào một trong bốn mức của rubric: SUPPORTED (nguồn chứng minh đủ), PARTIAL (đúng phần lớn nhưng thiếu điều kiện), UNSUPPORTED (nguồn không nói tới), CONTRADICTED (nói ngược nguồn).",
+    give: "Mức chấm và một câu lý do cho từng ý." },
+  { n: "Đánh dấu Khoản hết hiệu lực", size: "Vừa",
+    why: "Hệ thống mới lọc theo cả văn bản. Văn bản hết hiệu lực một phần vẫn được dùng toàn bộ, kể cả những Khoản đã bị sửa hoặc bãi bỏ.",
+    get: "Danh sách văn bản đang ghi \"hết hiệu lực một phần\".",
+    how: "Chỉ ra Điều, Khoản nào đã bị sửa đổi, bãi bỏ hoặc thay thế, và bởi văn bản nào.",
+    give: "Bảng: văn bản, Điều, Khoản, tình trạng, văn bản sửa đổi, ngày áp dụng." },
+  { n: "Góp ý kho văn bản và lời hiển thị", size: "Nhỏ · khi có thời gian",
+    why: "Kho chính mới có khoảng một nửa nhóm văn bản liên quan, và chưa có phụ lục, biểu mẫu. Lời từ chối và lưu ý pháp lý trên trang web cũng cần đúng giọng pháp lý.",
+    get: "Danh sách 8 văn bản hiện có và các câu hệ thống hiển thị cho người dùng.",
+    how: "Đề xuất văn bản nên thêm trước cho các chủ đề: thành lập, vốn và cổ đông, quản trị, tổ chức lại và giải thể. Sửa lời hiển thị nếu dễ gây hiểu nhầm.",
+    give: "Danh sách đề xuất kèm lý do ngắn." }
+];
+let tk = 0;
+TASKS.forEach((t, i) => {
+  const li = document.createElement("li");
+  li.innerHTML = `<button type="button" class="task"><span class="step-n">${i + 1}</span><span><b>${t.n}</b><small>${t.size}</small></span></button>`;
+  li.firstChild.onclick = () => { tk = i; drawTk(); };
+  $("tk").appendChild(li);
+});
+function drawTk() {
+  [...$("tk").children].forEach((li, i) => li.firstChild.classList.toggle("is-active", i === tk));
+  const t = TASKS[tk];
+  $("tk-d").innerHTML = `<h3>${tk + 1}. ${t.n}</h3><dl>`
+    + `<dt>Vì sao cần</dt><dd>${t.why}</dd><dt>Nhóm gửi bạn</dt><dd>${t.get}</dd>`
+    + `<dt>Bạn làm</dt><dd>${t.how}</dd><dt>Bạn trả lại</dt><dd>${t.give}</dd></dl>`;
+}
+drawTk();
+
+/* ---------- 7. phối hợp ---------- */
+const WK = [
+  { n: "Xuất bảng", team: "Team 1", cap: "Một thành viên Team 1 xuất khoảng 15 câu ra Google Sheet. Mỗi dòng có sẵn nguyên văn Khoản, nên bạn không phải mở file kỹ thuật nào." },
+  { n: "Soát", team: "Bạn", cap: "Bạn soát từng dòng, ghi kết luận, căn cứ đúng, ghi chú và tên bạn. Đây là bước duy nhất bạn làm." },
+  { n: "Nhập lại", team: "Team 1", cap: "Team 1 đưa kết quả vào repo (kho code chung trên GitHub) bằng một PR (Pull Request, tức một đề nghị thay đổi có người khác xem lại)." },
+  { n: "Kiểm", team: "Máy", cap: "Các test tự động kiểm mọi mã chunk có tồn tại và tính lại hash của bộ đề. Hash là dấu vân tay của file: sửa một chữ thì hash đổi." },
+  { n: "Đo lại", team: "Team 2", cap: "Team 2 thấy hash mới, biết bộ đề đã đổi, và chạy lại benchmark (lượt chấm điểm toàn bộ). Từ đây điểm số dựa trên các câu bạn đã soát." }
+];
+stepper(WK, { list: "wk-steps", cap: "wk-cap", count: "wk-count", back: "wk-back", next: "wk-next" });
+
+/* ---------- 8. thuật ngữ ---------- */
+const GL = [
+  ["RAG", "Tìm tài liệu trước, rồi cho AI viết câu trả lời dựa trên tài liệu đó."],
+  ["LLM", "Mô hình ngôn ngữ lớn, loại AI đọc và viết văn bản. Nhóm dùng Gemini của Google."],
+  ["Prompt", "Toàn bộ lời dặn và nội dung nhóm gửi cho LLM trong một lượt."],
+  ["Corpus", "Kho văn bản luật mà hệ thống được phép dùng. Hiện có 8 văn bản về doanh nghiệp."],
+  ["Chunk", "Một đoạn của văn bản, ở dự án này là một Khoản. Kho có 2.576 chunk."],
+  ["Retrieval", "Bước tìm các chunk liên quan đến câu hỏi."],
+  ["Citation", "Trích dẫn, ví dụ [C1], chỉ ra ý trong câu trả lời lấy từ Khoản nào."],
+  ["Article Store", "Kho nguyên văn 635 Điều, dùng khi người dùng bấm một trích dẫn."],
+  ["Registry", "Sổ ghi thông tin của từng văn bản: số hiệu, ngày ban hành, ngày hiệu lực, tình trạng hiệu lực."],
+  ["Golden set, Dev Set", "Bộ đề có sẵn đáp án để chấm hệ thống. Dev Set là phần dùng hằng ngày, gồm 110 câu."],
+  ["review_status", "Trường ghi câu đã được kiểm tới đâu: team2_reviewed (đã rà) hoặc draft_needs_legal_review (nháp, chờ soát pháp lý)."],
+  ["insufficient_context", "Trạng thái hệ thống từ chối vì không đủ căn cứ."],
+  ["Hallucination", "AI viết ra nội dung nghe hợp lý nhưng không có trong nguồn."],
+  ["Edge case", "Câu bẫy cho tình huống khó, ví dụ luật đã sửa đổi."],
+  ["Rubric", "Bảng tiêu chí chấm, ở đây có bốn mức từ SUPPORTED đến CONTRADICTED."],
+  ["Recall@5", "Trong 5 đoạn đầu tiên tìm được, có bao nhiêu phần đáp án đúng."],
+  ["Benchmark", "Một lượt cho hệ thống làm cả bộ đề rồi tính điểm."],
+  ["Exploratory", "Nhãn \"thăm dò\" trên điểm số khi bộ đề chưa được duyệt hết."],
+  ["Repo, commit", "Repo là kho code chung trên GitHub. Commit là một lần lưu thay đổi vào repo."],
+  ["PR (Pull Request)", "Đề nghị đưa một thay đổi vào repo, có người khác xem lại trước khi nhận."],
+  ["Hash", "Dấu vân tay của một file. Sửa một chữ thì hash đổi, nên nhóm biết bộ đề đã thay đổi."],
+  ["Team 1, 2, 3", "Team 1: dữ liệu và tìm kiếm. Team 2: AI và kiểm trích dẫn. Team 3: trang web và máy chủ."]
+];
+function drawGl() {
+  const q = $("gl-q").value.trim().toLowerCase();
+  const hit = GL.filter(([t, d]) => !q || t.toLowerCase().includes(q) || d.toLowerCase().includes(q));
+  $("gl").innerHTML = hit.map(([t, d]) => `<div><dt>${t}</dt><dd>${d}</dd></div>`).join("");
+  $("gl-empty").hidden = hit.length > 0;
+}
+$("gl-q").oninput = drawGl;
+drawGl();
+
+</script>
+</body>
+</html>
