@@ -148,6 +148,29 @@ h2{font-size:clamp(22px,3vw,28px);margin:0;line-height:1.3;flex:1 1 220px;min-wi
 .flow-detail h4{margin:0 0 6px;font-size:16px;color:var(--strong)}
 .flow-detail p{margin:0 0 8px;color:var(--text)}
 .flow-detail .go{font-size:13.5px;font-weight:600}
+/* workflow nhiều giai đoạn ở phần tổng quan */
+.wf{margin:6px 0 18px}
+.wf-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:var(--muted);margin:0 0 12px}
+.wf-legend b{color:var(--text);font-weight:600}
+.wf-stage{padding:16px 18px}
+.wf-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-bottom:12px}
+.wf-num{font:700 12px var(--mono);color:var(--on);background:var(--accent);border-radius:8px;padding:2px 8px}
+.wf-title{font-weight:700;color:var(--strong);font-size:15.5px}
+.wf-lane{display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px 6px;font-size:12px;font-weight:600;color:var(--muted)}
+.wf-lane i{width:7px;height:7px;border-radius:50%;background:var(--tc);display:inline-block}
+.wf-budget{margin-left:auto;font:600 11.5px var(--mono);color:var(--muted);border:1px solid var(--alt-bd);background:var(--alt);border-radius:10px;padding:3px 9px}
+.wf .flow{margin:0}
+.node .s2{display:block;font-size:12px;line-height:1.35;color:var(--muted);margin-top:3px}
+.node .exit b{font-weight:700}
+.node .exit{display:block;margin-top:7px;font-style:normal;font-size:11.5px;line-height:1.35;color:var(--deep);border:1px dashed rgba(169,208,232,.42);border-radius:8px;padding:3px 7px}
+.wf-detail{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--alt);border:1px solid var(--alt-bd)}
+.wf-detail h4{margin:0 0 4px;font-size:15px;color:var(--strong)}
+.wf-detail p{margin:0 0 6px;color:var(--text)}
+.wf-detail .go{font-size:13.5px;font-weight:600}
+.wf-link{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 16px;color:var(--muted);font-size:12.5px;text-align:center}
+.wf-link::before{content:"";width:1px;height:14px;background:var(--rim-mid)}
+.wf-link::after{content:"↓";color:var(--faint);font-size:14px;line-height:1}
+@media (max-width:640px){.wf-budget{margin-left:0}.wf-stage{padding:14px}}
 
 .teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:22px}
 .team{padding:16px 18px}
@@ -278,10 +301,14 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
 <!-- ================= TỔNG QUAN ================= -->
 <section class="part" id="tong-quan" >
   <div class="part-head"><span class="num">0</span><h2>Tổng quan: một câu hỏi đi qua hệ thống như thế nào</h2></div>
-  <p class="sub">Người dùng gõ câu hỏi về Luật Doanh nghiệp. Hệ thống tìm Điều/Khoản liên quan, đưa cho LLM viết câu trả lời có citation, kiểm lại citation, rồi hiển thị lên giao diện. Người đọc có thể bấm từng bước dưới đây để xem bước đó làm gì và thuộc team nào.</p>
+  <p class="sub">Team 1 chuẩn bị dữ liệu một lần trước khi hệ thống phục vụ. Sau đó, mỗi câu hỏi đi qua bốn giai đoạn: tiếp nhận, tìm căn cứ, viết và kiểm câu trả lời, rồi trả kết quả. Giai đoạn 5 chỉ chạy khi người dùng bấm một trích dẫn. Người đọc có thể bấm từng ô để xem bước đó làm gì, đọc file nào và thuộc team nào.</p>
 
-  <div class="flow" id="flow"></div>
-  <div class="flow-detail" id="flowDetail" aria-live="polite"></div>
+  <div class="wf-legend">
+    <span><b>Chấm màu</b> trên mỗi ô: team phụ trách bước đó</span>
+    <span><b>Ô viền nét đứt</b>: bước có trong code nhưng tắt mặc định</span>
+    <span><b>Khung "Dừng sớm"</b>: hệ thống dừng ở bước đó và trả kết quả ngay</span>
+  </div>
+  <div class="wf" id="wf"></div>
 
   <div class="teams">
     <div class="team" style="--tc:var(--t1)"><h4>Team 1 — Data &amp; Retrieval</h4><p>Team 1 xây corpus pháp luật, chunking, BM25, dense retrieval, Hybrid RRF, Golden set và đánh giá retrieval.</p></div>
@@ -574,7 +601,7 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <div class="term"><h4>JSON và JSON Schema</h4><p>JSON là cách ghi dữ liệu dạng <code>"tên trường": giá trị</code> mà mọi ngôn ngữ lập trình đều đọc được. JSON Schema là bản mô tả "một JSON đúng phải trông thế nào". Máy có thể dùng schema để tự kiểm tra một JSON có đúng mẫu không.</p></div>
       <div class="term"><h4>Validator</h4><p>Validator là chương trình cầm schema đi kiểm từng dữ liệu mẫu. Con số 76/76 nghĩa là cả 76 ví dụ đều đúng mẫu. Kết quả này chỉ nói dữ liệu đúng <em>hình dạng</em>, không nói câu trả lời đúng <em>luật</em>.</p></div>
       <div class="term"><h4>API, API nội bộ và API public</h4><p>API là cửa để một chương trình gọi một chương trình khác. API nội bộ là cửa giữa backend của Team 3 và dịch vụ AI của Team 2, người dùng không thấy. API public là cửa mà giao diện trên trình duyệt gọi vào backend.</p></div>
-      <div class="term"><h4>SSE (stream)</h4><p>SSE là cách server gửi câu trả lời về trình duyệt từng mẩu một, thay vì bắt người dùng chờ đến khi xong hết. Nhờ SSE, chữ hiện ra dần dần trên màn hình.</p></div>
+      <div class="term"><h4>SSE (stream)</h4><p>SSE là cách server giữ một kết nối mở và gửi nhiều sự kiện về trình duyệt. Backend của nhóm gửi <code>meta</code> khi nhận câu hỏi, gửi heartbeat trong lúc chờ AI, rồi gửi <code>delta</code> và <code>complete</code> khi có kết quả.</p></div>
       <div class="term"><h4>Mã lỗi và mã HTTP (502, 503…)</h4><p>Khi có sự cố, server trả về một con số cho biết loại lỗi. Các mã 4xx nghĩa là bên gửi yêu cầu làm sai. Các mã 5xx nghĩa là bên server gặp sự cố. Mã 502 nghĩa là dịch vụ phía sau trả về thứ không dùng được; mã 503 nghĩa là dịch vụ tạm thời không sẵn sàng.</p></div>
       <div class="term"><h4>CODEOWNERS</h4><p>Đây là file của GitHub ghi "folder nào do ai chịu trách nhiệm". Khi có người sửa một folder, GitHub tự mời đúng người đó vào xem. Từ 16/11, file của nhóm trỏ đúng folder. Nhưng tên người duyệt vẫn là tên giữ chỗ như <code>@team1-lead</code>, nên GitHub vẫn chưa tự mời ai.</p></div>
       <div class="term"><h4>CI</h4><p>CI là việc để máy tự chạy toàn bộ bài kiểm tra mỗi khi có người gửi code lên. Nếu có bài kiểm tra hỏng, mọi người biết ngay trước khi code được nhập vào nhánh chung. Repo của nhóm có CI từ 16/11, trong file <code>.github/workflows/verify.yml</code>.</p></div>
@@ -801,7 +828,7 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
       <div class="term"><h4>Frontend và backend</h4><p>Frontend là phần chạy trên trình duyệt của người dùng: ô nhập câu hỏi, khung chat, thẻ trích dẫn. Backend là phần chạy trên máy chủ mà người dùng không thấy: nhận yêu cầu, gọi dịch vụ AI, lưu dữ liệu.</p></div>
       <div class="term"><h4>Spring Boot và Maven</h4><p>Spring Boot là bộ khung phổ biến để viết backend bằng ngôn ngữ Java. Maven là công cụ tải thư viện và đóng gói chương trình Java. File <code>pom.xml</code> là danh sách thư viện mà Maven cần tải.</p></div>
       <div class="term"><h4>React, Vite, TypeScript, Tailwind</h4><p>Đây là bốn công cụ làm giao diện. React giúp dựng giao diện từ các mảnh ghép nhỏ. TypeScript là JavaScript có thêm kiểm tra kiểu dữ liệu để bắt lỗi sớm. Vite chạy và đóng gói trang web khi phát triển. Tailwind giúp viết kiểu dáng (màu, khoảng cách) nhanh hơn.</p></div>
-      <div class="term"><h4>Stream và delta</h4><p>Stream là việc gửi câu trả lời về từng mẩu thay vì gửi một lần. Mỗi mẩu gọi là một delta. Nhờ vậy người dùng thấy chữ hiện ra dần, không phải nhìn màn hình trống vài giây.</p></div>
+      <div class="term"><h4>Stream và delta</h4><p>Stream là việc gửi câu trả lời về từng mẩu thay vì gửi một lần. Mỗi mẩu gọi là một delta. Ở bản hiện tại, dịch vụ AI chưa stream, nên backend gửi cả câu trả lời trong một delta duy nhất. Trong lúc chờ, giao diện hiện chỉ báo đang tra cứu.</p></div>
       <div class="term"><h4>DTO, snake_case và camelCase</h4><p>DTO là "hộp đựng" dữ liệu khi chuyển giữa hai chương trình. Python quen đặt tên kiểu <code>source_url</code> (snake_case), còn Java và JavaScript quen kiểu <code>sourceUrl</code> (camelCase). Backend phải đổi tên trường giữa hai kiểu này khi chuyển dữ liệu.</p></div>
       <div class="term"><h4>JPA và PostgreSQL</h4><p>PostgreSQL là cơ sở dữ liệu, nơi lưu các cuộc hội thoại để người dùng mở lại được. JPA là cách để code Java đọc và ghi vào cơ sở dữ liệu mà không phải tự viết từng câu lệnh.</p></div>
       <div class="term"><h4>Profile mock và profile rag</h4><p>Profile là một bộ cài đặt để chạy backend. Profile mock dùng AI giả và không cần cơ sở dữ liệu, tiện cho việc phát triển giao diện. Profile rag gọi dịch vụ AI thật của Team 2 và lưu vào PostgreSQL, dùng khi demo thật.</p></div>
@@ -817,7 +844,7 @@ footer{padding:40px 0 60px;color:var(--faint);font-size:13px;border-top:1px soli
     <summary><span class="easy-ic" aria-hidden="true"></span><span>Hỏi – đáp: 14 câu hỏi thường gặp về phần này, kèm đáp án</span><span class="easy-hint">bấm để mở</span></summary>
     <p class="lede2">Mỗi mục dưới đây là một câu giảng viên có thể hỏi, kèm câu trả lời dựa trên số đo và tài liệu trong repo. Các câu đầu hỏi nhóm đã làm gì và làm như thế nào; các câu sau hỏi vì sao nhóm quyết định như vậy. Dòng "Nên nói thật" nêu giới hạn mà nhóm nên tự nhận khi bị hỏi sâu hơn.</p>
     <div class="qa-list">
-      <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Một câu hỏi đi từ màn hình đến câu trả lời như thế nào?</span></h4><div class="ans"><p>Có năm bước. Một: giao diện tạo một mã <code>client_request_id</code> và gửi câu hỏi tới backend. Hai: backend kiểm mã, tạo hoặc mở hội thoại, rồi gọi dịch vụ AI của Team 2 qua <code>HttpAiClient</code>. Ba: backend nhận kết quả, đổi tên trường và lưu vào cơ sở dữ liệu. Bốn: backend phát kết quả về trình duyệt theo thứ tự: thông tin lượt hỏi, các mẩu chữ, rồi tín hiệu hoàn tất. Năm: giao diện hiện chữ dần dần và gắn thẻ trích dẫn.</p></div></div>
+      <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Một câu hỏi đi từ màn hình đến câu trả lời như thế nào?</span></h4><div class="ans"><p>Có năm bước. Một: giao diện tạo một mã <code>client_request_id</code> và gửi câu hỏi tới backend. Hai: backend kiểm mã, tạo hoặc mở hội thoại, rồi gọi dịch vụ AI của Team 2 qua <code>HttpAiClient</code>. Ba: backend nhận kết quả, đổi tên trường và lưu vào cơ sở dữ liệu. Bốn: backend phát về trình duyệt thông tin lượt hỏi ngay từ đầu, heartbeat trong lúc chờ, rồi một mẩu chứa cả câu trả lời và tín hiệu hoàn tất. Năm: giao diện hiện câu trả lời và gắn thẻ trích dẫn.</p></div></div>
       <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Khi người dùng bấm vào một trích dẫn thì chuyện gì xảy ra?</span></h4><div class="ans"><p>Giao diện gửi mã văn bản và mã Điều tới backend. Backend hỏi dịch vụ của Team 2, dịch vụ này lấy nguyên văn Điều từ Article Store của Team 1. <code>DocumentViewer</code> hiển thị Điều đó, và hàm <code>locateCitedUnit</code> tìm rồi tô sáng Khoản được trích.</p></div></div>
       <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Backend lưu những gì?</span></h4><div class="ans"><p>Backend lưu các hội thoại và từng lượt hỏi trong đó: câu hỏi, câu trả lời, danh sách trích dẫn, và cả lỗi nếu lượt đó thất bại. Nhờ vậy người dùng mở lại được lịch sử, và một lượt gửi lại nhận đúng kết quả cũ. Cấu trúc bảng nằm trong <code>resources/db/chat-schema.sql</code>.</p></div></div>
       <div class="qa"><h4><span class="qa-ic" aria-hidden="true">?</span><span>Vì sao giao diện không gọi thẳng dịch vụ AI mà phải qua backend Java?</span></h4><div class="ans"><p>Backend làm những việc mà dịch vụ AI không làm: lưu hội thoại vào cơ sở dữ liệu, chống gửi trùng, gom mã lỗi và đổi tên trường. Backend cũng che API nội bộ và khóa API của LLM khỏi trình duyệt của người dùng.</p></div></div>
@@ -1109,36 +1136,94 @@ document.querySelectorAll("[data-tree]").forEach(el => {
   }
 });
 
-/* ---------- pipeline ---------- */
-const FLOW = [
-  {t:"sh", tag:"Người dùng", name:"Câu hỏi", sec:"p7", d:"Người dùng gõ câu hỏi trên frontend React. Frontend gửi câu hỏi đến backend Spring Boot, backend gọi API nội bộ của Team 2 theo <code>query_request.schema.json</code>."},
-  {t:"t1", tag:"Team 1", name:"Hybrid Retrieval", sec:"p2", d:"Team 1 tìm chunk bằng BM25 và dense retrieval rồi gộp bằng RRF (k=60, trọng số 0,5:1). Bước này trả top-20 chunk theo đơn vị Khoản từ corpus 2.576 chunk."},
-  {t:"t2", tag:"Team 2 · tắt", name:"Reranker BGE", sec:"p5", off:true, d:"Team 2 có reranker BGE để chấm lại chunk, nhưng đã tắt mặc định (<code>RAG_RERANK=false</code>) vì Hybrid thắng hoặc hòa ở mọi chỉ số trên 110 câu. Khi bật, reranker có timeout 4 giây và tự lùi về thứ hạng Hybrid nếu quá hạn."},
-  {t:"t2", tag:"Team 2", name:"Context Builder", sec:"p5", d:"Context Builder gắn nhãn C1..Cn và metadata cho từng chunk, rồi cắt theo ngân sách token và số chunk tối đa (<code>LLM_MAX_CONTEXT_CHUNKS</code>)."},
-  {t:"t2", tag:"Team 2", name:"LLM (Gemini)", sec:"p5", d:"LLM <code>gemini-3.1-flash-lite</code> nhận System Prompt <code>prompt_v3</code> và context, rồi trả JSON gồm <code>status</code>, <code>answer</code>, <code>citations</code> và <code>claims</code>. Nếu thiếu căn cứ, LLM trả <code>insufficient_context</code>."},
-  {t:"t2", tag:"Team 2", name:"Verification", sec:"p6", d:"Module Verification kiểm citation có khớp chunk đã gửi, rồi so từng claim với nguồn theo rubric 4 cấp. Response gửi Team 3 bỏ <code>claims</code>, chỉ giữ ba field theo contract."},
-  {t:"t3", tag:"Team 3", name:"Backend Java", sec:"p7", d:"Backend nhận response, đổi snake_case sang camelCase, lưu hội thoại bằng JPA và phát câu trả lời qua SSE. Lỗi như <code>CITATION_INVALID</code> được đổi thành mã public <code>UPSTREAM_INVALID_RESPONSE</code>."},
-  {t:"t3", tag:"Team 3", name:"Frontend + Viewer", sec:"p7", d:"Frontend hiện câu trả lời đang stream, thẻ citation và nút mở nguyên văn Điều. Viewer đọc Điều từ Article Store (<code>articles.jsonl</code>) mà Team 1 xuất ở tuần 10."}
+/* ---------- workflow nhiều giai đoạn ---------- */
+const WF = [
+ {num:"0", title:"Chuẩn bị dữ liệu", lane:[["t1","Team 1"]], laneNote:"chạy trước, không chạy theo từng câu hỏi", sec:"p1",
+  link:"Dữ liệu sẵn sàng · dịch vụ AI nạp chỉ mục khi khởi động",
+  steps:[
+   {t:"t1", tag:"Team 1", name:"Văn bản gốc", s2:"8 văn bản + registry", d:"Team 1 tải toàn văn 8 văn bản về doanh nghiệp từ các trang công bố của Nhà nước. File <code>registry/documents.json</code> ghi số hiệu, ngày hiệu lực, tình trạng hiệu lực và đường dẫn nguồn của từng văn bản."},
+   {t:"t1", tag:"Team 1", name:"Làm sạch, tách cấu trúc", s2:"Chương → Điều → Khoản → Điểm", d:"Script <code>chunk_documents.py</code> làm sạch text mà không sửa nội dung pháp lý, rồi dựng cây Chương, Điều, Khoản, Điểm cho từng văn bản."},
+   {t:"t1", tag:"Team 1", name:"chunks.jsonl", s2:"2.576 đoạn, mỗi đoạn một Khoản", d:"Mỗi chunk là một Khoản kèm metadata: văn bản, Điều, Khoản, ngày hiệu lực, tình trạng hiệu lực và đường dẫn nguồn. Giai đoạn 2 tìm kiếm trên các chunk này."},
+   {t:"t1", tag:"Team 1", name:"Chỉ mục tìm kiếm", s2:"BM25 + vector trong Qdrant", sec:"p2", d:"Team 1 dựng chỉ mục BM25 và tính sẵn vector của từng chunk bằng model AITeamVN. Script <code>populate_qdrant.py</code> nạp các vector này vào Qdrant. Nhờ vậy, lúc phục vụ, hệ thống chỉ cần tính vector của câu hỏi."},
+   {t:"t1", tag:"Team 1", name:"articles.jsonl", s2:"635 Điều nguyên văn", d:"Cùng lần tách đó, script ghi nguyên văn 635 Điều vào Article Store. Kho này chỉ dùng ở giai đoạn 5, khi người dùng mở một Điều từ trích dẫn."}
+  ]},
+ {num:"1", title:"Tiếp nhận câu hỏi", lane:[["t3","Team 3"],["t2","Team 2"]], budget:"FE chờ ≤ 60 s · Java chờ AI ≤ 50 s", sec:"p7",
+  link:"question + history",
+  steps:[
+   {t:"sh", tag:"Người dùng", name:"Gõ câu hỏi", s2:"trên giao diện React", d:"Người dùng gõ một câu hỏi về Luật Doanh nghiệp. Ô nhập bị khóa cho tới khi lượt này xong, nên mỗi lần bấm gửi chỉ tạo một lượt hỏi."},
+   {t:"t3", tag:"Team 3", name:"React gửi câu hỏi", s2:"POST /api/v1/chat/stream", d:"Frontend gửi câu hỏi kèm <code>clientRequestId</code>, một mã UUID riêng cho lượt này. Frontend chờ tối đa 60 giây. Khi mạng đứt hoặc quá hạn, frontend cho thử lại với đúng mã cũ, nên server không tạo lượt thứ hai."},
+   {t:"t3", tag:"Team 3", name:"Java nhận lượt hỏi", s2:"chống gửi trùng, lấy lịch sử", d:"Backend Spring Boot kiểm <code>clientRequestId</code>. Nếu lượt này đã xong, backend phát lại kết quả đã lưu và không gọi AI lần nữa. Nếu lượt là mới, backend lấy lịch sử hội thoại từ PostgreSQL."},
+   {t:"t3", tag:"Team 3", name:"Java mở luồng SSE", s2:"gửi meta, rồi heartbeat mỗi 10 s", d:"Backend gửi sự kiện <code>meta</code> ngay, để giao diện biết lượt đã được nhận. Trong lúc chờ AI, backend gửi heartbeat mỗi 10 giây để kết nối không bị cắt."},
+   {t:"t3", tag:"Team 3 → Team 2", name:"Java gọi dịch vụ AI", s2:"POST /internal/v1/query", d:"Backend gửi <code>question</code> và <code>history</code> theo <code>query_request.schema.json</code>, rồi chờ tối đa 50 giây. Dịch vụ AI chỉ xử lý một lượt tại một thời điểm. Lượt thứ hai nhận ngay 503 <code>LLM_UNAVAILABLE</code> (ADR 0004, đang chờ chốt)."}
+  ]},
+ {num:"2", title:"Tìm căn cứ", lane:[["t2","Team 2"],["t1","thư viện của Team 1"]], laneNote:"chạy trong tiến trình Python của Team 2", budget:"trần AI 45 s · retrieval ≤ 10 s", sec:"p2",
+  link:"10 đoạn luật đã xếp hạng",
+  steps:[
+   {t:"t2", tag:"Team 2", name:"Kiểm câu hỏi", s2:"rỗng, quá dài, nhắc lượt trước", exit:"câu chỉ nhắc \"công ty đó\" → insufficient_context", sec:"p5", d:"Pipeline kiểm câu hỏi và lịch sử. Hệ thống chưa có bước viết lại câu hỏi. Vì vậy, câu chỉ trỏ về lượt trước, như \"công ty đó\" hay \"trường hợp trên\", nhận ngay <code>insufficient_context</code> kèm lời nhắc nêu rõ tình huống. Pipeline không tìm kiếm với câu này."},
+   {t:"t1", tag:"Team 1", name:"BM25 và Dense", s2:"song song, mỗi nhánh 100 ứng viên", d:"Thư viện <code>team1_data/retrieval/</code> chạy trong tiến trình của Team 2. BM25 tìm theo từ khóa đã tách bằng underthesea. Dense so vector của câu hỏi với vector trong Qdrant. Retrieval chỉ giữ chunk của văn bản còn hiệu lực hoặc hết hiệu lực một phần."},
+   {t:"t1", tag:"Team 1", name:"Gộp bằng RRF", s2:"k = 60 · BM25 : Dense = 0,5 : 1", exit:"không có ứng viên → insufficient_context", d:"RRF gộp hai danh sách theo thứ hạng. File <code>retrieval_v2.json</code> của Team 1 đặt 20 đoạn, nhưng runtime của Team 2 đặt <code>RAG_TOP_K=10</code>, nên pipeline giữ 10 đoạn."},
+   {t:"t2", tag:"Team 2 · tắt", name:"Reranker BGE", s2:"chỉ chạy khi RAG_RERANK=true", off:true, sec:"p5", d:"Team 2 tắt reranker mặc định, vì trên 110 câu, Hybrid thắng hoặc hòa ở mọi chỉ số. Khi bật, bước này có hạn 4 giây. Quá hạn thì pipeline dùng lại thứ hạng Hybrid và vẫn gọi LLM."}
+  ]},
+ {num:"3", title:"Viết và kiểm câu trả lời", lane:[["t2","Team 2"]], budget:"LLM dùng thời gian còn lại, tối đa 30 s", sec:"p5",
+  link:"status, answer, citations · hoặc mã lỗi nội bộ",
+  steps:[
+   {t:"t2", tag:"Team 2", name:"Context Builder", s2:"tối đa 5 đoạn, ≈ 3.000 token", exit:"không còn đoạn dùng được → insufficient_context, không gọi LLM", d:"Context Builder bỏ đoạn trùng, giữ tối đa 5 đoạn trong khoảng 3.000 token, và gắn nhãn C1, C2… kèm địa chỉ Điều, Khoản. Nếu không còn đoạn nào dùng được, pipeline trả <code>insufficient_context</code> mà không gọi LLM."},
+   {t:"t2", tag:"Team 2", name:"Gọi LLM", s2:"gemini-3.1-flash-lite · prompt_v3", d:"Prompt gồm chỉ dẫn <code>prompt_v3</code>, lịch sử, câu hỏi và các đoạn có nhãn. LLM trả JSON gồm <code>status</code>, <code>answer</code> và <code>citations</code>. Pipeline truyền thời gian còn lại của trần 45 giây xuống lần gọi này, tối đa 30 giây. LLM cũng tự trả <code>insufficient_context</code> khi các đoạn không chứa đáp án."},
+   {t:"t2", tag:"Team 2", name:"Kiểm JSON và trích dẫn", s2:"luôn chạy", d:"Code đọc JSON theo schema, rồi kiểm mỗi trích dẫn có trỏ đúng một đoạn đã gửi và metadata có khớp không. JSON sai dạng thành lỗi <code>INVALID_LLM_OUTPUT</code>. Trích dẫn sai thành lỗi <code>CITATION_INVALID</code>. Code không tự sửa trích dẫn của LLM."},
+   {t:"t2", tag:"Team 2 · tắt", name:"Kiểm từng nhận định", s2:"chỉ khi RAG_VERIFY_CLAIMS=true", off:true, sec:"p6", d:"Khi bật <code>RAG_VERIFY_CLAIMS</code>, LLM khai thêm danh sách claims, và <code>verify_response</code> so từng claim với đoạn được trích theo rubric 4 cấp. Chế độ này dùng cho benchmark và mặc định tắt. Field claims không bao giờ được gửi cho Team 3."}
+  ]},
+ {num:"4", title:"Trả kết quả về giao diện", lane:[["t2","Team 2"],["t3","Team 3"]], budget:"FE chờ ≤ 60 s", sec:"p7",
+  link:"Người dùng bấm một thẻ trích dẫn",
+  steps:[
+   {t:"t2", tag:"Team 2", name:"Dịch vụ AI trả kết quả", s2:"answered · insufficient_context · lỗi", sec:"p4", d:"Dịch vụ AI trả một trong ba kết quả: câu trả lời có trích dẫn; <code>insufficient_context</code>, gồm cả các lối ra sớm ở giai đoạn 2 và 3; hoặc một mã lỗi nội bộ như <code>LLM_TIMEOUT</code> (504) hay <code>CITATION_INVALID</code> (502)."},
+   {t:"t3", tag:"Team 3", name:"Java kiểm và lưu", s2:"schema, mã lỗi public, PostgreSQL", d:"Backend kiểm response theo contract, đổi tên trường sang camelCase, và đổi mã lỗi nội bộ sang mã public theo mục 7.1 của <code>ARCHITECTURE.md</code>. Ví dụ, <code>CITATION_INVALID</code> thành <code>UPSTREAM_INVALID_RESPONSE</code>. Sau đó backend lưu kết quả vào PostgreSQL."},
+   {t:"t3", tag:"Team 3", name:"Java gửi kết quả", s2:"một delta + complete, hoặc error", d:"Khi kết quả là <code>answered</code>, backend gửi một sự kiện <code>delta</code> chứa cả câu trả lời, rồi gửi <code>complete</code>. Khi thiếu căn cứ, backend chỉ gửi <code>complete</code>. Khi có lỗi, backend gửi <code>error</code>. Câu trả lời không hiện dần theo từng chữ, vì dịch vụ AI chưa stream."},
+   {t:"t3", tag:"Team 3", name:"React hiển thị", s2:"câu trả lời và thẻ [C1], [C2]…", d:"Frontend hiện câu trả lời và các thẻ trích dẫn. Khi thiếu căn cứ, frontend hiện thông báo riêng và không có thẻ. Khi lỗi có <code>retryable = true</code>, frontend hiện nút Thử lại."}
+  ]},
+ {num:"5", title:"Mở Điều từ trích dẫn", lane:[["t3","Team 3"],["t2","Team 2"],["t1","kho của Team 1"]], laneNote:"chỉ chạy khi người dùng bấm", budget:"Java → AI ≤ 10 s · FE ≤ 15 s (NFR-09)", sec:"p7",
+  steps:[
+   {t:"sh", tag:"Người dùng", name:"Bấm [C1]", s2:"documentId + articleId", d:"Mỗi thẻ trích dẫn mang mã văn bản và mã Điều. Khi người dùng bấm thẻ, frontend mở Document Viewer với hai mã này."},
+   {t:"t3", tag:"Team 3", name:"Java chuyển yêu cầu", s2:"GET /api/v1/documents/{id}", d:"Backend nhận <code>documentId</code> và <code>articleId</code>, rồi gọi dịch vụ AI. Từ 16/11, lời gọi này có timeout riêng 10 giây (<code>app.rag.article-timeout-ms</code>), không chờ 50 giây như lời gọi hỏi đáp."},
+   {t:"t2", tag:"Team 2", name:"Python tra Article Store", s2:"articles.jsonl, nạp vào bộ nhớ", exit:"kho thiếu, hỏng → 503 · không có Điều → 404", sec:"p5", d:"Endpoint <code>GET /internal/v1/documents/{id}/articles/{id}</code> đọc Điều từ <code>articles.jsonl</code>, đã nạp vào bộ nhớ ở lần gọi đầu. Mã sai dạng trả 400. Văn bản hoặc Điều không có trả 404. Kho thiếu, hỏng hoặc rỗng trả 503 <code>RETRIEVAL_UNAVAILABLE</code>. Từ 17/11, code không còn dựng Điều từ chunk."},
+   {t:"t3", tag:"Team 3", name:"Document Viewer", s2:"nguyên Điều, tô Khoản được trích", d:"Viewer hiện nguyên văn Điều. Hàm <code>locateCitedUnit</code> tô sáng Khoản hoặc Điểm được trích khi tìm được đúng một đoạn khớp. Nếu không, Viewer hiện cả Điều kèm ghi chú. Khi tra lỗi, Viewer hiện thông báo và vẫn có liên kết tới văn bản nguồn."}
+  ]}
 ];
-const flowEl = document.getElementById("flow"), det = document.getElementById("flowDetail");
-const TEAM_NAME = {t1:"Team 1",t2:"Team 2",t3:"Team 3",sh:"Dùng chung"};
-FLOW.forEach((n,i) => {
-  const b = document.createElement("button");
-  b.className = "node" + (n.off ? " off" : "");
-  b.style.setProperty("--tc", OWN_COLOR[n.t]);
-  b.innerHTML = `<small>${i+1} · ${n.tag}</small><strong>${n.name}</strong>`;
-  b.addEventListener("click", () => select(i));
-  flowEl.appendChild(b);
-  if (i < FLOW.length-1){ const a = document.createElement("span"); a.className="arrow"; a.textContent="→"; a.setAttribute("aria-hidden","true"); flowEl.appendChild(a); }
+const wfEl = document.getElementById("wf");
+const wfDetails = [];
+WF.forEach((st, si) => {
+  const card = document.createElement("div");
+  card.className = "card wf-stage";
+  const lane = st.lane.map(([t, name]) => `<span style="--tc:${OWN_COLOR[t]}"><i></i> ${name}</span>`).join(" → ");
+  card.innerHTML = `<div class="wf-head"><span class="wf-num">${st.num}</span><span class="wf-title">${st.title}</span>`
+    + `<span class="wf-lane">${lane}${st.laneNote ? ` · ${st.laneNote}` : ""}</span>`
+    + (st.budget ? `<span class="wf-budget">${st.budget}</span>` : "") + `</div>`;
+  const row = document.createElement("div");
+  row.className = "flow";
+  st.steps.forEach((n, i) => {
+    const b = document.createElement("button");
+    b.className = "node" + (n.off ? " off" : "");
+    b.dataset.k = si + "." + i;
+    b.style.setProperty("--tc", OWN_COLOR[n.t]);
+    b.innerHTML = `<small>${n.tag}</small><strong>${n.name}</strong><span class="s2">${n.s2}</span>`
+      + (n.exit ? `<em class="exit"><b>Dừng sớm:</b> ${n.exit}</em>` : "");
+    b.addEventListener("click", () => wfSelect(si, i));
+    row.appendChild(b);
+    if (i < st.steps.length - 1) { const a = document.createElement("span"); a.className = "arrow"; a.textContent = "→"; a.setAttribute("aria-hidden", "true"); row.appendChild(a); }
+  });
+  const det = document.createElement("div");
+  det.className = "wf-detail"; det.hidden = true; det.setAttribute("aria-live", "polite");
+  card.append(row, det);
+  wfEl.appendChild(card);
+  wfDetails.push(det);
+  if (st.link) { const l = document.createElement("div"); l.className = "wf-link"; l.textContent = st.link; wfEl.appendChild(l); }
 });
-function select(i){
-  const n = FLOW[i];
-  flowEl.querySelectorAll(".node").forEach((b,j)=>b.classList.toggle("on", j===i));
-  det.style.setProperty("--tc", OWN_COLOR[n.t]);
-  const secNum = n.sec.slice(1);
-  det.innerHTML = `<h4>${i+1}. ${n.name}</h4><p>${n.d}</p><a class="go" href="#${n.sec}">Xem chi tiết ở phần ${secNum} →</a>`;
+function wfSelect(si, i){
+  const st = WF[si], n = st.steps[i], sec = n.sec || st.sec;
+  wfEl.querySelectorAll(".node").forEach(b => b.classList.toggle("on", b.dataset.k === si + "." + i));
+  wfDetails.forEach((d, j) => { d.hidden = j !== si; });
+  wfDetails[si].innerHTML = `<h4>${st.num}.${i+1} · ${n.name}</h4><p>${n.d}</p><a class="go" href="#${sec}">Xem chi tiết ở phần ${sec.slice(1)} →</a>`;
 }
-select(1);
+wfSelect(1, 0);
 
 /* ---------- retrieval chart ---------- */
 const RET = {
