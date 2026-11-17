@@ -1,0 +1,50 @@
+<header class="page-head">
+  <svg class="page-ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="9" y="6" width="30" height="36" rx="4"/><path d="M16 16h16M16 23h16M16 30h9"/><path d="M28 33l3 3 6-7"/>
+    <circle class="lt" cx="34" cy="11" r="2"/>
+  </svg>
+  <h1 class="page-title"><span>Soát bộ đề</span></h1>
+</header>
+
+<main class="page">
+
+<section class="mc-glass studio-card">
+  <div class="studio-body">
+    <p class="eyebrow">Bắt đầu</p>
+    <h2 class="viz-title">103 câu chờ người hiểu luật soát</h2>
+    <p class="viz-why">Mỗi lần trang hiện một câu. Bạn đọc câu hỏi, đáp án và nguyên văn Khoản, đánh giá từng tiêu chí, rồi chọn kết luận. Trang tự lưu mọi thứ bạn nhập trong trình duyệt này, nên bạn có thể đóng trang và làm tiếp sau. Khi xong một đợt, bấm "Tải kết quả" và gửi file cho Team 1.</p>
+    <p class="note">Bạn chưa đọc phần giới thiệu dự án? Hãy xem <a href="law-student-onboarding-visualization.html">trang giới thiệu</a> trước, nhất là mục 4 và mục 5.</p>
+    <div class="who-row">
+      <label class="ctl">Tên người soát<input class="mc-field" id="reviewer" type="text" maxlength="60" placeholder="Họ tên của bạn" autocomplete="name"></label>
+    </div>
+    <div class="prog" id="prog"></div>
+    <div class="io">
+      <button class="mc-btn mc-btn--primary" id="dl-csv" type="button">Tải kết quả (Google Sheet, Excel)</button>
+      <button class="mc-btn" id="dl-json" type="button">Tải bản lưu đầy đủ</button>
+      <label class="mc-btn file-btn">Mở bản lưu cũ<input id="load" type="file" accept=".json,application/json" hidden></label>
+    </div>
+    <p class="note" id="io-msg" aria-live="polite"></p>
+  </div>
+</section>
+
+<section class="mc-glass studio-card" id="work">
+  <div class="studio-body">
+    <div class="tabs" role="tablist" id="grp"></div>
+    <div class="grid-head">
+      <span class="note" id="grp-note"></span>
+      <label class="ctl--inline note"><input type="checkbox" id="only-todo"> Chỉ hiện câu chưa làm</label>
+    </div>
+    <div class="chips" id="chips" role="list"></div>
+
+    <div class="item" id="item" aria-live="polite"></div>
+
+    <div class="stp-controls">
+      <button class="mc-btn" id="prev" type="button">Câu trước</button>
+      <button class="mc-btn mc-btn--primary" id="next" type="button">Câu tiếp</button>
+      <span class="stp-count" id="pos"></span>
+    </div>
+  </div>
+</section>
+
+<p class="foot" id="foot"></p>
+</main>

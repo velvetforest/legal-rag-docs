@@ -635,6 +635,28 @@ mark.wrong { background: color-mix(in srgb, var(--bad) 22%, transparent); color:
 @media (min-width: 1900px) { body.mc-page { zoom: 1.45; } }
 @media (min-width: 2400px) { body.mc-page { zoom: 1.65; } }
 
+/* 4. chấm một câu, so sánh hai nhóm */
+.sub-h { font-family: var(--display); font-weight: 500; font-size: 19px; color: var(--mc-strong); margin-top: 10px; }
+.sim { display: grid; gap: 6px; padding: 12px 14px; border-radius: 14px; background: var(--mc-surface); border: 1px solid var(--mc-border); }
+.slots { display: flex; flex-wrap: wrap; gap: 5px; }
+.slot { display: grid; justify-items: center; min-width: 50px; padding: 6px; border-radius: 10px; font: 700 14px var(--mono); color: var(--mc-muted); background: var(--mc-alt); border: 1px solid var(--mc-alt-bd); }
+.slot small { font: 600 11px var(--ui); }
+.slot.is-hit { color: var(--ok); border-color: var(--ok); background: color-mix(in srgb, var(--ok) 14%, transparent); }
+.slot.is-miss-slot { color: var(--bad); border: 1px dashed var(--bad); background: transparent; }
+.sim-score { font-weight: 600; margin-top: 4px; }
+.sim-score .num { font-size: 18px; }
+.cmp { display: grid; border-top: 1px solid var(--mc-border); }
+.cmp-row { display: grid; grid-template-columns: 11em minmax(0, 1fr) minmax(0, 1fr); gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--mc-border); line-height: 1.5; font-size: 14.5px; }
+.cmp-row > span:first-child { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--mc-muted); padding-top: 2px; }
+.cmp-head > span { font-weight: 700; color: var(--mc-strong); }
+.go-btn { justify-self: start; align-self: start; text-decoration: none; display: inline-flex; align-items: center; }
+.viz-why a, .note a { color: var(--mc-deep); }
+@media (max-width: 560px) {
+  .cmp-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 12px; }
+  .cmp-row > span:first-child { grid-column: 1 / -1; }
+  .cmp-head > span:first-child { display: none; }
+}
+
 </style>
 </head>
 <body class="mc-page">
@@ -717,24 +739,53 @@ mark.wrong { background: color-mix(in srgb, var(--bad) 22%, transparent); color:
   <div class="studio-body">
     <p class="eyebrow">4 · Vì sao nhóm cần bạn</p>
     <h2 class="viz-title">Bộ đề chấm điểm còn 103 câu chưa có người hiểu luật kiểm</h2>
-    <p class="viz-why">Nhóm chấm hệ thống bằng một bộ đề có sẵn đáp án, gọi là <b>Golden set</b>. Phần dùng hằng ngày gọi là <b>Dev Set</b>, gồm 110 câu. Bấm từng nhóm câu để so điểm tìm kiếm của hệ thống trên mỗi nhóm.</p>
+    <p class="viz-why">Nhóm chấm hệ thống bằng một bộ đề có sẵn đáp án, gọi là <b>Golden set</b>. Phần dùng hằng ngày gọi là <b>Dev Set</b>, gồm 110 câu. Mỗi câu ghi sẵn Khoản nào chứa đáp án. Trước hết, hãy xem một câu được chấm thế nào.</p>
+
+    <h3 class="sub-h">Một câu được chấm thế nào</h3>
+    <p>Với mỗi câu hỏi, hệ thống đưa ra 5 Khoản đầu tiên mà nó cho là liên quan nhất. Nhóm đếm xem trong 5 Khoản đó có bao nhiêu Khoản chứa đáp án, rồi chia cho số Khoản mà câu đó cần. Điểm này gọi là <b>Recall@5</b>. Bấm từng ví dụ để thấy điểm thay đổi.</p>
+    <div class="stage">
+      <div class="tabs" role="tablist" id="sim-tabs"></div>
+      <div class="sim">
+        <p class="case-k">5 Khoản đầu tiên hệ thống đưa ra</p>
+        <div class="slots" id="sim-slots"></div>
+        <p class="case-k">Các Khoản câu này cần</p>
+        <div class="slots" id="sim-gold"></div>
+        <p class="sim-score">Điểm của câu này: <span class="num" id="sim-calc"></span></p>
+      </div>
+      <p class="stp-caption" id="sim-cap"></p>
+    </div>
+
+    <h3 class="sub-h">Điểm trung bình trên từng nhóm câu</h3>
+    <p>Điểm của một nhóm câu là trung bình điểm của các câu trong nhóm. Ví dụ, 0,783 nghĩa là: tính trung bình, khoảng 78% số Khoản cần thiết có mặt trong 5 Khoản đầu tiên. Bấm từng nhóm câu để so.</p>
     <div class="viz-meta"><span class="seal seal--calc">Số đo lượt vlra53</span><span class="seal seal--warn">Nhãn exploratory</span></div>
     <div class="stage">
       <div class="tabs" role="tablist" id="rc-tabs"></div>
       <div class="bars" id="rc-bars"></div>
       <p class="stp-caption" id="rc-cap"></p>
-      <div class="counts">
-        <div><span class="num">40</span> câu Team 2 đã rà</div>
-        <div><span class="num">70</span> câu nháp, chờ soát pháp lý</div>
-        <div><span class="num">33</span> câu ngoài phạm vi, chờ soát</div>
-        <div><span class="num">25</span> câu bẫy (edge case), chưa chạy</div>
-      </div>
     </div>
-    <div class="viz-takeaways"><h4>Điều cần nhớ</h4><ul>
-      <li><b>Recall@5</b> cho biết: trong 5 đoạn đầu tiên hệ thống tìm được, có bao nhiêu phần đáp án đúng.</li>
-      <li>70 câu nháp cho điểm 0,986, cao hơn hẳn 0,783 của 40 câu đã rà. Câu nháp có thể quá dễ, vì đáp án thường chép nguyên văn Khoản.</li>
-      <li>Chừng nào chưa có người hiểu luật soát, mọi điểm số vẫn phải mang nhãn <b>exploratory</b> (chỉ để tham khảo).</li>
+
+    <h3 class="sub-h">Câu đã rà và câu nháp khác nhau ở đâu</h3>
+    <div class="cmp" role="table" aria-label="So sánh câu đã rà và câu nháp">
+      <div class="cmp-row cmp-head" role="row"><span role="columnheader"></span><span role="columnheader">40 câu đã rà</span><span role="columnheader">70 câu nháp</span></div>
+      <div class="cmp-row" role="row"><span role="rowheader">Ai soạn</span><span role="cell">Các thành viên trong nhóm đóng góp</span><span role="cell">Team 1 soạn với sự hỗ trợ của AI</span></div>
+      <div class="cmp-row" role="row"><span role="rowheader">Soạn bắt đầu từ đâu</span><span role="cell">Từ một câu hỏi, rồi tìm căn cứ</span><span role="cell">Từ một Khoản, rồi đặt câu hỏi cho Khoản đó</span></div>
+      <div class="cmp-row" role="row"><span role="rowheader">Ai đã đọc lại</span><span role="cell">Team 2 đã rà</span><span role="cell">Chưa ai hiểu luật đọc lại</span></div>
+      <div class="cmp-row" role="row"><span role="rowheader">Số Khoản cần để trả lời</span><span role="cell">20 câu cần 1 Khoản, 20 câu cần từ 2 đến 11 Khoản</span><span role="cell">Cả 70 câu chỉ cần 1 Khoản</span></div>
+      <div class="cmp-row" role="row"><span role="rowheader">Đáp án chép nguyên văn Khoản</span><span role="cell">10/40 câu</span><span role="cell">70/70 câu</span></div>
+      <div class="cmp-row" role="row"><span role="rowheader">Recall@5</span><span role="cell"><span class="num">0,783</span></span><span role="cell"><span class="num">0,986</span></span></div>
+      <div class="cmp-row" role="row"><span role="rowheader">Ví dụ</span><span role="cell">gold_003: "Theo Luật Doanh nghiệp, cổ đông là ai?"</span><span role="cell">gold_042: "Trước hạn thanh toán đủ cổ phần đã đăng ký mua, số phiếu biểu quyết của cổ đông được tính như thế nào?"</span></div>
+    </div>
+    <div class="viz-takeaways"><h4>Vì sao câu nháp cho điểm cao hơn</h4><ul>
+      <li>Câu nháp được đặt ra từ chính một Khoản, nên câu hỏi dùng đúng chữ của Khoản đó. Ví dụ, gold_042 lặp lại "thanh toán đủ", "cổ phần đã đăng ký mua" và "số phiếu biểu quyết". Hệ thống tìm theo từ khóa rất dễ.</li>
+      <li>Mỗi câu nháp chỉ cần 1 Khoản, nên chỉ cần tìm trúng một chỗ là đạt điểm tối đa. Một câu cần 11 Khoản thì dù 5 Khoản đầu đều đúng, điểm cũng chỉ là 5/11.</li>
+      <li>Người dùng thật hỏi bằng lời của họ, và nhiều câu cần vài Khoản. Vì vậy 0,783 gần với thực tế hơn 0,986. Việc của bạn là kiểm và sửa câu nháp cho giống câu hỏi thật.</li>
     </ul></div>
+    <div class="counts">
+      <div><span class="num">70</span> câu nháp, chờ soát pháp lý</div>
+      <div><span class="num">33</span> câu ngoài phạm vi, chờ soát</div>
+      <div><span class="num">25</span> câu bẫy (edge case), làm sau</div>
+    </div>
+    <a class="mc-btn mc-btn--primary go-btn" href="legal-review-dev-set-visualization.html">Mở trang soát 103 câu</a>
   </div>
 </section>
 
@@ -762,6 +813,7 @@ mark.wrong { background: color-mix(in srgb, var(--bad) 22%, transparent); color:
       <li>Đáp án của câu này đang chép nguyên văn Khoản, kể cả số "2." ở đầu. Đây là dấu hiệu chung của 70 câu nháp.</li>
       <li>Bạn chỉ cần kết luận về nội dung pháp lý. Việc đổi mã chunk hay sửa file là việc của nhóm.</li>
     </ul></div>
+    <a class="mc-btn mc-btn--primary go-btn" href="legal-review-dev-set-visualization.html">Làm thật ở trang soát 103 câu</a>
   </div>
 </section>
 
@@ -770,7 +822,7 @@ mark.wrong { background: color-mix(in srgb, var(--bad) 22%, transparent); color:
   <div class="studio-body">
     <p class="eyebrow">6 · Việc của bạn</p>
     <h2 class="viz-title">Bảy việc thuần luật, xếp theo thứ tự nên làm</h2>
-    <p class="viz-why">Bấm từng việc để xem lý do, những gì nhóm gửi cho bạn, cách làm và kết quả cần trả lại. Việc 1 nhỏ và gỡ được lỗi ngay. Việc 2 quan trọng nhất.</p>
+    <p class="viz-why">Bấm từng việc để xem lý do, những gì nhóm gửi cho bạn, cách làm và kết quả cần trả lại. Việc 1 nhỏ và gỡ được lỗi ngay. Việc 2 quan trọng nhất. Việc 2 và 3 làm trên <a href="legal-review-dev-set-visualization.html">trang soát 103 câu</a>.</p>
     <div class="stage">
       <ol class="tasks" id="tk"></ol>
       <div class="task-detail" id="tk-d" aria-live="polite"></div>
@@ -782,8 +834,8 @@ mark.wrong { background: color-mix(in srgb, var(--bad) 22%, transparent); color:
 <section class="mc-glass studio-card" id="s7">
   <div class="studio-body">
     <p class="eyebrow">7 · Bạn và nhóm phối hợp thế nào</p>
-    <h2 class="viz-title">Bạn làm trên Google Sheet, nhóm lo phần kỹ thuật</h2>
-    <p class="viz-why">Mỗi đợt soát đi qua năm bước. Bấm Tiếp để xem ai làm bước nào. Bạn chỉ làm bước 2.</p>
+    <h2 class="viz-title">Bạn soát trên trang web, nhóm lo phần kỹ thuật</h2>
+    <p class="viz-why">Mỗi đợt soát đi qua năm bước. Bấm Tiếp để xem ai làm bước nào. Bạn chỉ làm bước 1 và 2.</p>
     <div class="stage">
       <ol class="steps" id="wk-steps"></ol>
       <p class="stp-caption" id="wk-cap"></p>
@@ -799,8 +851,8 @@ mark.wrong { background: color-mix(in srgb, var(--bad) 22%, transparent); color:
           <li>Câu trả lời của AI có được nguồn chứng minh không.</li>
         </ul></div>
         <div><p class="case-k">Nhóm quyết định</p><ul>
-          <li>Đổi Khoản bạn chỉ ra thành mã chunk tương ứng.</li>
-          <li>Sửa file trong repo, chạy test, mở PR.</li>
+          <li>Đổi Khoản bạn chỉ ra thành dữ liệu của hệ thống.</li>
+          <li>Cập nhật bộ đề và cho máy kiểm tự động.</li>
           <li>Báo các team khác khi bộ đề thay đổi.</li>
         </ul></div>
       </div>
@@ -818,6 +870,7 @@ mark.wrong { background: color-mix(in srgb, var(--bad) 22%, transparent); color:
       <input class="mc-field" id="gl-q" type="search" placeholder="Ví dụ: chunk, hash, PR" aria-label="Lọc thuật ngữ">
       <dl class="gloss" id="gl"></dl>
       <p class="note" id="gl-empty" hidden>Không có thuật ngữ nào khớp.</p>
+      <p class="note">Bạn sẽ nghe nhóm nói repo, commit, PR hay hash. Đó là các bước kỹ thuật nhóm làm sau khi nhận kết quả của bạn. Bạn không cần biết các từ này để làm phần việc của mình.</p>
     </div>
   </div>
 </section>
@@ -935,11 +988,38 @@ const DOCS = [
 ];
 $("docs").innerHTML = DOCS.map(([id, name, note]) => `<li><b>${name}</b>${note ? ` <span class="note">· ${note}</span>` : ""}<br><code>${id}-v1</code></li>`).join("");
 
+/* ---------- 4a. một câu được chấm thế nào ---------- */
+const SIM = [
+  { tab: "Cần 1 Khoản, tìm trúng", gold: 1, hits: [2], cap: "Câu cần 1 Khoản, và Khoản đó đứng thứ 2 trong 5 Khoản đầu. Điểm 1/1 = 1. Thứ tự trong 5 Khoản đầu không làm đổi điểm." },
+  { tab: "Cần 1 Khoản, tìm trượt", gold: 1, hits: [], cap: "Khoản chứa đáp án đứng thứ 8, ngoài 5 Khoản đầu. Điểm 0/1 = 0. AI sẽ không được đọc căn cứ đúng." },
+  { tab: "Cần 3 Khoản, có 2", gold: 3, hits: [1, 4], cap: "Câu cần 3 Khoản, và 5 Khoản đầu có 2 trong số đó. Điểm 2/3 ≈ 0,67." },
+  { tab: "Cần 11 Khoản", gold: 11, hits: [1, 2, 3, 4, 5], cap: "Câu cần 11 Khoản. Dù cả 5 Khoản đầu đều đúng, điểm vẫn chỉ là 5/11 ≈ 0,45. Bộ đề có một câu đã rà cần đúng 11 Khoản như vậy." }
+];
+let sim = 0;
+SIM.forEach((s, i) => {
+  const b = document.createElement("button");
+  b.className = "tab"; b.type = "button"; b.role = "tab"; b.textContent = s.tab;
+  b.onclick = () => { sim = i; drawSim(); };
+  $("sim-tabs").appendChild(b);
+});
+function drawSim() {
+  const s = SIM[sim];
+  [...$("sim-tabs").children].forEach((b, i) => b.setAttribute("aria-selected", i === sim));
+  $("sim-slots").innerHTML = [1, 2, 3, 4, 5].map((k) => s.hits.includes(k)
+    ? `<span class="slot is-hit">${k}<small>đúng</small></span>` : `<span class="slot">${k}<small>khác</small></span>`).join("");
+  $("sim-gold").innerHTML = Array.from({ length: s.gold }, (_, k) => k < s.hits.length
+    ? `<span class="slot is-hit">K${k + 1}<small>có mặt</small></span>` : `<span class="slot is-miss-slot">K${k + 1}<small>thiếu</small></span>`).join("");
+  const v = s.hits.length / s.gold;
+  $("sim-calc").textContent = `${s.hits.length}/${s.gold} = ${String(Math.round(v * 100) / 100).replace(".", ",")}`;
+  $("sim-cap").textContent = s.cap;
+}
+drawSim();
+
 /* ---------- 4. Recall theo nhóm câu ---------- */
 const RC = [
   { tab: "Cả 110 câu", v: 0.912, cap: "Trên cả Dev Set, cấu hình đang dùng đạt Recall@5 0,912. Đây là con số nhóm hay báo cáo." },
   { tab: "40 câu đã rà", v: 0.783, cap: "Trên 40 câu Team 2 đã rà, điểm chỉ còn 0,783, thấp hơn mốc 0,85 mà nhóm đặt ra (NFR-01)." },
-  { tab: "70 câu nháp", v: 0.986, cap: "Trên 70 câu nháp, điểm gần tuyệt đối. Câu nháp được soạn bám sát câu chữ của Khoản, nên hệ thống tìm rất dễ." }
+  { tab: "70 câu nháp", v: 0.986, cap: "Trên 70 câu nháp, điểm gần tuyệt đối. Bảng so sánh bên dưới giải thích vì sao." }
 ];
 let rc = 0, rcPrev = null;
 RC.forEach((r, i) => {
@@ -1017,14 +1097,14 @@ const TASKS = [
     give: "Ngày đăng Công báo, ngày có hiệu lực, tình trạng hiệu lực hiện nay, và đường dẫn nguồn bạn đã tra." },
   { n: "Soát 70 câu nháp trong Dev Set", size: "Lớn nhất · khoảng 15 câu mỗi đợt",
     why: "70/110 câu do Team 1 soạn với sự hỗ trợ của AI và chưa có người hiểu luật kiểm. Mọi điểm số của nhóm đang dựa trên các câu này.",
-    get: "Một Google Sheet, mỗi dòng một câu: câu hỏi, đáp án, căn cứ được ghi và nguyên văn Khoản đó.",
+    get: "Link trang soát 103 câu. Mỗi câu có sẵn câu hỏi, đáp án, căn cứ được ghi, nguyên văn Khoản và cả Điều chứa Khoản đó.",
     how: "Xét năm tiêu chí như ở mục 5, rồi kết luận Giữ nguyên, Sửa hoặc Bỏ câu. Nếu căn cứ sai, ghi căn cứ đúng (Khoản, Điều, văn bản). Nếu thiếu căn cứ, ghi thêm.",
-    give: "Kết luận, căn cứ đúng nếu có, ghi chú và tên bạn trên từng dòng." },
+    give: "Bấm \"Tải kết quả\" trên trang soát và gửi file cho Team 1. File có kết luận, căn cứ đúng, ghi chú và tên bạn cho từng câu." },
   { n: "Soát 33 câu ngoài phạm vi", size: "Vừa",
     why: "Nhóm dùng 33 câu này để kiểm hệ thống có biết từ chối không. Nếu kho thật ra có câu trả lời, câu đó không còn là câu ngoài phạm vi.",
     get: "Câu hỏi, loại câu (ngoài lĩnh vực, thiếu dữ kiện, câu bẫy) và lý do Team 1 ghi.",
     how: "Xét từng câu: kho 8 văn bản về doanh nghiệp có trả lời được không, dù chỉ một phần. Ví dụ: oos_023 hỏi \"Hợp đồng tôi vừa ký có hợp lệ không?\" và thiếu dữ kiện.",
-    give: "Đồng ý hay không đồng ý là ngoài phạm vi, kèm Khoản trả lời được nếu có." },
+    give: "Trên cùng trang soát, chọn \"Đúng là ngoài phạm vi\" hoặc \"Kho trả lời được\" kèm Khoản trả lời được, rồi tải kết quả." },
   { n: "Soát 25 câu bẫy (edge case)", size: "Vừa · cần hiểu luật sâu nhất",
     why: "Các câu bẫy kiểm tình huống khó: luật đã sửa đổi (4), hết hiệu lực một phần (4), cần nhiều nguồn (4), trích dẫn lệch (5), thiếu căn cứ (4), ngoài kho (2), xung đột giữa luật gốc và văn bản hợp nhất (2).",
     get: "Câu hỏi, loại bẫy, đáp án mong đợi và các căn cứ.",
@@ -1064,11 +1144,11 @@ drawTk();
 
 /* ---------- 7. phối hợp ---------- */
 const WK = [
-  { n: "Xuất bảng", team: "Team 1", cap: "Một thành viên Team 1 xuất khoảng 15 câu ra Google Sheet. Mỗi dòng có sẵn nguyên văn Khoản, nên bạn không phải mở file kỹ thuật nào." },
-  { n: "Soát", team: "Bạn", cap: "Bạn soát từng dòng, ghi kết luận, căn cứ đúng, ghi chú và tên bạn. Đây là bước duy nhất bạn làm." },
-  { n: "Nhập lại", team: "Team 1", cap: "Team 1 đưa kết quả vào repo (kho code chung trên GitHub) bằng một PR (Pull Request, tức một đề nghị thay đổi có người khác xem lại)." },
-  { n: "Kiểm", team: "Máy", cap: "Các test tự động kiểm mọi mã chunk có tồn tại và tính lại hash của bộ đề. Hash là dấu vân tay của file: sửa một chữ thì hash đổi." },
-  { n: "Đo lại", team: "Team 2", cap: "Team 2 thấy hash mới, biết bộ đề đã đổi, và chạy lại benchmark (lượt chấm điểm toàn bộ). Từ đây điểm số dựa trên các câu bạn đã soát." }
+  { n: "Soát", team: "Bạn", cap: "Bạn mở trang soát 103 câu và làm từng câu. Trang tự lưu trên trình duyệt của bạn, nên bạn có thể làm trong nhiều buổi." },
+  { n: "Gửi file", team: "Bạn", cap: "Xong một đợt, bạn bấm \"Tải kết quả\" và gửi file cho Team 1 qua Zalo hoặc email. File mở được bằng Google Sheet hoặc Excel." },
+  { n: "Đưa vào bộ đề", team: "Team 1", cap: "Team 1 đọc kết luận của bạn, đổi Khoản bạn chỉ ra thành dữ liệu của hệ thống, và sửa câu hỏi, đáp án trong bộ đề." },
+  { n: "Kiểm tự động", team: "Máy", cap: "Máy tự kiểm mọi căn cứ có thật trong kho văn bản, và ghi nhận rằng bộ đề đã đổi." },
+  { n: "Chấm lại", team: "Team 2", cap: "Team 2 cho hệ thống làm lại cả bộ đề. Từ đây, điểm số dựa trên các câu bạn đã soát." }
 ];
 stepper(WK, { list: "wk-steps", cap: "wk-cap", count: "wk-count", back: "wk-back", next: "wk-next" });
 
@@ -1092,9 +1172,6 @@ const GL = [
   ["Recall@5", "Trong 5 đoạn đầu tiên tìm được, có bao nhiêu phần đáp án đúng."],
   ["Benchmark", "Một lượt cho hệ thống làm cả bộ đề rồi tính điểm."],
   ["Exploratory", "Nhãn \"thăm dò\" trên điểm số khi bộ đề chưa được duyệt hết."],
-  ["Repo, commit", "Repo là kho code chung trên GitHub. Commit là một lần lưu thay đổi vào repo."],
-  ["PR (Pull Request)", "Đề nghị đưa một thay đổi vào repo, có người khác xem lại trước khi nhận."],
-  ["Hash", "Dấu vân tay của một file. Sửa một chữ thì hash đổi, nên nhóm biết bộ đề đã thay đổi."],
   ["Team 1, 2, 3", "Team 1: dữ liệu và tìm kiếm. Team 2: AI và kiểm trích dẫn. Team 3: trang web và máy chủ."]
 ];
 function drawGl() {
